@@ -1,0 +1,35 @@
+# ── Stage 1: Frontend ──────────────────────────────────
+FROM docker.io/library/node:20-slim AS frontend
+WORKDIR /build
+RUN npm install -g pnpm
+COPY web/package.json web/pnpm-lock.yaml web/
+RUN cd web && pnpm install --frozen-lockfile
+COPY web/ web/
+RUN cd web && pnpm build
+
+# ── Stage 2: Backend (embeds web/dist) ────────────────
+FROM docker.io/library/rust:1-slim AS backend
+WORKDIR /build
+COPY Cargo.toml Cargo.lock ./
+COPY server/ server/
+COPY --from=frontend /build/web/dist web/dist
+RUN cargo build --release -p server
+
+# ── Stage 3: Runtime ──────────────────────────────────
+FROM docker.io/library/debian:bookworm-slim
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# 前端已打包进二进制，只需拷贝一个文件
+COPY --from=backend /build/target/release/server /app/wheremystuff
+
+# 数据目录（运行时挂载卷）
+VOLUME /app/data
+
+EXPOSE 3000
+
+# 必须从 /app 运行（相对路径读取 web/dist 和 data/）
+CMD ["/app/wheremystuff"]

@@ -1,0 +1,32 @@
+# wheremystuff systemd 服务（单二进制，前端已打包内嵌）
+# 安装:
+#   sudo cp deploy/systemd/wheremystuff.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now wheremystuff
+#
+# WorkingDirectory = 数据目录位置（数据库 + 图片写在这里）
+
+[Unit]
+Description=wheremystuff — 个人物品管理
+After=network.target
+
+[Service]
+Type=simple
+# 数据目录（默认 ~/.local/share/wheremystuff/，可覆盖）
+# WorkingDirectory 影响 config.toml 查找路径，数据默认用 XDG 路径
+# 二进制路径（just install 默认 ~/.local/bin/wheremystuff）
+ExecStart=/usr/local/bin/wheremystuff
+Restart=on-failure
+RestartSec=5
+
+# 安全加固
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=%h/.local/share/wheremystuff
+
+# 环境变量（可选）
+# Environment=CONFIG_PATH=/etc/wheremystuff/config.toml
+# Environment=RUST_LOG=info
+
+[Install]
+WantedBy=multi-user.target
