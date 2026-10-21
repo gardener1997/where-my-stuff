@@ -1,5 +1,7 @@
 # wheremystuff
 
+[English](README.en.md) | 简体中文
+
 个人物品管理与查找工具 — 「我有个东西，放哪儿了？」
 
 ## 技术栈
@@ -216,3 +218,7 @@ REST 风格，前缀 `/api/v1`：
 - `GET/POST/PUT/DELETE /tags/*` — 标签
 - `GET /search?q=` — FTS5 全文搜索（trigram 分词，支持中文）
 - `GET /stats` — 统计概览
+
+## License
+
+[MIT](LICENSE)
