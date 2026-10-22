@@ -5,6 +5,7 @@ import { useTags, useCreateTag } from "@/hooks/useTags";
 import { useCategoryTree } from "@/hooks/useCategories";
 import { useContainerTree } from "@/hooks/useContainers";
 import { api } from "@/lib/api";
+import { flattenTree } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
 import { ImageUpload } from "@/components/ui/ImageUpload";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -157,11 +158,7 @@ function NewItemPage() {
             value={categoryId}
             onChange={setCategoryId}
             placeholder="未分类"
-            options={flattenCategories(categoryTree || []).map((c) => ({
-              value: c.id,
-              label: c.name,
-              indent: c.indent,
-            }))}
+            options={flattenTree(categoryTree || [])}
           />
         </Field>
 
@@ -171,11 +168,7 @@ function NewItemPage() {
             value={containerId}
             onChange={setContainerId}
             placeholder="未归位"
-            options={flattenContainers(containerTree || []).map((c) => ({
-              value: c.id,
-              label: c.name,
-              indent: c.indent,
-            }))}
+            options={flattenTree(containerTree || [])}
           />
         </Field>
 
@@ -258,30 +251,4 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       {children}
     </div>
   );
-}
-
-function flattenCategories(
-  nodes: { id: string; name: string; children: unknown[] }[],
-  depth = 0,
-): { id: string; name: string; indent: string }[] {
-  return nodes.flatMap((n) => [
-    { id: n.id, name: n.name, indent: "  ".repeat(depth) },
-    ...flattenCategories(
-      n.children as { id: string; name: string; children: unknown[] }[],
-      depth + 1,
-    ),
-  ]);
-}
-
-function flattenContainers(
-  nodes: { id: string; name: string; children: unknown[] }[],
-  depth = 0,
-): { id: string; name: string; indent: string }[] {
-  return nodes.flatMap((n) => [
-    { id: n.id, name: n.name, indent: "  ".repeat(depth) },
-    ...flattenContainers(
-      n.children as { id: string; name: string; children: unknown[] }[],
-      depth + 1,
-    ),
-  ]);
 }

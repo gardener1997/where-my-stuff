@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useCategoryTree, useCreateCategory } from "@/hooks/useCategories";
 import { api } from "@/lib/api";
+import { flattenTree } from "@/lib/utils";
 import { useConfirm } from "@/hooks/useConfirm";
 import { SkeletonList } from "@/components/ui/Skeleton";
 import { Select } from "@/components/ui/Select";
@@ -60,11 +61,7 @@ function CategoriesPage() {
             value={newParentId}
             onChange={setNewParentId}
             placeholder="顶层分类"
-            options={flattenTree(tree || []).map((c) => ({
-              value: c.id,
-              label: c.name,
-              indent: c.indent,
-            }))}
+            options={flattenTree(tree || [])}
           />
         </div>
         <button
@@ -144,13 +141,7 @@ function CategoryNode({
               value={parentId}
               onChange={setParentId}
               placeholder="顶层"
-              options={flattenTree(allNodes)
-                .filter((c) => c.id !== node.id)
-                .map((c) => ({
-                  value: c.id,
-                  label: c.name,
-                  indent: c.indent,
-                }))}
+              options={flattenTree(allNodes).filter((c) => c.value !== node.id)}
             />
           </div>
           <button onClick={handleSave} className="p-1 text-green-600 hover:bg-green-100 rounded">
@@ -199,14 +190,4 @@ function CategoryNode({
       ))}
     </div>
   );
-}
-
-function flattenTree(
-  nodes: import("@/types").CategoryNode[],
-  depth = 0,
-): { id: string; name: string; indent: string }[] {
-  return nodes.flatMap((n) => [
-    { id: n.id, name: n.name, indent: "  ".repeat(depth) },
-    ...flattenTree(n.children, depth + 1),
-  ]);
 }

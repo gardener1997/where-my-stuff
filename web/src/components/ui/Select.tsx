@@ -4,7 +4,10 @@ import { ChevronDown, Check } from "lucide-react";
 export interface SelectOption {
   value: string;
   label: string;
-  indent?: string;
+  /** Nesting level for tree-shaped options (containers, categories). */
+  depth?: number;
+  /** Full ancestor path shown when this option is selected. */
+  path?: string;
 }
 
 interface SelectProps {
@@ -49,15 +52,8 @@ export function Select({
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm bg-white text-left focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-gray-300 transition-colors"
       >
-        <span className={selected ? "text-gray-900" : "text-gray-400"}>
-          {selected ? (
-            <>
-              {selected.indent && <span className="text-gray-400">{selected.indent}</span>}
-              {selected.label}
-            </>
-          ) : (
-            placeholder
-          )}
+        <span className={`truncate ${selected ? "text-gray-900" : "text-gray-400"}`}>
+          {selected ? selected.path ?? selected.label : placeholder}
         </span>
         <ChevronDown
           size={16}
@@ -90,12 +86,14 @@ export function Select({
                 onChange(opt.value);
                 setOpen(false);
               }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm text-left hover:bg-gray-50 transition-colors ${
+              className={`w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm text-left hover:bg-gray-50 transition-colors ${
                 value === opt.value ? "text-blue-600 bg-blue-50/50 font-medium" : "text-gray-700"
               }`}
             >
-              <span>
-                {opt.indent && <span className="text-gray-400">{opt.indent}</span>}
+              <span
+                className="truncate"
+                style={{ paddingLeft: (opt.depth ?? 0) * 16 }}
+              >
                 {opt.label}
               </span>
               {value === opt.value && <Check size={15} className="text-blue-500 shrink-0" />}

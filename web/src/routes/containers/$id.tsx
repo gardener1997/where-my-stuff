@@ -5,7 +5,7 @@ import {
   useCreateContainer,
   useContainerTree,
 } from "@/hooks/useContainers";
-import { formatDate } from "@/lib/utils";
+import { formatDate, flattenTree } from "@/lib/utils";
 import { useState } from "react";
 import { FolderTree, Package, Edit, Trash2, X, Check, Plus } from "lucide-react";
 import { api } from "@/lib/api";
@@ -293,13 +293,7 @@ function EditContainerForm({
               value={parentId}
               onChange={setParentId}
               placeholder="无（顶层）"
-              options={flattenContainers(allContainers)
-                .filter((c) => c.id !== container.id)
-                .map((c) => ({
-                  value: c.id,
-                  label: c.name,
-                  indent: c.indent,
-                }))}
+              options={flattenTree(allContainers).filter((c) => c.value !== container.id)}
             />
           </div>
         </div>
@@ -398,14 +392,4 @@ function CreateChildForm({ parentId, onDone }: { parentId: string; onDone: () =>
       </div>
     </div>
   );
-}
-
-function flattenContainers(
-  nodes: import("@/types").ContainerNode[],
-  depth = 0,
-): { id: string; name: string; indent: string }[] {
-  return nodes.flatMap((n) => [
-    { id: n.id, name: n.name, indent: "  ".repeat(depth) },
-    ...flattenContainers(n.children, depth + 1),
-  ]);
 }

@@ -117,9 +117,16 @@ function ItemDetailPage() {
         </>
       )}
 
+      {/* Description — full width outside the info card */}
+      {item.description && (
+        <section className="mb-6">
+          <h3 className="text-sm font-medium text-gray-500 mb-3">描述</h3>
+          <MarkdownText>{item.description}</MarkdownText>
+        </section>
+      )}
+
       {/* Info */}
       <div className="bg-white border rounded-xl divide-y">
-        <InfoRow label="描述" value={item.description && <MarkdownText>{item.description}</MarkdownText>} />
         <InfoRow
           label="来源"
           value={
