@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { useCategoryTree, useCreateCategory } from "@/hooks/useCategories";
-import { api } from "@/lib/api";
+import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategory } from "@/hooks/useCategories";
 import { flattenTree } from "@/lib/utils";
 import { useConfirm } from "@/hooks/useConfirm";
 import { SkeletonList } from "@/components/ui/Skeleton";
@@ -15,6 +14,7 @@ export const Route = createFileRoute("/categories")({
 function CategoriesPage() {
   const { data: tree, isLoading } = useCategoryTree();
   const createCategory = useCreateCategory();
+  const deleteCategory = useDeleteCategory();
   const { confirm, dialog } = useConfirm();
   const [newName, setNewName] = useState("");
   const [newParentId, setNewParentId] = useState("");
@@ -39,7 +39,7 @@ function CategoriesPage() {
       variant: "danger",
     });
     if (ok) {
-      await api.deleteCategory(id);
+      await deleteCategory.mutateAsync(id);
     }
   };
 
@@ -113,11 +113,12 @@ function CategoryNode({
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(node.name);
   const [parentId, setParentId] = useState(node.parent_id || "");
+  const updateCategory = useUpdateCategory();
 
   const handleSave = async () => {
-    await api.updateCategory(node.id, {
-      name,
-      parent_id: parentId || undefined,
+    await updateCategory.mutateAsync({
+      id: node.id,
+      data: { name, parent_id: parentId || undefined },
     });
     setEditing(false);
   };

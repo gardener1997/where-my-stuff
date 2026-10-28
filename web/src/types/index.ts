@@ -43,6 +43,7 @@ export interface Item {
   id: string;
   name: string;
   description: string | null;
+  location_note: string | null;
   source_type: string;
   purchased_at: string | null;
   bought_from: string | null;
@@ -128,6 +129,7 @@ export interface Stats {
 export interface CreateItem {
   name: string;
   description?: string;
+  location_note?: string;
   source_type?: string;
   purchased_at?: string;
   bought_from?: string;
@@ -140,6 +142,7 @@ export interface CreateItem {
 export interface UpdateItem {
   name?: string;
   description?: string;
+  location_note?: string;
   source_type?: string;
   purchased_at?: string;
   bought_from?: string;

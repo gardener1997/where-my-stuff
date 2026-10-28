@@ -162,6 +162,7 @@ function ItemDetailPage() {
             )
           }
         />
+        {item.location_note && <InfoRow label="位置说明" value={item.location_note} />}
         <InfoRow
           label="标签"
           value={

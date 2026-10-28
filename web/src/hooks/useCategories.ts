@@ -37,3 +37,14 @@ export function useUpdateCategory() {
     },
   });
 }
+
+export function useDeleteCategory() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.deleteCategory(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["categories"] });
+      qc.invalidateQueries({ queryKey: ["stats"] });
+    },
+  });
+}

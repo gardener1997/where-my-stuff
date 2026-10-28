@@ -39,6 +39,11 @@ pub async fn search(pool: &SqlitePool, query: &SearchQuery) -> AppResult<SearchR
                     parts.push(s.clone());
                 }
             }
+            if let Some(ref s) = row.note_snippet {
+                if s.contains("<mark>") {
+                    parts.push(s.clone());
+                }
+            }
             if parts.is_empty() {
                 row.description.clone().map(|d| {
                     if d.chars().count() > 80 {
@@ -105,11 +110,11 @@ async fn search_like(
         "SELECT COUNT(*) FROM items i
          LEFT JOIN containers ct ON ct.id = i.container_id
          LEFT JOIN categories c ON c.id = i.category_id
-         WHERE (i.name LIKE ? OR i.description LIKE ? OR ct.name LIKE ? OR ct.label LIKE ? OR c.name LIKE ?)
+         WHERE (i.name LIKE ? OR i.description LIKE ? OR i.location_note LIKE ? OR ct.name LIKE ? OR ct.label LIKE ? OR c.name LIKE ?)
          AND {where_clause}"
     );
     let mut count_q = sqlx::query_scalar::<_, i64>(&count_sql);
-    for _ in 0..5 {
+    for _ in 0..6 {
         count_q = count_q.bind(&like);
     }
     if let Some(ref cid) = query.category_id {
@@ -133,13 +138,13 @@ async fn search_like(
          FROM items i
          LEFT JOIN containers ct ON ct.id = i.container_id
          LEFT JOIN categories c ON c.id = i.category_id
-         WHERE (i.name LIKE ? OR i.description LIKE ? OR ct.name LIKE ? OR ct.label LIKE ? OR c.name LIKE ?)
+         WHERE (i.name LIKE ? OR i.description LIKE ? OR i.location_note LIKE ? OR ct.name LIKE ? OR ct.label LIKE ? OR c.name LIKE ?)
          AND {where_clause}
          ORDER BY i.created_at DESC
          LIMIT ? OFFSET ?"
     );
     let mut list_q = sqlx::query_as::<_, SearchRow>(&list_sql);
-    for _ in 0..5 {
+    for _ in 0..6 {
         list_q = list_q.bind(&like);
     }
     if let Some(ref cid) = query.category_id {
@@ -191,7 +196,8 @@ async fn search_fts(
                 (SELECT thumb_path FROM item_images WHERE item_id = i.id ORDER BY sort_order LIMIT 1) as thumb_path,
                 i.created_at,
                 snippet(items_fts, 1, '<mark>', '</mark>', '…', 20) as name_snippet,
-                snippet(items_fts, 2, '<mark>', '</mark>', '…', 32) as desc_snippet
+                snippet(items_fts, 2, '<mark>', '</mark>', '…', 32) as desc_snippet,
+                snippet(items_fts, 3, '<mark>', '</mark>', '…', 32) as note_snippet
          FROM items_fts f
          JOIN items i ON i.id = f.item_id
          LEFT JOIN categories c ON c.id = i.category_id
@@ -228,6 +234,7 @@ struct SearchRow {
     created_at: String,
     name_snippet: Option<String>,
     desc_snippet: Option<String>,
+    note_snippet: Option<String>,
 }
 
 pub async fn stats(pool: &SqlitePool) -> AppResult<Stats> {

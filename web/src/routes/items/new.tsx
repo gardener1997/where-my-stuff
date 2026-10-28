@@ -24,6 +24,7 @@ function NewItemPage() {
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [locationNote, setLocationNote] = useState("");
   const [sourceType, setSourceType] = useState("handmade");
   const [purchasedAt, setPurchasedAt] = useState("");
   const [boughtFrom, setBoughtFrom] = useState("");
@@ -51,6 +52,7 @@ function NewItemPage() {
     const result = await createItem.mutateAsync({
       name: name.trim(),
       description: description.trim() || undefined,
+      location_note: locationNote.trim() || undefined,
       source_type: sourceType,
       purchased_at: purchasedAt || undefined,
       bought_from: boughtFrom.trim() || undefined,
@@ -169,6 +171,17 @@ function NewItemPage() {
             onChange={setContainerId}
             placeholder="未归位"
             options={flattenTree(containerTree || [])}
+          />
+        </Field>
+
+        {/* Location note */}
+        <Field label="位置说明">
+          <textarea
+            value={locationNote}
+            onChange={(e) => setLocationNote(e.target.value)}
+            rows={2}
+            placeholder="补充位置或其他说明，例如：床底下的蓝色箱子、第三格…"
+            className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </Field>
 

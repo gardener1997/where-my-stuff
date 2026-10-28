@@ -104,7 +104,7 @@ pub async fn list(pool: &SqlitePool, query: &ListItemsQuery) -> AppResult<Pagina
 
 pub async fn get(pool: &SqlitePool, id: &str) -> AppResult<ItemDetail> {
     let item = sqlx::query_as::<_, Item>(
-        "SELECT id, name, description, source_type, purchased_at, bought_from, price,
+        "SELECT id, name, description, location_note, source_type, purchased_at, bought_from, price,
                 category_id, container_id, created_at, updated_at
          FROM items WHERE id = ?",
     )
@@ -167,12 +167,13 @@ pub async fn create(pool: &SqlitePool, input: &CreateItem) -> AppResult<ItemDeta
     let id = uuid::Uuid::new_v4().to_string();
     let source_type = input.source_type.as_deref().unwrap_or("handmade");
     sqlx::query(
-        "INSERT INTO items (id, name, description, source_type, purchased_at, bought_from, price, category_id, container_id)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO items (id, name, description, location_note, source_type, purchased_at, bought_from, price, category_id, container_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     )
     .bind(&id)
     .bind(&input.name)
     .bind(&input.description)
+    .bind(&input.location_note)
     .bind(source_type)
     .bind(&input.purchased_at)
     .bind(&input.bought_from)
@@ -194,12 +195,13 @@ pub async fn update(pool: &SqlitePool, id: &str, input: &UpdateItem) -> AppResul
     let item = existing.item;
 
     sqlx::query(
-        "UPDATE items SET name = ?, description = ?, source_type = ?, purchased_at = ?,
+        "UPDATE items SET name = ?, description = ?, location_note = ?, source_type = ?, purchased_at = ?,
          bought_from = ?, price = ?, category_id = ?, container_id = ?, updated_at = datetime('now')
          WHERE id = ?",
     )
     .bind(input.name.as_deref().unwrap_or(&item.name))
     .bind(input.description.as_deref())
+    .bind(input.location_note.as_deref())
     .bind(input.source_type.as_deref().unwrap_or(&item.source_type))
     .bind(input.purchased_at.as_deref())
     .bind(input.bought_from.as_deref())

@@ -66,6 +66,7 @@ function ContainersPage() {
               { value: "shelf", label: "架子" },
               { value: "box", label: "箱子" },
               { value: "drawer", label: "抽屉" },
+              { value: "cabinet", label: "柜子" },
               { value: "bag", label: "袋子" },
               { value: "other", label: "其他" },
             ]}

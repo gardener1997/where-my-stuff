@@ -12,13 +12,13 @@ pub async fn sync_item(pool: &SqlitePool, item_id: &str) -> AppResult<()> {
         .await?;
 
     // Gather searchable fields
-    let row: Option<(String, String, Option<String>)> =
-        sqlx::query_as("SELECT i.id, i.name, i.description FROM items i WHERE i.id = ?")
+    let row: Option<(String, String, Option<String>, Option<String>)> =
+        sqlx::query_as("SELECT i.id, i.name, i.description, i.location_note FROM items i WHERE i.id = ?")
             .bind(item_id)
             .fetch_optional(pool)
             .await?;
 
-    let Some((id, name, description)) = row else {
+    let Some((id, name, description, location_note)) = row else {
         return Ok(()); // item deleted
     };
 
@@ -53,12 +53,13 @@ pub async fn sync_item(pool: &SqlitePool, item_id: &str) -> AppResult<()> {
         .unwrap_or_default();
 
     sqlx::query(
-        "INSERT INTO items_fts (item_id, name, description, tags, container_name, container_label, category_name)
-         VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO items_fts (item_id, name, description, location_note, tags, container_name, container_label, category_name)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     )
     .bind(&id)
     .bind(&name)
     .bind(description.unwrap_or_default())
+    .bind(location_note.unwrap_or_default())
     .bind(tags.join(" "))
     .bind(&container_name)
     .bind(&container_label)

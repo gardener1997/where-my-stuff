@@ -6,6 +6,7 @@ pub struct Item {
     pub id: String,
     pub name: String,
     pub description: Option<String>,
+    pub location_note: Option<String>,
     pub source_type: String,
     pub purchased_at: Option<String>,
     pub bought_from: Option<String>,
@@ -64,6 +65,7 @@ pub struct ItemDocument {
 pub struct CreateItem {
     pub name: String,
     pub description: Option<String>,
+    pub location_note: Option<String>,
     pub source_type: Option<String>,
     pub purchased_at: Option<String>,
     pub bought_from: Option<String>,
@@ -77,6 +79,7 @@ pub struct CreateItem {
 pub struct UpdateItem {
     pub name: Option<String>,
     pub description: Option<String>,
+    pub location_note: Option<String>,
     pub source_type: Option<String>,
     pub purchased_at: Option<String>,
     pub bought_from: Option<String>,
