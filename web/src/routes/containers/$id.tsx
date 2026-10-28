@@ -295,6 +295,7 @@ function EditContainerForm({
               onChange={setParentId}
               placeholder="无（顶层）"
               options={flattenTree(allContainers).filter((c) => c.value !== container.id)}
+              searchable
             />
           </div>
         </div>

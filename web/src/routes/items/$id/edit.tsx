@@ -214,6 +214,7 @@ function EditItemPage() {
             onChange={setCategoryId}
             placeholder="未分类"
             options={flattenTree(categoryTree || [])}
+            searchable
           />
         </Field>
 
@@ -223,6 +224,7 @@ function EditItemPage() {
             onChange={setContainerId}
             placeholder="未归位"
             options={flattenTree(containerTree || [])}
+            searchable
           />
         </Field>
 

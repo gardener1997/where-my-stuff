@@ -62,6 +62,7 @@ function CategoriesPage() {
             onChange={setNewParentId}
             placeholder="顶层分类"
             options={flattenTree(tree || [])}
+            searchable
           />
         </div>
         <button
@@ -143,6 +144,7 @@ function CategoryNode({
               onChange={setParentId}
               placeholder="顶层"
               options={flattenTree(allNodes).filter((c) => c.value !== node.id)}
+              searchable
             />
           </div>
           <button onClick={handleSave} className="p-1 text-green-600 hover:bg-green-100 rounded">

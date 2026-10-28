@@ -161,6 +161,7 @@ function NewItemPage() {
             onChange={setCategoryId}
             placeholder="未分类"
             options={flattenTree(categoryTree || [])}
+            searchable
           />
         </Field>
 
@@ -171,6 +172,7 @@ function NewItemPage() {
             onChange={setContainerId}
             placeholder="未归位"
             options={flattenTree(containerTree || [])}
+            searchable
           />
         </Field>
 
