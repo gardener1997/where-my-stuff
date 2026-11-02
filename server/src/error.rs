@@ -13,6 +13,9 @@ pub enum AppError {
     #[error("bad request: {0}")]
     BadRequest(String),
 
+    #[error("unauthorized: {0}")]
+    Unauthorized(String),
+
     #[error("internal error: {0}")]
     Internal(String),
 }
@@ -24,6 +27,10 @@ impl AppError {
 
     pub fn bad_request(msg: impl Into<String>) -> Self {
         Self::BadRequest(msg.into())
+    }
+
+    pub fn unauthorized(msg: impl Into<String>) -> Self {
+        Self::Unauthorized(msg.into())
     }
 }
 
@@ -47,6 +54,7 @@ impl IntoResponse for AppError {
         let (status, message) = match &self {
             Self::NotFound(msg) => (StatusCode::NOT_FOUND, msg.clone()),
             Self::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.clone()),
+            Self::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.clone()),
             Self::Internal(msg) => {
                 tracing::error!("internal error: {msg}");
                 (

@@ -67,14 +67,20 @@ pub async fn update(
     Path(id): Path<String>,
     Json(input): Json<UpdateContainer>,
 ) -> AppResult<Json<Container>> {
-    Ok(Json(container::update(&pool, &id, &input).await?))
+    let container = container::update(&pool, &id, &input).await?;
+    // The container name/path is part of the search index for every item inside it.
+    crate::services::search_index::sync_container_tree(&pool, &id).await?;
+    Ok(Json(container))
 }
 
 pub async fn delete(
     State(pool): State<SqlitePool>,
     Path(id): Path<String>,
 ) -> AppResult<Json<serde_json::Value>> {
+    // Capture affected items before the delete: afterwards their container link is gone.
+    let item_ids = crate::services::search_index::item_ids_for_container(&pool, &id).await?;
     container::delete(&pool, &id).await?;
+    crate::services::search_index::sync_items(&pool, &item_ids).await?;
     Ok(Json(serde_json::json!({ "ok": true })))
 }
 

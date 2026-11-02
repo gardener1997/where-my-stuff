@@ -1,8 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useStats } from "@/hooks/useStats";
-import { useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, Package, FolderTree, Tag, Layers } from "lucide-react";
+import { useStats } from "@/hooks/useStats";
+import { useItems } from "@/hooks/useItems";
+import { containerPathText, formatDate, imageUrl } from "@/lib/utils";
+import { Search, Package, FolderTree, Layers, Tag, ChevronRight, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -12,6 +13,7 @@ function HomePage() {
   const navigate = useNavigate();
   const [q, setQ] = useState("");
   const { data: stats } = useStats();
+  const { data: recent } = useItems({ page: 1, size: 4 });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,83 +23,160 @@ function HomePage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 sm:p-8">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">找东西</h2>
-      <p className="text-gray-500 mb-6 sm:mb-8">输入关键词，立刻找到你的物品</p>
+    <div className="page max-w-4xl">
+      <header className="mb-8">
+        <h2 className="font-display text-[32px] font-semibold leading-tight tracking-tight text-ink sm:text-[40px]">
+          东西在哪
+        </h2>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
+          每件物品都有一张卡片，记着它放在哪个房间、哪个柜子、哪一层。
+        </p>
+      </header>
 
-      {/* Search box */}
-      <form onSubmit={handleSubmit} className="relative mb-8 sm:mb-12">
-        <Search size={20} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* Catalog query */}
+      <form
+        onSubmit={handleSubmit}
+        className="card flex items-center gap-2 rounded-full p-1.5 pl-4 shadow-card transition-[border-color,box-shadow] focus-within:border-accent/60 focus-within:shadow-[0_0_0_4px_rgb(61_82_244/0.10),var(--shadow-card-hover)]"
+      >
+        <Search size={18} className="shrink-0 text-muted" />
         <input
           type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="搜索物品、标签、容器…"
-          className="w-full pl-13 pr-5 py-4 text-base sm:text-lg border border-gray-200 rounded-2xl shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+          placeholder="充电器、说明书、蓝色箱子…"
+          aria-label="搜索物品"
+          className="min-w-0 flex-1 bg-transparent px-1 py-2.5 text-base text-ink outline-none placeholder:text-muted/70"
           autoFocus
         />
+        <button type="submit" className="btn btn-primary shrink-0 rounded-full px-6 py-2.5">
+          查找
+        </button>
       </form>
 
-      {/* Stats */}
+      {/* Ledger: the numbers are the hero */}
       {stats && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-          <StatCard
-            icon={<Package size={20} className="text-blue-600" />}
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatCell
+            to="/items"
             label="物品"
             value={stats.total_items}
-            to="/items"
-            color="bg-blue-50"
+            icon={<Package size={13} />}
+            featured
           />
-          <StatCard
-            icon={<FolderTree size={20} className="text-emerald-600" />}
+          <StatCell
+            to="/containers"
             label="容器"
             value={stats.total_containers}
-            to="/containers"
-            color="bg-emerald-50"
+            icon={<FolderTree size={13} />}
           />
-          <StatCard
-            icon={<Layers size={20} className="text-amber-600" />}
+          <StatCell
+            to="/categories"
             label="分类"
             value={stats.total_categories}
-            to="/categories"
-            color="bg-amber-50"
+            icon={<Layers size={13} />}
           />
-          <StatCard
-            icon={<Tag size={20} className="text-purple-600" />}
+          <StatCell
+            to="/tags"
             label="标签"
             value={stats.total_tags}
-            to="/tags"
-            color="bg-purple-50"
+            icon={<Tag size={13} />}
           />
         </div>
       )}
+
+      {/* Recently filed */}
+      <section className="mt-10">
+        <div className="mb-3 flex items-baseline justify-between gap-4">
+          <h3 className="section-title">最近归档</h3>
+          <Link
+            to="/items"
+            search={{ page: 1 }}
+            className="inline-flex items-center gap-0.5 text-xs text-muted transition-colors hover:text-ink"
+          >
+            全部物品
+            <ChevronRight size={13} />
+          </Link>
+        </div>
+
+        {recent && recent.items.length > 0 ? (
+          <div className="card divide-y divide-line">
+            {recent.items.map((item) => (
+              <Link
+                key={item.id}
+                to="/items/$id"
+                params={{ id: item.id }}
+                className="flex items-center gap-3.5 px-4 py-3 transition-colors first:rounded-t-card last:rounded-b-card hover:bg-paper/70"
+              >
+                {imageUrl(item.thumb_path) ? (
+                  <img
+                    src={imageUrl(item.thumb_path) ?? ""}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="h-11 w-11 shrink-0 rounded-tab border border-line object-cover"
+                  />
+                ) : (
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-tab border border-line bg-paper">
+                    <Package size={16} className="text-muted" />
+                  </div>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-ink">{item.name}</p>
+                  <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-muted">
+                    <MapPin size={11} className="shrink-0" />
+                    {containerPathText(item.container_path)}
+                  </p>
+                </div>
+                <span className="shrink-0 text-xs text-muted">{formatDate(item.created_at)}</span>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="empty">
+            <p>还没有归档任何物品。</p>
+            <Link to="/items/new" className="btn btn-primary mt-4">
+              记下第一件
+            </Link>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
 
-function StatCard({
-  icon,
+function StatCell({
+  to,
   label,
   value,
-  to,
-  color,
+  icon,
+  featured = false,
 }: {
-  icon: React.ReactNode;
+  to: string;
   label: string;
   value: number;
-  to: string;
-  color: string;
+  icon: React.ReactNode;
+  featured?: boolean;
 }) {
   return (
     <Link
       to={to}
-      className="bg-white rounded-2xl p-5 border hover:shadow-md hover:-translate-y-0.5 transition-all"
+      className={`card block rounded-card px-5 py-4 shadow-card transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-card-hover ${
+        featured
+          ? "border-accent/40 bg-accent-soft/50 hover:border-accent/60"
+          : "hover:border-line-strong"
+      }`}
     >
-      <div className={`w-10 h-10 rounded-xl ${color} flex items-center justify-center mb-3`}>
+      <span className="font-display block text-[34px] font-semibold leading-none tracking-tight tabular-nums text-ink">
+        {value}
+      </span>
+      <span
+        className={`mt-2 flex items-center gap-1 text-xs ${
+          featured ? "font-medium text-accent" : "text-muted"
+        }`}
+      >
         {icon}
-      </div>
-      <div className="text-2xl font-bold text-gray-900">{value}</div>
-      <div className="text-sm text-gray-500 mt-0.5">{label}</div>
+        {label}
+      </span>
     </Link>
   );
 }

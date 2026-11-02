@@ -9,11 +9,20 @@ import { flattenTree } from "@/lib/utils";
 import { Select } from "@/components/ui/Select";
 import { ImageUpload } from "@/components/ui/ImageUpload";
 import { DocumentList } from "@/components/ui/DocumentList";
-import { ArrowLeft, Plus, X, Check } from "lucide-react";
+import { Field, FormSection } from "@/components/ui/Form";
+import { ArrowLeft, Plus, Check, X } from "lucide-react";
 
 export const Route = createFileRoute("/items/$id/edit")({
   component: EditItemPage,
 });
+
+const SOURCE_TYPES = [
+  { value: "purchased", label: "购买" },
+  { value: "handmade", label: "自制" },
+  { value: "gift", label: "赠送" },
+  { value: "salvage", label: "拆卸" },
+  { value: "other", label: "其他" },
+];
 
 function EditItemPage() {
   const { id } = Route.useParams();
@@ -61,19 +70,23 @@ function EditItemPage() {
 
   if (isLoading)
     return (
-      <div className="max-w-2xl mx-auto p-4 sm:p-8">
-        <div className="h-8 w-32 rounded-lg bg-gray-200/70 animate-pulse mb-6" />
-        <div className="space-y-6">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="space-y-2">
-              <div className="h-4 w-16 rounded bg-gray-200/70 animate-pulse" />
-              <div className="h-10 w-full rounded-xl bg-gray-200/70 animate-pulse" />
+      <div className="page max-w-4xl">
+        <div className="mb-6 flex items-center gap-3">
+          <div className="h-9 w-9 animate-pulse rounded-tab bg-line/70" />
+          <div className="h-7 w-32 animate-pulse rounded bg-line/70" />
+        </div>
+        <div className="space-y-5">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="card space-y-3 p-5">
+              <div className="h-4 w-20 animate-pulse rounded bg-line/70" />
+              <div className="h-10 w-full animate-pulse rounded-tab bg-line/50" />
+              <div className="h-10 w-full animate-pulse rounded-tab bg-line/40" />
             </div>
           ))}
         </div>
       </div>
     );
-  if (!data) return <div className="p-8 text-gray-400">物品不存在</div>;
+  if (!data) return <div className="page max-w-4xl text-muted">物品不存在</div>;
 
   const handleAddTag = async () => {
     const tagName = newTagName.trim();
@@ -93,14 +106,14 @@ function EditItemPage() {
       id,
       data: {
         name: name.trim(),
-        description: description.trim() || undefined,
-        location_note: locationNote.trim() || undefined,
+        description: description.trim() || null,
+        location_note: locationNote.trim() || null,
         source_type: sourceType,
-        purchased_at: purchasedAt || undefined,
-        bought_from: boughtFrom.trim() || undefined,
-        price: price ? parseFloat(price) : undefined,
-        category_id: categoryId || undefined,
-        container_id: containerId || undefined,
+        purchased_at: purchasedAt || null,
+        bought_from: boughtFrom.trim() || null,
+        price: price.trim() === "" ? null : parseFloat(price),
+        category_id: categoryId || null,
+        container_id: containerId || null,
         tag_ids: selectedTagIds,
       },
     });
@@ -129,204 +142,195 @@ function EditItemPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 sm:p-8">
-      <div className="flex items-center gap-4 mb-6">
+    <div className="page max-w-4xl">
+      <header className="mb-6 flex items-center gap-3">
         <button
           onClick={() => navigate({ to: "/items/$id", params: { id } })}
-          className="p-2 rounded-lg hover:bg-gray-100"
+          className="btn btn-quiet px-2 py-2"
+          aria-label="返回物品详情"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size={18} />
         </button>
-        <h2 className="text-2xl font-bold text-gray-900">编辑物品</h2>
-      </div>
+        <div className="min-w-0">
+          <h2 className="page-title text-2xl sm:text-3xl">编辑物品</h2>
+          <p className="page-sub truncate">{data.item.name}</p>
+        </div>
+      </header>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Field label="名称 *">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </Field>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <FormSection title="物品信息">
+          <Field label="名称 *">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="input"
+            />
+          </Field>
 
-        <Field label="描述">
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-            placeholder="支持 Markdown 格式（粗体、列表、链接等）"
-            className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </Field>
+          <Field label="描述" hint="支持 Markdown：粗体、列表、链接等。">
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              className="textarea"
+            />
+          </Field>
 
-        <Field label="来源">
-          <Select
-            value={sourceType}
-            onChange={setSourceType}
-            placeholder="选择来源"
-            options={[
-              { value: "purchased", label: "购买" },
-              { value: "handmade", label: "自制" },
-              { value: "gift", label: "赠送" },
-              { value: "salvage", label: "拆卸" },
-              { value: "other", label: "其他" },
-            ]}
-          />
-        </Field>
+          <Field label="来源">
+            <Select
+              value={sourceType}
+              onChange={setSourceType}
+              placeholder="选择来源"
+              options={SOURCE_TYPES}
+            />
+          </Field>
 
-        {sourceType === "purchased" && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Field label="购买时间">
-              <input
-                type="date"
-                value={purchasedAt}
-                onChange={(e) => setPurchasedAt(e.target.value)}
-                className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          {sourceType === "purchased" && (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <Field label="购买时间">
+                <input
+                  type="date"
+                  value={purchasedAt}
+                  onChange={(e) => setPurchasedAt(e.target.value)}
+                  className="input"
+                />
+              </Field>
+              <Field label="购买平台">
+                <input
+                  type="text"
+                  value={boughtFrom}
+                  onChange={(e) => setBoughtFrom(e.target.value)}
+                  placeholder="淘宝、京东…"
+                  className="input"
+                />
+              </Field>
+              <Field label="价格">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="0.00"
+                  className="input"
+                />
+              </Field>
+            </div>
+          )}
+        </FormSection>
+
+        <FormSection title="归档位置">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <Field label="分类">
+              <Select
+                value={categoryId}
+                onChange={setCategoryId}
+                placeholder="未分类"
+                options={flattenTree(categoryTree || [])}
+                searchable
               />
             </Field>
-            <Field label="购买平台">
-              <input
-                type="text"
-                value={boughtFrom}
-                onChange={(e) => setBoughtFrom(e.target.value)}
-                placeholder="淘宝、京东…"
-                className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </Field>
-            <Field label="价格">
-              <input
-                type="text"
-                inputMode="decimal"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                placeholder="0.00"
-                className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+            <Field label="存放位置">
+              <Select
+                value={containerId}
+                onChange={setContainerId}
+                placeholder="未归位"
+                options={flattenTree(containerTree || [])}
+                searchable
               />
             </Field>
           </div>
-        )}
 
-        <Field label="分类">
-          <Select
-            value={categoryId}
-            onChange={setCategoryId}
-            placeholder="未分类"
-            options={flattenTree(categoryTree || [])}
-            searchable
-          />
-        </Field>
+          <Field label="位置说明" hint="写清楚具体在哪一格，比只填容器更容易找到。">
+            <textarea
+              value={locationNote}
+              onChange={(e) => setLocationNote(e.target.value)}
+              rows={2}
+              placeholder="例如：床底下的蓝色箱子、第三格…"
+              className="textarea"
+            />
+          </Field>
 
-        <Field label="存放位置">
-          <Select
-            value={containerId}
-            onChange={setContainerId}
-            placeholder="未归位"
-            options={flattenTree(containerTree || [])}
-            searchable
-          />
-        </Field>
-
-        <Field label="位置说明">
-          <textarea
-            value={locationNote}
-            onChange={(e) => setLocationNote(e.target.value)}
-            rows={2}
-            placeholder="补充位置或其他说明，例如：床底下的蓝色箱子、第三格…"
-            className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </Field>
-
-        <Field label="标签">
-          <div className="space-y-2">
-            <div className="flex flex-wrap gap-2">
-              {tags?.map((tag) => (
-                <button
-                  key={tag.id}
-                  type="button"
-                  onClick={() => {
-                    setSelectedTagIds((prev) =>
-                      prev.includes(tag.id)
-                        ? prev.filter((tid) => tid !== tag.id)
-                        : [...prev, tag.id],
+          <Field label="标签">
+            <div className="space-y-2.5">
+              {tags && tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => {
+                    const selected = selectedTagIds.includes(tag.id);
+                    return (
+                      <button
+                        key={tag.id}
+                        type="button"
+                        onClick={() =>
+                          setSelectedTagIds((prev) =>
+                            prev.includes(tag.id)
+                              ? prev.filter((tid) => tid !== tag.id)
+                              : [...prev, tag.id],
+                          )
+                        }
+                        className={`rounded-tab border px-2.5 py-1 text-sm transition-colors ${
+                          selected
+                            ? "border-cabinet bg-cabinet text-card"
+                            : "border-line bg-card text-muted hover:border-line-strong hover:text-ink"
+                        }`}
+                      >
+                        {tag.name}
+                      </button>
                     );
-                  }}
-                  className={`px-3 py-1 rounded-full text-sm border transition-colors ${
-                    selectedTagIds.includes(tag.id)
-                      ? "bg-blue-100 border-blue-500 text-blue-700"
-                      : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  {tag.name}
+                  })}
+                </div>
+              )}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newTagName}
+                  onChange={(e) => setNewTagName(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddTag())}
+                  placeholder="新建标签"
+                  className="input py-1.5"
+                />
+                <button type="button" onClick={handleAddTag} className="btn btn-ghost px-3 py-1.5">
+                  <Plus size={15} />
                 </button>
-              ))}
+              </div>
             </div>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newTagName}
-                onChange={(e) => setNewTagName(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddTag())}
-                placeholder="新标签…"
-                className="flex-1 px-3 py-1.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="button"
-                onClick={handleAddTag}
-                className="px-3 py-1.5 border rounded-lg text-sm hover:bg-gray-50"
-              >
-                <Plus size={16} />
-              </button>
-            </div>
-          </div>
-        </Field>
+          </Field>
+        </FormSection>
 
-        <Field label="图片">
+        <FormSection title="图片">
           <ImageUpload
             existingImages={images}
             onDeleteExisting={handleDeleteImage}
             onFilesChange={setFiles}
           />
-        </Field>
+        </FormSection>
 
-        <Field label="说明书">
+        <FormSection title="说明书">
           <DocumentList
             documents={documents}
             editable
             onUpload={handleDocUpload}
             onDelete={handleDocDelete}
           />
-        </Field>
+        </FormSection>
 
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            disabled={updateItem.isPending}
-            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-          >
-            <Check size={18} />
+        <div className="flex gap-3 pt-1">
+          <button type="submit" disabled={updateItem.isPending} className="btn btn-primary px-5">
+            <Check size={16} />
             {updateItem.isPending ? "保存中…" : "保存"}
           </button>
           <button
             type="button"
             onClick={() => navigate({ to: "/items/$id", params: { id } })}
-            className="flex items-center gap-2 px-6 py-2 border rounded-lg hover:bg-gray-50"
+            className="btn btn-ghost px-5"
           >
-            <X size={18} />
+            <X size={16} />
             取消
           </button>
         </div>
       </form>
-    </div>
-  );
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      {children}
     </div>
   );
 }

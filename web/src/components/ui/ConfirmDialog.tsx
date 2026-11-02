@@ -41,36 +41,34 @@ export function ConfirmDialog({
   return createPortal(
     <div
       ref={backdropRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/45 animate-fade-in"
       onClick={(e) => e.target === backdropRef.current && onCancel()}
     >
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm mx-4 overflow-hidden animate-zoom-in">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        className="mx-4 w-full max-w-sm overflow-hidden rounded-card border border-line bg-card shadow-[0_18px_50px_rgba(28,33,29,0.22)] animate-zoom-in"
+      >
         <div className="p-6">
           {variant === "danger" && (
-            <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
-                <AlertTriangle className="text-red-500" size={24} />
+            <div className="mb-4 flex justify-center">
+              <div className="flex h-11 w-11 items-center justify-center rounded-tab bg-signal-soft">
+                <AlertTriangle className="text-signal" size={22} />
               </div>
             </div>
           )}
-          <h3 className="text-lg font-semibold text-gray-900 text-center">{title}</h3>
-          <p className="mt-2 text-sm text-gray-500 text-center">{message}</p>
+          <h3 className="text-center font-display text-xl text-ink">{title}</h3>
+          <p className="mt-2 text-center text-sm leading-relaxed text-muted">{message}</p>
         </div>
-        <div className="flex border-t bg-gray-50/50">
-          <button
-            onClick={onCancel}
-            className="flex-1 px-4 py-3 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
-          >
+        <div className="flex justify-end gap-2 border-t border-line bg-paper/50 px-4 py-3">
+          <button onClick={onCancel} className="btn btn-ghost">
             {cancelLabel}
           </button>
           <button
             ref={confirmRef}
             onClick={onConfirm}
-            className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
-              variant === "danger"
-                ? "text-red-600 hover:bg-red-50 border-l border-red-100"
-                : "text-blue-600 hover:bg-blue-50 border-l border-blue-100"
-            }`}
+            className={variant === "danger" ? "btn btn-danger-solid" : "btn btn-primary"}
           >
             {confirmLabel}
           </button>

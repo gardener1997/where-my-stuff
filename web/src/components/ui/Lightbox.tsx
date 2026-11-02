@@ -45,7 +45,7 @@ export function Lightbox({ images, initialIndex = 0, onClose }: LightboxProps) {
       {/* Close */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 p-2.5 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+        className="absolute top-4 right-4 p-2.5 rounded-full bg-card/10 text-white hover:bg-card/20 transition-colors"
       >
         <X size={22} />
       </button>
@@ -54,7 +54,7 @@ export function Lightbox({ images, initialIndex = 0, onClose }: LightboxProps) {
       {images.length > 1 && (
         <button
           onClick={goPrev}
-          className="absolute left-3 p-2.5 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+          className="absolute left-3 p-2.5 rounded-full bg-card/10 text-white hover:bg-card/20 transition-colors"
         >
           <ChevronLeft size={24} />
         </button>
@@ -64,7 +64,7 @@ export function Lightbox({ images, initialIndex = 0, onClose }: LightboxProps) {
       {images.length > 1 && (
         <button
           onClick={goNext}
-          className="absolute right-3 p-2.5 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+          className="absolute right-3 p-2.5 rounded-full bg-card/10 text-white hover:bg-card/20 transition-colors"
         >
           <ChevronRight size={24} />
         </button>
@@ -74,13 +74,13 @@ export function Lightbox({ images, initialIndex = 0, onClose }: LightboxProps) {
       <img
         src={current.src}
         alt={current.alt || ""}
-        className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg select-none"
+        className="max-w-[90vw] max-h-[85vh] object-contain rounded-tab select-none"
         onClick={(e) => e.stopPropagation()}
       />
 
       {/* Counter */}
       {images.length > 1 && (
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-white/10 text-white text-sm">
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-card/10 text-white text-sm">
           {index + 1} / {images.length}
         </div>
       )}

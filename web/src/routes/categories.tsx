@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { useCategoryTree, useCreateCategory, useUpdateCategory, useDeleteCategory } from "@/hooks/useCategories";
+import {
+  useCategoryTree,
+  useCreateCategory,
+  useUpdateCategory,
+  useDeleteCategory,
+} from "@/hooks/useCategories";
 import { flattenTree } from "@/lib/utils";
 import { useConfirm } from "@/hooks/useConfirm";
 import { SkeletonList } from "@/components/ui/Skeleton";
@@ -44,46 +49,54 @@ function CategoriesPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 sm:p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">分类</h2>
-
-      {/* Create */}
-      <form onSubmit={handleCreate} className="flex flex-col sm:flex-row gap-2 mb-6">
-        <input
-          type="text"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          placeholder="分类名…"
-          className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <div className="sm:w-40">
-          <Select
-            value={newParentId}
-            onChange={setNewParentId}
-            placeholder="顶层分类"
-            options={flattenTree(tree || [])}
-            searchable
-          />
+    <div className="page max-w-3xl">
+      <div className="page-head">
+        <div>
+          <h2 className="page-title">分类</h2>
+          <p className="page-sub">按用途归类，比如「电子」「厨房」「工具」。</p>
         </div>
-        <button
-          type="submit"
-          disabled={createCategory.isPending}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-        >
-          <Plus size={18} />
-          添加
-        </button>
+      </div>
+
+      <form onSubmit={handleCreate} className="card mb-6 p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <label className="field-label">名称</label>
+            <input
+              type="text"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="分类名"
+              className="input"
+            />
+          </div>
+          <div className="sm:w-44">
+            <label className="field-label">上级分类</label>
+            <Select
+              value={newParentId}
+              onChange={setNewParentId}
+              placeholder="顶层分类"
+              options={flattenTree(tree || [])}
+              searchable
+            />
+          </div>
+          <button type="submit" disabled={createCategory.isPending} className="btn btn-primary">
+            <Plus size={16} />
+            添加
+          </button>
+        </div>
       </form>
 
-      {/* List */}
       {isLoading && <SkeletonList count={4} />}
 
       {tree && tree.length === 0 && (
-        <div className="text-center py-12 text-gray-400">还没有分类</div>
+        <div className="empty">
+          <p>还没有分类。</p>
+          <p className="mt-1 text-sm">先建一个宽泛的分类，再往下细分。</p>
+        </div>
       )}
 
       {tree && tree.length > 0 && (
-        <div className="space-y-1">
+        <div className="card overflow-hidden">
           {tree.map((node) => (
             <CategoryNode
               key={node.id}
@@ -128,15 +141,15 @@ function CategoryNode({
     <div>
       {editing ? (
         <div
-          className="flex items-center gap-2 px-3 py-2 bg-blue-50 rounded-lg"
-          style={{ paddingLeft: `${depth * 24 + 12}px` }}
+          className="flex flex-wrap items-center gap-2 border-b border-line bg-cabinet-soft/50 px-3 py-2 last:border-b-0"
+          style={{ paddingLeft: `${depth * 22 + 12}px` }}
         >
-          <Layers size={16} className="text-blue-400" />
+          <Layers size={15} className="shrink-0 text-cabinet" />
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="flex-1 px-2 py-1 border rounded text-sm"
+            className="input min-w-32 flex-1 py-1.5"
           />
           <div className="w-32">
             <Select
@@ -147,7 +160,11 @@ function CategoryNode({
               searchable
             />
           </div>
-          <button onClick={handleSave} className="p-1 text-green-600 hover:bg-green-100 rounded">
+          <button
+            onClick={handleSave}
+            className="rounded-tab p-1.5 text-cabinet transition-colors hover:bg-cabinet-soft"
+            aria-label="保存"
+          >
             <Check size={16} />
           </button>
           <button
@@ -156,27 +173,30 @@ function CategoryNode({
               setName(node.name);
               setParentId(node.parent_id || "");
             }}
-            className="p-1 text-gray-400 hover:bg-gray-100 rounded"
+            className="rounded-tab p-1.5 text-muted transition-colors hover:bg-ink/[0.04] hover:text-ink"
+            aria-label="取消"
           >
             <X size={16} />
           </button>
         </div>
       ) : (
         <div
-          className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50"
-          style={{ paddingLeft: `${depth * 24 + 12}px` }}
+          className="group flex items-center gap-2.5 border-b border-line px-3 py-2.5 transition-colors last:border-b-0 hover:bg-paper/60"
+          style={{ paddingLeft: `${depth * 22 + 12}px` }}
         >
-          <Layers size={16} className="text-gray-400" />
-          <span className="flex-1 text-gray-900">{node.name}</span>
+          <Layers size={15} className="shrink-0 text-muted" />
+          <span className="flex-1 text-sm text-ink">{node.name}</span>
           <button
             onClick={() => setEditing(true)}
-            className="p-1 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded"
+            className="rounded-tab p-1.5 text-muted opacity-0 transition-colors group-hover:opacity-100 hover:bg-cabinet-soft hover:text-cabinet focus-visible:opacity-100"
+            aria-label="编辑分类"
           >
             <Edit size={14} />
           </button>
           <button
             onClick={() => onDelete(node.id)}
-            className="p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded"
+            className="rounded-tab p-1.5 text-muted opacity-0 transition-colors group-hover:opacity-100 hover:bg-signal-soft hover:text-signal focus-visible:opacity-100"
+            aria-label="删除分类"
           >
             <Trash2 size={14} />
           </button>

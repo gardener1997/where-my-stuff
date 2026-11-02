@@ -147,25 +147,25 @@ export function Select({
         type="button"
         onClick={() => (open ? close() : setOpen(true))}
         aria-expanded={open}
-        className="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm bg-white text-left focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-gray-300 transition-colors"
+        className="flex w-full items-center justify-between gap-2 rounded-tab border border-line bg-white px-3.5 py-2.5 text-left text-sm transition-colors hover:border-line-strong focus:border-cabinet focus:ring-2 focus:ring-cabinet/15 focus:outline-none"
       >
-        <span className={`truncate ${selected ? "text-gray-900" : "text-gray-400"}`}>
+        <span className={`truncate ${selected ? "text-ink" : "text-muted"}`}>
           {selected ? (selected.path ?? selected.label) : placeholder}
         </span>
         <ChevronDown
           size={16}
-          className={`text-gray-400 shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`shrink-0 text-muted transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-1 w-full min-w-[180px] bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+        <div className="absolute z-50 mt-1 w-full min-w-[180px] overflow-hidden rounded-card border border-line bg-white shadow-[0_10px_28px_rgba(28,33,29,0.10)]">
           {searchable && (
-            <div className="p-2 border-b border-gray-100">
+            <div className="border-b border-line p-2">
               <div className="relative">
                 <Search
                   size={14}
-                  className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted"
                 />
                 <input
                   ref={searchRef}
@@ -174,7 +174,7 @@ export function Select({
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="输入以筛选…"
                   autoComplete="off"
-                  className="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="input py-1.5 pl-8"
                 />
               </div>
             </div>
@@ -194,14 +194,14 @@ export function Select({
                   onMouseEnter={() => setActiveIndex(i)}
                   onClick={() => choose(row.value)}
                   className={cn(
-                    "w-full flex items-center justify-between gap-2 px-3.5 py-2.5 text-sm text-left transition-colors",
-                    !isSelected && "hover:bg-gray-50",
-                    isActive && !isSelected && "bg-gray-50",
+                    "flex w-full items-center justify-between gap-2 px-3.5 py-2.5 text-left text-sm transition-colors",
+                    !isSelected && "hover:bg-paper/70",
+                    isActive && !isSelected && "bg-paper/70",
                     isSelected
-                      ? "bg-blue-50 text-blue-600 font-medium"
+                      ? "bg-cabinet-soft text-cabinet font-medium"
                       : row.isPlaceholder
-                        ? "text-gray-500"
-                        : "text-gray-700",
+                        ? "text-muted"
+                        : "text-ink",
                   )}
                 >
                   <span
@@ -212,12 +212,12 @@ export function Select({
                   >
                     {row.label}
                   </span>
-                  {isSelected && <Check size={15} className="text-blue-500 shrink-0" />}
+                  {isSelected && <Check size={15} className="shrink-0 text-cabinet" />}
                 </button>
               );
             })}
             {rows.length === 0 && (
-              <div className="px-3.5 py-2.5 text-sm text-gray-400">
+              <div className="px-3.5 py-2.5 text-sm text-muted">
                 {trimmedQuery ? "无匹配项" : "无选项"}
               </div>
             )}

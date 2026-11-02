@@ -5,7 +5,7 @@ import {
   useCreateContainer,
   useContainerTree,
 } from "@/hooks/useContainers";
-import { formatDate, flattenTree } from "@/lib/utils";
+import { containerTypeLabel, flattenTree, formatDate, imageUrl } from "@/lib/utils";
 import { useState } from "react";
 import { FolderTree, Package, Edit, Trash2, X, Check, Plus } from "lucide-react";
 import { api } from "@/lib/api";
@@ -17,6 +17,17 @@ import { Lightbox } from "@/components/ui/Lightbox";
 export const Route = createFileRoute("/containers/$id")({
   component: ContainerDetailPage,
 });
+
+const CONTAINER_TYPES = [
+  { value: "room", label: "房间" },
+  { value: "table", label: "桌子" },
+  { value: "shelf", label: "架子" },
+  { value: "box", label: "箱子" },
+  { value: "drawer", label: "抽屉" },
+  { value: "cabinet", label: "柜子" },
+  { value: "bag", label: "袋子" },
+  { value: "other", label: "其他" },
+];
 
 function ContainerDetailPage() {
   const { id } = Route.useParams();
@@ -31,32 +42,37 @@ function ContainerDetailPage() {
 
   if (isLoading)
     return (
-      <div className="max-w-4xl mx-auto p-4 sm:p-8">
+      <div className="page max-w-5xl">
         <SkeletonText lines={1} className="mb-4" />
-        <Skeleton className="h-10 w-48 mb-6" />
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+        <Skeleton className="mb-6 h-10 w-48" />
+        <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-20 rounded-2xl" />
+            <Skeleton key={i} className="h-20 rounded-card" />
           ))}
         </div>
         <SkeletonText lines={2} />
       </div>
     );
-  if (!data) return <div className="p-8 text-gray-400">容器不存在</div>;
+  if (!data) return <div className="page max-w-5xl text-muted">容器不存在</div>;
 
   const { container, path, children, items } = data;
+  const image = imageUrl(container.image_path);
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-8">
+    <div className="page max-w-5xl">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1 text-sm text-gray-500 mb-6">
+      <nav className="mb-6 flex flex-wrap items-center gap-1.5 text-xs text-muted">
         {path.map((seg, i) => (
-          <span key={seg.id} className="flex items-center gap-1">
-            {i > 0 && <span className="text-gray-300">/</span>}
+          <span key={seg.id} className="flex items-center gap-1.5">
+            {i > 0 && <span className="text-line-strong">/</span>}
             {i === path.length - 1 ? (
-              <span className="text-gray-900 font-medium">{seg.name}</span>
+              <span className="font-medium text-ink">{seg.name}</span>
             ) : (
-              <Link to="/containers/$id" params={{ id: seg.id }} className="hover:text-blue-600">
+              <Link
+                to="/containers/$id"
+                params={{ id: seg.id }}
+                className="transition-colors hover:text-cabinet"
+              >
                 {seg.name}
               </Link>
             )}
@@ -76,73 +92,68 @@ function ContainerDetailPage() {
           onCancel={() => setEditing(false)}
         />
       ) : (
-        <div className="flex items-start gap-6 mb-8">
-          {container.image_path && (
+        <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-start">
+          {image && (
             <button
               type="button"
               onClick={() => setLightboxOpen(true)}
-              className="group relative overflow-hidden rounded-xl border w-32 h-32 shrink-0"
+              className="group w-28 shrink-0 overflow-hidden rounded-card border border-line"
             >
               <img
-                src={`/images/${container.image_path}`}
+                src={image}
                 alt={container.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                className="aspect-square h-28 w-28 object-cover transition-transform duration-200 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
             </button>
           )}
           <div className="flex-1">
-            <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-gray-900">{container.name}</h2>
-              <button
-                onClick={() => setEditing(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50"
-              >
-                <Edit size={14} />
-                编辑
-              </button>
-              <button
-                onClick={async () => {
-                  const ok = await confirm({
-                    title: "删除容器",
-                    message: "删除后，该容器下的物品将变为未归位。",
-                    confirmLabel: "删除",
-                    variant: "danger",
-                  });
-                  if (ok) {
-                    await api.deleteContainer(id);
-                    if (container.parent_id) {
-                      navigate({ to: "/containers/$id", params: { id: container.parent_id } });
-                    } else {
-                      navigate({ to: "/containers" });
+            <div className="flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-3xl leading-tight text-ink">{container.name}</h2>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setEditing(true)} className="btn btn-ghost px-3 py-1.5">
+                  <Edit size={14} />
+                  编辑
+                </button>
+                <button
+                  onClick={async () => {
+                    const ok = await confirm({
+                      title: "删除容器",
+                      message: "删除后，该容器下的物品将变为未归位。",
+                      confirmLabel: "删除",
+                      variant: "danger",
+                    });
+                    if (ok) {
+                      await api.deleteContainer(id);
+                      if (container.parent_id) {
+                        navigate({ to: "/containers/$id", params: { id: container.parent_id } });
+                      } else {
+                        navigate({ to: "/containers" });
+                      }
                     }
-                  }
-                }}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-red-200 text-red-600 rounded-lg hover:bg-red-50"
-              >
-                <Trash2 size={14} />
-                删除
-              </button>
-            </div>
-            {container.label && (
-              <div className="mt-1">
-                <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 rounded text-sm">
-                  标签: {container.label}
-                </span>
+                  }}
+                  className="btn btn-danger px-3 py-1.5"
+                >
+                  <Trash2 size={14} />
+                  删除
+                </button>
               </div>
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="tag-tab">{containerTypeLabel(container.container_type)}</span>
+              {container.label && <span className="tag-tab">标签 {container.label}</span>}
+            </div>
+            {container.description && (
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
+                {container.description}
+              </p>
             )}
-            {container.description && <p className="text-gray-500 mt-2">{container.description}</p>}
-            <p className="text-sm text-gray-400 mt-2">类型: {container.container_type}</p>
           </div>
         </div>
       )}
 
-      {/* Add sub-container button */}
+      {/* Add sub-container */}
       <div className="mb-6">
-        <button
-          onClick={() => setCreatingChild(true)}
-          className="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg hover:bg-gray-50"
-        >
+        <button onClick={() => setCreatingChild(true)} className="btn btn-ghost">
           <Plus size={16} />
           添加子容器
         </button>
@@ -152,66 +163,72 @@ function ContainerDetailPage() {
 
       {/* Sub-containers */}
       {children.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">子容器 ({children.length})</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <section className="mb-8">
+          <h3 className="section-title mb-3">子容器 · {children.length}</h3>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {children.map((child) => (
               <Link
                 key={child.id}
                 to="/containers/$id"
                 params={{ id: child.id }}
-                className="flex items-center gap-3 p-3 bg-white border rounded-xl hover:shadow-md transition-shadow"
+                className="card card-hover flex items-center gap-3 p-3.5"
               >
-                <FolderTree size={20} className="text-gray-400" />
-                <div>
-                  <div className="font-medium text-gray-900">{child.name}</div>
-                  {child.label && <div className="text-xs text-gray-400">{child.label}</div>}
+                <FolderTree size={18} className="shrink-0 text-muted" />
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-medium text-ink">{child.name}</div>
+                  <div className="mt-0.5 text-xs text-muted">
+                    {child.label || containerTypeLabel(child.container_type)}
+                  </div>
                 </div>
               </Link>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* Items in this container */}
-      <div>
-        <h3 className="text-lg font-medium text-gray-900 mb-3">物品 ({items.length})</h3>
+      {/* Items */}
+      <section>
+        <h3 className="section-title mb-3">物品 · {items.length}</h3>
         {items.length === 0 ? (
-          <div className="text-gray-400 py-4">这个容器里没有物品</div>
+          <div className="empty py-8">这个容器里还没有物品。</div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {items.map((item) => (
-              <Link
-                key={item.id}
-                to="/items/$id"
-                params={{ id: item.id }}
-                className="flex items-center gap-3 p-3 bg-white border rounded-xl hover:shadow-md transition-shadow"
-              >
-                {item.thumb_path ? (
-                  <img
-                    src={`/images/${item.thumb_path}`}
-                    alt={item.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-12 h-12 rounded-lg object-cover bg-gray-100"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center">
-                    <Package size={18} className="text-gray-400" />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {items.map((item) => {
+              const thumb = imageUrl(item.thumb_path);
+              return (
+                <Link
+                  key={item.id}
+                  to="/items/$id"
+                  params={{ id: item.id }}
+                  className="card card-hover flex items-center gap-3 p-3.5"
+                >
+                  {thumb ? (
+                    <img
+                      src={thumb}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="h-11 w-11 shrink-0 rounded-tab border border-line object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-tab border border-line bg-paper">
+                      <Package size={15} className="text-muted" />
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-medium text-ink">{item.name}</div>
+                    <div className="mt-0.5 text-xs text-muted">{formatDate(item.created_at)}</div>
                   </div>
-                )}
-                <div>
-                  <div className="font-medium text-gray-900">{item.name}</div>
-                  <div className="text-xs text-gray-400">{formatDate(item.created_at)}</div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
-      </div>
-      {lightboxOpen && container.image_path && (
+      </section>
+
+      {lightboxOpen && image && (
         <Lightbox
-          images={[{ src: `/images/${container.image_path}`, alt: container.name }]}
+          images={[{ src: image, alt: container.name }]}
           onClose={() => setLightboxOpen(false)}
         />
       )}
@@ -238,58 +255,49 @@ function EditContainerForm({
   const [parentId, setParentId] = useState(container.parent_id || "");
 
   return (
-    <div className="bg-white border rounded-xl p-6 mb-8">
-      <h3 className="text-lg font-medium mb-4">编辑容器</h3>
+    <div className="card mb-8 p-5 sm:p-6">
+      <h3 className="mb-4 text-base font-medium text-ink">编辑容器</h3>
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">名称</label>
+          <label className="field-label">名称</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">标签</label>
+          <label className="field-label">标签</label>
           <input
             type="text"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             placeholder="贴在箱子上的标签"
-            className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">描述</label>
+          <label className="field-label">描述</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
-            className="block w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="textarea"
           />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">类型</label>
+            <label className="field-label">类型</label>
             <Select
               value={containerType}
               onChange={setContainerType}
               placeholder="选择类型"
-              options={[
-                { value: "room", label: "房间" },
-                { value: "table", label: "桌子" },
-                { value: "shelf", label: "架子" },
-                { value: "box", label: "箱子" },
-                { value: "drawer", label: "抽屉" },
-                { value: "cabinet", label: "柜子" },
-                { value: "bag", label: "袋子" },
-                { value: "other", label: "其他" },
-              ]}
+              options={CONTAINER_TYPES}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">上级容器</label>
+            <label className="field-label">上级容器</label>
             <Select
               value={parentId}
               onChange={setParentId}
@@ -310,15 +318,12 @@ function EditContainerForm({
                 parent_id: parentId || undefined,
               })
             }
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="btn btn-primary"
           >
             <Check size={16} />
             保存
           </button>
-          <button
-            onClick={onCancel}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50"
-          >
+          <button onClick={onCancel} className="btn btn-ghost">
             <X size={16} />
             取消
           </button>
@@ -335,43 +340,34 @@ function CreateChildForm({ parentId, onDone }: { parentId: string; onDone: () =>
   const [containerType, setContainerType] = useState("box");
 
   return (
-    <div className="bg-white border rounded-2xl p-4 mb-6">
-      <div className="flex flex-col sm:flex-row gap-3 sm:items-end">
+    <div className="card mb-6 p-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <div className="flex-1">
-          <label className="block text-xs font-medium text-gray-500 mb-1">名称</label>
+          <label className="field-label">名称</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="子容器名称"
-            className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm"
+            className="input"
           />
         </div>
         <div className="sm:w-32">
-          <label className="block text-xs font-medium text-gray-500 mb-1">标签</label>
+          <label className="field-label">标签</label>
           <input
             type="text"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
-            className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm"
+            className="input"
           />
         </div>
-        <div className="sm:w-36">
-          <label className="block text-xs font-medium text-gray-500 mb-1">类型</label>
+        <div className="sm:w-32">
+          <label className="field-label">类型</label>
           <Select
             value={containerType}
             onChange={setContainerType}
             placeholder="选择类型"
-            options={[
-              { value: "room", label: "房间" },
-              { value: "table", label: "桌子" },
-              { value: "shelf", label: "架子" },
-              { value: "box", label: "箱子" },
-              { value: "drawer", label: "抽屉" },
-              { value: "cabinet", label: "柜子" },
-              { value: "bag", label: "袋子" },
-              { value: "other", label: "其他" },
-            ]}
+            options={CONTAINER_TYPES}
           />
         </div>
         <button
@@ -385,11 +381,11 @@ function CreateChildForm({ parentId, onDone }: { parentId: string; onDone: () =>
             });
             onDone();
           }}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
+          className="btn btn-primary"
         >
           创建
         </button>
-        <button onClick={onDone} className="px-3 py-2 border rounded-lg text-sm hover:bg-gray-50">
+        <button onClick={onDone} className="btn btn-ghost">
           取消
         </button>
       </div>

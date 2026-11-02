@@ -53,69 +53,61 @@ function TagsPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 sm:p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-1">标签</h2>
-      <p className="text-sm text-gray-500 mb-6">
-        {tags?.length ? `共 ${tags.length} 个标签` : "管理你的标签"}
-      </p>
+    <div className="page max-w-3xl">
+      <div className="page-head">
+        <div>
+          <h2 className="page-title">标签</h2>
+          <p className="page-sub">
+            {tags?.length ? `共 ${tags.length} 个标签，点击名称可改名` : "用它给物品加几个关键词"}
+          </p>
+        </div>
+      </div>
 
-      {/* Create */}
-      <form onSubmit={handleCreate} className="flex flex-col sm:flex-row gap-2 mb-4">
+      <form onSubmit={handleCreate} className="flex flex-col gap-2 sm:flex-row">
         <input
           type="text"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           placeholder="输入标签名，回车添加"
-          className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow bg-white"
+          className="input flex-1"
         />
-        <button
-          type="submit"
-          disabled={createTag.isPending}
-          className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
-        >
-          <Plus size={18} />
+        <button type="submit" disabled={createTag.isPending} className="btn btn-primary">
+          <Plus size={16} />
           添加
         </button>
       </form>
 
-      {/* Filter */}
       {tags && tags.length > 3 && (
-        <div className="relative mb-5">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+        <div className="relative mt-4">
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
           <input
             type="text"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            placeholder="筛选标签…"
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+            placeholder="筛选标签"
+            className="input pl-9"
           />
         </div>
       )}
 
-      {/* Loading skeleton */}
       {isLoading && <SkeletonList count={5} />}
 
-      {/* Empty */}
       {tags && tags.length === 0 && (
-        <div className="text-center py-16">
-          <div className="w-16 h-16 rounded-2xl bg-purple-50 flex items-center justify-center mx-auto mb-4">
-            <Tag size={28} className="text-purple-400" />
-          </div>
-          <p className="text-gray-500">还没有标签</p>
-          <p className="text-sm text-gray-400 mt-1">在上方输入标签名，回车即可创建</p>
+        <div className="empty mt-6">
+          <p>还没有标签。</p>
+          <p className="mt-1 text-sm">标签适合记录「常用」「备用」「待处理」这类状态。</p>
         </div>
       )}
 
-      {/* Tag chips */}
       {filtered && filtered.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="mt-6 flex flex-wrap gap-2">
           {filtered.map((tag) =>
             editingId === tag.id ? (
               <span
                 key={tag.id}
-                className="inline-flex items-center gap-1 pl-3.5 pr-2 py-1.5 bg-white border-2 border-blue-400 rounded-full text-sm shadow-sm"
+                className="inline-flex items-center gap-1 rounded-tab border border-cabinet bg-white py-1 pl-2.5 pr-1 text-sm"
               >
-                <Tag size={13} className="text-blue-400" />
+                <Tag size={13} className="text-cabinet" />
                 <input
                   ref={editInputRef}
                   value={editName}
@@ -125,38 +117,40 @@ function TagsPage() {
                     if (e.key === "Escape") setEditingId(null);
                   }}
                   onBlur={() => handleRename(tag.id)}
-                  className="w-24 bg-transparent outline-none text-gray-900"
+                  className="w-24 bg-transparent py-0.5 text-ink outline-none"
                 />
                 <button
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => handleRename(tag.id)}
-                  className="p-1 text-green-500 hover:bg-green-50 rounded-full"
+                  className="rounded-tab p-1 text-cabinet hover:bg-cabinet-soft"
+                  aria-label="保存标签名"
                 >
-                  <X size={13} className="rotate-45" />
+                  <X size={12} className="rotate-45" />
                 </button>
               </span>
             ) : (
               <span
                 key={tag.id}
-                className="group inline-flex items-center gap-1.5 pl-3.5 pr-1.5 py-1.5 bg-white border border-gray-200 rounded-full text-sm text-gray-700 transition-colors"
+                className="group inline-flex items-center gap-1.5 rounded-tab border border-line bg-card py-1 pl-2.5 pr-1 text-sm text-ink transition-colors hover:border-line-strong"
               >
-                <Tag size={13} className="text-gray-400" />
+                <Tag size={13} className="text-muted" />
                 <button
                   onClick={() => {
                     setEditingId(tag.id);
                     setEditName(tag.name);
                   }}
-                  title="点击编辑"
-                  className="hover:text-blue-600 transition-colors"
+                  title="点击改名"
+                  className="transition-colors hover:text-cabinet"
                 >
                   {tag.name}
                 </button>
                 <button
                   onClick={() => handleDelete(tag.id)}
                   title="删除标签"
-                  className="ml-0.5 p-1 rounded-full text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors"
+                  className="rounded-tab p-1 text-muted/70 transition-colors hover:bg-signal-soft hover:text-signal"
+                  aria-label="删除标签"
                 >
-                  <X size={13} />
+                  <X size={12} />
                 </button>
               </span>
             ),
@@ -165,7 +159,7 @@ function TagsPage() {
       )}
 
       {tags && tags.length > 0 && filtered && filtered.length === 0 && (
-        <div className="text-center py-8 text-gray-400">没有匹配的标签</div>
+        <div className="empty mt-6 py-8">没有匹配的标签。</div>
       )}
 
       {dialog}

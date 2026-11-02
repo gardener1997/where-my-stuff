@@ -21,6 +21,8 @@ chrono = { version = "0.4", features = ["serde"] }
 image = "0.25"
 toml = "0.8"
 rust-embed = "8"
+argon2 = "0.5"
+rpassword = "7"
 
 [dev-dependencies]
 reqwest = { version = "0.12", features = ["json", "multipart"] }

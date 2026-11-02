@@ -52,5 +52,9 @@ pub fn api_routes(pool: SqlitePool) -> Router {
         .route("/search", get(handlers::search::search))
         // Stats
         .route("/stats", get(handlers::stats::get))
+        // Auth
+        .route("/auth/login", post(handlers::auth::login))
+        .route("/auth/logout", post(handlers::auth::logout))
+        .route("/auth/me", get(handlers::auth::me))
         .with_state(pool)
 }

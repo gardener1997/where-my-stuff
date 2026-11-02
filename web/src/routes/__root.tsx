@@ -1,103 +1,123 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
-import { Search, Package, FolderTree, Tag, Home, Layers, MapPin, Menu, X } from "lucide-react";
+import { createRootRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
+import {
+  Search,
+  Package,
+  FolderTree,
+  Tag,
+  Home,
+  Layers,
+  Menu,
+  X,
+  LogOut,
+} from "lucide-react";
 import { useState } from "react";
+import { LogoMark } from "@/components/Logo";
+import { useStats } from "@/hooks/useStats";
+import { useMe, useLogout } from "@/hooks/useAuth";
 
 export const Route = createRootRoute({
   component: RootLayout,
 });
 
+const NAV = [
+  { to: "/", label: "首页", icon: Home, exact: true },
+  { to: "/search", label: "搜索", icon: Search, exact: false },
+  { to: "/items", label: "物品", icon: Package, exact: false },
+  { to: "/containers", label: "容器", icon: FolderTree, exact: false },
+  { to: "/categories", label: "分类", icon: Layers, exact: false },
+  { to: "/tags", label: "标签", icon: Tag, exact: false },
+] as const;
+
 function RootLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const isLogin = useRouterState({
+    select: (s) => s.location.pathname === "/login",
+  });
+  const { data: stats } = useStats(!isLogin);
+  const { data: me } = useMe(!isLogin);
+  const logout = useLogout();
+
+  const close = () => setSidebarOpen(false);
+
+  // The login page stands alone: no chrome, no sidebar.
+  if (isLogin) {
+    return <Outlet />;
+  }
 
   return (
-    <div className="flex h-screen bg-gray-50/50">
+    <div className="flex h-screen bg-paper">
       {/* Mobile top bar */}
-      <header className="lg:hidden fixed top-0 inset-x-0 z-30 h-14 bg-white border-b flex items-center px-4 gap-3">
+      <header className="fixed inset-x-0 top-0 z-30 flex h-14 items-center gap-3 bg-cabinet px-4 lg:hidden">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="p-2 -ml-2 rounded-lg hover:bg-gray-100"
+          className="-ml-2 rounded-tab p-2 text-panel-muted transition-colors hover:bg-white/[0.08] hover:text-card"
+          aria-label="打开导航"
         >
-          <Menu size={22} className="text-gray-600" />
+          <Menu size={20} />
         </button>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-            <MapPin size={15} className="text-white" />
-          </div>
-          <h1 className="text-base font-bold text-gray-900">东西在哪</h1>
-        </div>
+        <Link to="/" className="flex items-center gap-2.5 text-card" onClick={close}>
+          <LogoMark size={26} />
+          <span className="font-display text-lg leading-none">东西在哪</span>
+        </Link>
       </header>
 
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-black/30"
-          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-ink/40 animate-fade-in lg:hidden"
+          onClick={close}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar — the spine of the filing cabinet */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 border-r bg-white flex flex-col transition-transform duration-200 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`fixed inset-y-0 left-0 z-50 flex w-60 flex-col bg-cabinet transition-transform duration-200 lg:static lg:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Desktop logo / mobile close */}
-        <div className="p-5 border-b flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center">
-              <MapPin size={18} className="text-white" />
-            </div>
-            <h1 className="text-lg font-bold text-gray-900">东西在哪</h1>
-          </div>
+        <div className="flex items-center justify-between border-b border-white/10 px-5 py-5">
+          <Link to="/" onClick={close} className="flex items-center gap-2.5 text-card">
+            <LogoMark size={34} />
+            <span>
+              <span className="block font-display text-lg font-semibold leading-tight tracking-tight">东西在哪</span>
+              <span className="mt-0.5 block text-[11px] leading-tight text-panel-muted">
+                个人物品档案
+              </span>
+            </span>
+          </Link>
           <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1.5 rounded-lg hover:bg-gray-100"
+            onClick={close}
+            className="rounded-tab p-1.5 text-panel-muted hover:bg-white/[0.06] hover:text-card lg:hidden"
+            aria-label="关闭导航"
           >
-            <X size={20} className="text-gray-500" />
+            <X size={18} />
           </button>
         </div>
 
-        <nav className="flex-1 p-3 space-y-0.5">
-          <NavLink
-            to="/"
-            icon={<Home size={18} />}
-            label="首页"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <NavLink
-            to="/search"
-            icon={<Search size={18} />}
-            label="搜索"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <NavLink
-            to="/items"
-            icon={<Package size={18} />}
-            label="物品"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <NavLink
-            to="/containers"
-            icon={<FolderTree size={18} />}
-            label="容器"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <NavLink
-            to="/categories"
-            icon={<Layers size={18} />}
-            label="分类"
-            onClick={() => setSidebarOpen(false)}
-          />
-          <NavLink
-            to="/tags"
-            icon={<Tag size={18} />}
-            label="标签"
-            onClick={() => setSidebarOpen(false)}
-          />
+        <nav className="flex-1 space-y-0.5 px-3 py-4">
+          {NAV.slice(0, 2).map((item) => (
+            <NavItem key={item.to} {...item} onClick={close} />
+          ))}
+          <div className="my-3 h-px bg-white/10" />
+          {NAV.slice(2).map((item) => (
+            <NavItem key={item.to} {...item} onClick={close} />
+          ))}
         </nav>
 
-        <div className="p-4 border-t">
-          <p className="text-xs text-gray-400">个人物品管理</p>
+        <div className="border-t border-white/10 px-5 py-4">
+          <p className="text-[11px] leading-relaxed text-panel-muted">
+            {stats ? `本机保存 · ${stats.total_items} 件物品` : "本机保存"}
+          </p>
+          {me && (
+            <button
+              onClick={() => logout.mutate()}
+              disabled={logout.isPending}
+              className="mt-2 flex items-center gap-1.5 text-[11px] text-panel-muted transition-colors hover:text-card disabled:opacity-50"
+            >
+              <LogOut size={12} />
+              {me.username} · 退出登录
+            </button>
+          )}
         </div>
       </aside>
 
@@ -109,27 +129,22 @@ function RootLayout() {
   );
 }
 
-function NavLink({
+function NavItem({
   to,
-  icon,
   label,
+  icon: Icon,
+  exact,
   onClick,
 }: {
   to: string;
-  icon: React.ReactNode;
   label: string;
+  icon: React.ComponentType<{ size?: number | string }>;
+  exact: boolean;
   onClick?: () => void;
 }) {
   return (
-    <Link
-      to={to}
-      onClick={onClick}
-      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-      activeProps={{
-        className: "bg-blue-50 text-blue-700 font-medium",
-      }}
-    >
-      {icon}
+    <Link to={to} onClick={onClick} activeOptions={{ exact }} className="nav-link">
+      <Icon size={17} />
       {label}
     </Link>
   );

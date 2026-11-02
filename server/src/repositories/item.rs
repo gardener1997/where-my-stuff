@@ -200,14 +200,14 @@ pub async fn update(pool: &SqlitePool, id: &str, input: &UpdateItem) -> AppResul
          WHERE id = ?",
     )
     .bind(input.name.as_deref().unwrap_or(&item.name))
-    .bind(input.description.as_deref())
-    .bind(input.location_note.as_deref())
+    .bind(pick_str(&item.description, &input.description))
+    .bind(pick_str(&item.location_note, &input.location_note))
     .bind(input.source_type.as_deref().unwrap_or(&item.source_type))
-    .bind(input.purchased_at.as_deref())
-    .bind(input.bought_from.as_deref())
-    .bind(input.price)
-    .bind(input.category_id.as_deref())
-    .bind(input.container_id.as_deref())
+    .bind(pick_str(&item.purchased_at, &input.purchased_at))
+    .bind(pick_str(&item.bought_from, &input.bought_from))
+    .bind(pick_f64(item.price, &input.price))
+    .bind(pick_str(&item.category_id, &input.category_id))
+    .bind(pick_str(&item.container_id, &input.container_id))
     .bind(id)
     .execute(pool)
     .await?;
@@ -217,6 +217,21 @@ pub async fn update(pool: &SqlitePool, id: &str, input: &UpdateItem) -> AppResul
     }
 
     get(pool, id).await
+}
+
+/// Merge a nullable patch field: absent keeps the current value, `null` clears it.
+fn pick_str<'a>(current: &'a Option<String>, patch: &'a Option<Option<String>>) -> Option<&'a str> {
+    match patch {
+        Some(next) => next.as_deref(),
+        None => current.as_deref(),
+    }
+}
+
+fn pick_f64(current: Option<f64>, patch: &Option<Option<f64>>) -> Option<f64> {
+    match patch {
+        Some(next) => *next,
+        None => current,
+    }
 }
 
 pub async fn delete(pool: &SqlitePool, id: &str, image_dir: &str) -> AppResult<()> {

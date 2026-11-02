@@ -43,12 +43,12 @@ export function DocumentList({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-colors disabled:opacity-50"
+            className="btn btn-ghost"
           >
             <Upload size={15} />
             {uploading ? "上传中…" : "上传说明书"}
           </button>
-          <span className="text-xs text-gray-400">PDF</span>
+          <span className="text-xs text-muted">PDF</span>
           <input
             ref={inputRef}
             type="file"
@@ -65,16 +65,16 @@ export function DocumentList({
           {documents.map((doc) => (
             <div
               key={doc.id}
-              className="group flex items-center gap-3 px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl hover:border-blue-200 hover:bg-blue-50/30 transition-colors"
+              className="group flex items-center gap-3 rounded-tab border border-line bg-card px-3.5 py-2.5 transition-colors hover:border-line-strong hover:bg-paper/60"
             >
-              <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
-                <FileText size={16} className="text-red-500" />
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-tab bg-signal-soft">
+                <FileText size={15} className="text-signal" />
               </div>
               <div className="flex-1 min-w-0">
                 <button
                   type="button"
                   onClick={() => openDoc(doc)}
-                  className="text-sm text-gray-700 hover:text-blue-600 truncate block text-left w-full"
+                  className="block w-full truncate text-left text-sm text-ink transition-colors hover:text-cabinet"
                   title="新标签页打开"
                 >
                   {doc.filename}
@@ -84,7 +84,7 @@ export function DocumentList({
                 <button
                   type="button"
                   onClick={() => openDoc(doc)}
-                  className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                  className="rounded-tab p-1.5 text-muted transition-colors hover:bg-cabinet-soft hover:text-cabinet"
                   title="新标签页打开"
                 >
                   <ExternalLink size={15} />
@@ -93,7 +93,7 @@ export function DocumentList({
                   <button
                     type="button"
                     onClick={() => onDelete(doc.id)}
-                    className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                    className="rounded-tab p-1.5 text-muted transition-colors hover:bg-signal-soft hover:text-signal"
                     title="删除"
                   >
                     <X size={15} />

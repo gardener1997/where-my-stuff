@@ -9,6 +9,16 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     ...options,
   });
   if (!res.ok) {
+    // Not logged in / expired session: send the SPA to the login page.
+    // Auth endpoints report 401 as a normal result, and we never redirect
+    // while already on /login (that would loop).
+    if (
+      res.status === 401 &&
+      !path.startsWith("/auth/") &&
+      !window.location.pathname.startsWith("/login")
+    ) {
+      window.location.href = "/login";
+    }
     const body = await res.json().catch(() => ({ error: res.statusText }));
     throw new Error(body.error || res.statusText);
   }
@@ -16,6 +26,15 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  // Auth
+  login: (data: import("@/types").LoginRequest) =>
+    request<import("@/types").AuthInfo>("/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  logout: () => request<{ ok: boolean }>("/auth/logout", { method: "POST" }),
+  me: () => request<import("@/types").AuthInfo>("/auth/me"),
+
   // Stats
   getStats: () => request<import("@/types").Stats>("/stats"),
 

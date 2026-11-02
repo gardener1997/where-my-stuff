@@ -43,15 +43,21 @@ fn default_max_doc_size() -> String {
 }
 
 impl Config {
-    pub fn load() -> Self {
+    /// Load `config.toml` (or defaults) without interpreting process arguments.
+    /// Used by the credential subcommands, which do not start a server.
+    pub fn load_base() -> Self {
         let config_path = std::env::var("CONFIG_PATH").unwrap_or_else(|_| "config.toml".into());
-        let mut config = if PathBuf::from(&config_path).exists() {
+        if PathBuf::from(&config_path).exists() {
             let content =
                 std::fs::read_to_string(&config_path).expect("failed to read config.toml");
             toml::from_str(&content).expect("failed to parse config.toml")
         } else {
             Self::default()
-        };
+        }
+    }
+
+    pub fn load() -> Self {
+        let mut config = Self::load_base();
 
         // CLI overrides: --port <N>, --host <addr>, --help / -h
         let args: Vec<String> = std::env::args().collect();
@@ -77,7 +83,10 @@ impl Config {
                     }
                 }
                 "--help" | "-h" => {
-                    println!("用法: wheremystuff [选项]\n");
+                    println!("用法: server [选项]\n");
+                    println!("命令:");
+                    println!("  set-user      设置或修改登录用户名和密码");
+                    println!("  show-user     查看当前登录用户名\n");
                     println!("选项:");
                     println!("  --port <N>    监听端口 (默认: {})", Self::default().server.port);
                     println!("  --host <addr> 监听地址 (默认: {})", Self::default().server.host);

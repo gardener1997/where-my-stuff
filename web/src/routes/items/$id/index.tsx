@@ -6,7 +6,12 @@ import { Skeleton, SkeletonText } from "@/components/ui/Skeleton";
 import { Lightbox } from "@/components/ui/Lightbox";
 import { MarkdownText } from "@/components/ui/MarkdownText";
 import { DocumentList } from "@/components/ui/DocumentList";
-import { formatDate, formatPrice, sourceTypeLabel } from "@/lib/utils";
+import {
+  formatDate,
+  formatPrice,
+  imageUrl,
+  sourceTypeLabel,
+} from "@/lib/utils";
 import { ArrowLeft, Trash2, Edit, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/items/$id/")({
@@ -23,15 +28,15 @@ function ItemDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl mx-auto p-4 sm:p-8">
-        <div className="flex items-center gap-4 mb-6">
-          <Skeleton className="w-10 h-10 rounded-xl" />
+      <div className="page max-w-4xl">
+        <div className="mb-6 flex items-center gap-4">
+          <Skeleton className="h-9 w-9 rounded-tab" />
           <Skeleton className="h-8 w-48" />
-          <Skeleton className="h-10 w-20 ml-auto" />
+          <Skeleton className="ml-auto h-9 w-20" />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-          <Skeleton className="aspect-square rounded-2xl" />
-          <Skeleton className="aspect-square rounded-2xl" />
+        <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <Skeleton className="aspect-square rounded-card" />
+          <Skeleton className="aspect-square rounded-card" />
         </div>
         <SkeletonText lines={4} />
       </div>
@@ -39,7 +44,7 @@ function ItemDetailPage() {
   }
 
   if (!data) {
-    return <div className="p-8 text-gray-400">物品不存在</div>;
+    return <div className="page max-w-4xl text-muted">物品不存在</div>;
   }
 
   const { item, images, tags, category_name, container_path, documents: docs } = data;
@@ -58,56 +63,54 @@ function ItemDetailPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4 sm:p-8">
+    <div className="page max-w-4xl">
       {/* Header */}
-      <div className="flex items-center gap-2 sm:gap-4 mb-6 flex-wrap">
-        <Link to="/items" search={{ page: 1 }} className="p-2 rounded-lg hover:bg-gray-100">
-          <ArrowLeft size={20} />
+      <div className="mb-6 flex flex-wrap items-center gap-3">
+        <Link to="/items" search={{ page: 1 }} className="btn btn-quiet px-2 py-2" aria-label="返回物品列表">
+          <ArrowLeft size={18} />
         </Link>
-        <h2 className="text-lg sm:text-2xl font-bold text-gray-900 flex-1 min-w-0 truncate">
+        <h2 className="min-w-0 flex-1 truncate font-display text-2xl leading-tight text-ink sm:text-3xl">
           {item.name}
         </h2>
-        <Link
-          to="/items/$id/edit"
-          params={{ id: item.id }}
-          className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 rounded-xl text-sm hover:bg-gray-50"
-        >
-          <Edit size={15} />
-          <span className="hidden sm:inline">编辑</span>
-        </Link>
-        <button
-          onClick={handleDelete}
-          className="flex items-center gap-1.5 px-3 py-2 border border-red-200 text-red-600 rounded-xl text-sm hover:bg-red-50"
-        >
-          <Trash2 size={15} />
-          <span className="hidden sm:inline">删除</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/items/$id/edit"
+            params={{ id: item.id }}
+            className="btn btn-ghost px-3 py-1.5"
+          >
+            <Edit size={14} />
+            <span className="hidden sm:inline">编辑</span>
+          </Link>
+          <button onClick={handleDelete} className="btn btn-danger px-3 py-1.5">
+            <Trash2 size={14} />
+            <span className="hidden sm:inline">删除</span>
+          </button>
+        </div>
       </div>
 
       {/* Images */}
       {images.length > 0 && (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+          <div className="mb-6 grid grid-cols-2 gap-2.5 sm:grid-cols-3">
             {images.map((img, idx) => (
               <button
                 key={img.id}
                 type="button"
                 onClick={() => setLightboxIndex(idx)}
-                className="group relative overflow-hidden rounded-xl border"
+                className="group overflow-hidden rounded-card border border-line"
               >
                 <img
-                  src={`/images/${img.file_path}`}
+                  src={imageUrl(img.file_path) ?? ""}
                   alt=""
-                  className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-200"
+                  className="aspect-square w-full object-cover transition-transform duration-200 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
               </button>
             ))}
           </div>
           {lightboxIndex !== null && (
             <Lightbox
               images={images.map((img) => ({
-                src: `/images/${img.file_path}`,
+                src: imageUrl(img.file_path) ?? "",
                 alt: item.name,
               }))}
               initialIndex={lightboxIndex}
@@ -117,16 +120,18 @@ function ItemDetailPage() {
         </>
       )}
 
-      {/* Description — full width outside the info card */}
+      {/* Description */}
       {item.description && (
         <section className="mb-6">
-          <h3 className="text-sm font-medium text-gray-500 mb-3">描述</h3>
-          <MarkdownText>{item.description}</MarkdownText>
+          <h3 className="mb-2 text-xs font-medium text-muted">描述</h3>
+          <MarkdownText className="prose-sm prose-p:leading-relaxed prose-headings:font-display prose-headings:text-ink prose-p:text-ink/85 prose-li:text-ink/85 prose-strong:text-ink prose-a:text-cabinet">
+            {item.description}
+          </MarkdownText>
         </section>
       )}
 
       {/* Info */}
-      <div className="bg-white border rounded-xl divide-y">
+      <div className="card divide-y divide-line">
         <InfoRow
           label="来源"
           value={
@@ -141,16 +146,14 @@ function ItemDetailPage() {
           label="位置"
           value={
             container_path.length > 0 ? (
-              <div className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-1">
                 {container_path.map((seg, i) => (
-                  <span key={seg.id} className="flex items-center gap-1.5">
-                    {i > 0 && (
-                      <ChevronRight size={14} className="text-gray-300 shrink-0" />
-                    )}
+                  <span key={seg.id} className="flex items-center gap-1">
+                    {i > 0 && <ChevronRight size={13} className="shrink-0 text-line-strong" />}
                     <Link
                       to="/containers/$id"
                       params={{ id: seg.id }}
-                      className="text-blue-600 hover:underline"
+                      className="text-cabinet hover:underline"
                     >
                       {seg.name}
                     </Link>
@@ -167,9 +170,9 @@ function ItemDetailPage() {
           label="标签"
           value={
             tags.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {tags.map((tag) => (
-                  <span key={tag.id} className="px-2 py-1 bg-gray-100 rounded-full text-xs">
+                  <span key={tag.id} className="tag-tab bg-card">
                     {tag.name}
                   </span>
                 ))}
@@ -179,15 +182,15 @@ function ItemDetailPage() {
             )
           }
         />
-        <InfoRow label="创建时间" value={formatDate(item.created_at)} />
+        <InfoRow label="归档时间" value={formatDate(item.created_at)} />
       </div>
 
       {/* Documents */}
       {docs.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-sm font-medium text-gray-500 mb-3">说明书</h3>
+        <section className="mt-6">
+          <h3 className="mb-2 text-xs font-medium text-muted">说明书</h3>
           <DocumentList documents={docs} />
-        </div>
+        </section>
       )}
 
       {dialog}
@@ -197,9 +200,9 @@ function ItemDetailPage() {
 
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="flex px-4 py-3">
-      <div className="w-24 text-sm text-gray-500 shrink-0">{label}</div>
-      <div className="text-sm text-gray-900">{value || "—"}</div>
+    <div className="flex gap-3 px-4 py-3">
+      <div className="w-20 shrink-0 text-xs leading-6 text-muted">{label}</div>
+      <div className="min-w-0 text-sm leading-6 text-ink">{value || "—"}</div>
     </div>
   );
 }

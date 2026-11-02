@@ -28,13 +28,19 @@ pub async fn update(
     Path(id): Path<String>,
     Json(input): Json<UpdateCategory>,
 ) -> AppResult<Json<Category>> {
-    Ok(Json(category::update(&pool, &id, &input).await?))
+    let category = category::update(&pool, &id, &input).await?;
+    // The category name/path is part of the search index for every item inside it.
+    crate::services::search_index::sync_category_tree(&pool, &id).await?;
+    Ok(Json(category))
 }
 
 pub async fn delete(
     State(pool): State<SqlitePool>,
     Path(id): Path<String>,
 ) -> AppResult<Json<serde_json::Value>> {
+    // Capture affected items before the delete: afterwards their category link is gone.
+    let item_ids = crate::services::search_index::item_ids_for_category(&pool, &id).await?;
     category::delete(&pool, &id).await?;
+    crate::services::search_index::sync_items(&pool, &item_ids).await?;
     Ok(Json(serde_json::json!({ "ok": true })))
 }

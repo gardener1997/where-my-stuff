@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from "./routes/__root"
 import { Route as IndexRouteImport } from "./routes/index"
 import { Route as CategoriesRouteImport } from "./routes/categories"
+import { Route as LoginRouteImport } from "./routes/login"
 import { Route as SearchRouteImport } from "./routes/search"
 import { Route as TagsRouteImport } from "./routes/tags"
 import { Route as ContainersIndexRouteImport } from "./routes/containers/index"
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const CategoriesRoute = CategoriesRouteImport.update({
   id: "/categories",
   path: "/categories",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRoute = SearchRouteImport.update({
@@ -80,6 +86,7 @@ const ItemsIdEditRoute = ItemsIdEditRouteImport.update({
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/categories": typeof CategoriesRoute
+  "/login": typeof LoginRoute
   "/search": typeof SearchRoute
   "/tags": typeof TagsRoute
   "/containers/$id": typeof ContainersIdRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/categories": typeof CategoriesRoute
+  "/login": typeof LoginRoute
   "/search": typeof SearchRoute
   "/tags": typeof TagsRoute
   "/containers/$id": typeof ContainersIdRoute
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
   "/categories": typeof CategoriesRoute
+  "/login": typeof LoginRoute
   "/search": typeof SearchRoute
   "/tags": typeof TagsRoute
   "/containers/$id": typeof ContainersIdRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fullPaths:
     | "/"
     | "/categories"
+    | "/login"
     | "/search"
     | "/tags"
     | "/containers/$id"
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   to:
     | "/"
     | "/categories"
+    | "/login"
     | "/search"
     | "/tags"
     | "/containers/$id"
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | "__root__"
     | "/"
     | "/categories"
+    | "/login"
     | "/search"
     | "/tags"
     | "/containers/$id"
@@ -160,6 +172,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CategoriesRoute: typeof CategoriesRoute
+  LoginRoute: typeof LoginRoute
   SearchRoute: typeof SearchRoute
   TagsRoute: typeof TagsRoute
   ContainersIdRoute: typeof ContainersIdRoute
@@ -183,6 +196,13 @@ declare module "@tanstack/react-router" {
       path: "/categories"
       fullPath: "/categories"
       preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/login": {
+      id: "/login"
+      path: "/login"
+      fullPath: "/login"
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/search": {
@@ -267,6 +287,7 @@ const ItemsIdRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CategoriesRoute: CategoriesRoute,
+  LoginRoute: LoginRoute,
   SearchRoute: SearchRoute,
   TagsRoute: TagsRoute,
   ContainersIdRoute: ContainersIdRoute,

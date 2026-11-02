@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use sqlx::FromRow;
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
@@ -75,17 +75,36 @@ pub struct CreateItem {
     pub tag_ids: Option<Vec<String>>,
 }
 
+/// Deserializes a field so that "absent" and "present but null" are distinguishable.
+/// `Option<Option<T>>` reads as: `None` = keep, `Some(None)` = clear, `Some(Some(v))` = set.
+fn double_option<'de, D, T>(deserializer: D) -> Result<Option<Option<T>>, D::Error>
+where
+    D: Deserializer<'de>,
+    T: Deserialize<'de>,
+{
+    Option::<T>::deserialize(deserializer).map(Some)
+}
+
 #[derive(Debug, Deserialize)]
 pub struct UpdateItem {
+    /// `name` and `source_type` are NOT NULL: absent or null both keep the current value.
     pub name: Option<String>,
-    pub description: Option<String>,
-    pub location_note: Option<String>,
     pub source_type: Option<String>,
-    pub purchased_at: Option<String>,
-    pub bought_from: Option<String>,
-    pub price: Option<f64>,
-    pub category_id: Option<String>,
-    pub container_id: Option<String>,
+    /// Nullable columns: absent keeps the current value, explicit `null` clears it.
+    #[serde(default, deserialize_with = "double_option")]
+    pub description: Option<Option<String>>,
+    #[serde(default, deserialize_with = "double_option")]
+    pub location_note: Option<Option<String>>,
+    #[serde(default, deserialize_with = "double_option")]
+    pub purchased_at: Option<Option<String>>,
+    #[serde(default, deserialize_with = "double_option")]
+    pub bought_from: Option<Option<String>>,
+    #[serde(default, deserialize_with = "double_option")]
+    pub price: Option<Option<f64>>,
+    #[serde(default, deserialize_with = "double_option")]
+    pub category_id: Option<Option<String>>,
+    #[serde(default, deserialize_with = "double_option")]
+    pub container_id: Option<Option<String>>,
     pub tag_ids: Option<Vec<String>>,
 }
 

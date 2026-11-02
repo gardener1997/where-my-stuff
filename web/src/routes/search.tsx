@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { useSearch } from "@/hooks/useSearch";
-import { containerPathText, formatDate } from "@/lib/utils";
-import { Search, Package } from "lucide-react";
+import { containerPathText, formatDate, imageUrl } from "@/lib/utils";
+import { Search, Package, MapPin, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/search")({
   validateSearch: (search: Record<string, unknown>): { q: string; page: number } => ({
@@ -27,108 +27,118 @@ function SearchPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4 sm:p-8">
-      {/* Search bar */}
-      <form onSubmit={handleSubmit} className="relative mb-6">
-        <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+    <div className="page max-w-4xl">
+      <div className="page-head">
+        <div>
+          <h2 className="page-title">搜索</h2>
+          <p className="page-sub">物品名、描述、位置说明、标签和存放路径都能搜到。</p>
+        </div>
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="card mb-7 flex items-center gap-2 p-2 transition-colors focus-within:border-line-strong"
+      >
+        <Search size={18} className="ml-2.5 shrink-0 text-muted" />
         <input
           type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="搜索物品、标签、容器…"
-          className="w-full pl-12 pr-4 py-3 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="充电器、说明书、蓝色箱子…"
+          aria-label="搜索物品"
+          className="min-w-0 flex-1 bg-transparent px-1 py-2.5 text-base text-ink outline-none placeholder:text-muted/70"
           autoFocus
         />
+        <button type="submit" className="btn btn-primary shrink-0 px-5 py-2.5">
+          查找
+        </button>
       </form>
 
-      {/* Results */}
       {initialQ && (
         <div>
-          <p className="text-sm text-gray-500 mb-4">
-            {isLoading ? "搜索中…" : data ? `找到 ${data.total} 个结果` : ""}
+          <p className="mb-3 text-sm text-muted">
+            {isLoading ? "正在翻找…" : data ? `找到 ${data.total} 条记录` : ""}
           </p>
 
           <div className="space-y-3">
             {isLoading &&
               Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="bg-white rounded-2xl border p-5">
-                  <div className="flex gap-4">
-                    <div className="w-16 h-16 rounded-xl bg-gray-200/70 animate-pulse shrink-0" />
-                    <div className="flex-1 space-y-2.5">
-                      <div className="h-5 w-1/2 rounded-lg bg-gray-200/70 animate-pulse" />
-                      <div className="h-3.5 w-2/3 rounded-lg bg-gray-200/70 animate-pulse" />
-                      <div className="h-3 w-1/3 rounded-lg bg-gray-200/70 animate-pulse" />
-                    </div>
+                <div key={i} className="card flex gap-4 p-4">
+                  <div className="h-16 w-16 shrink-0 animate-pulse rounded-tab bg-line/70" />
+                  <div className="flex-1 space-y-2.5 py-1">
+                    <div className="h-4 w-1/2 animate-pulse rounded bg-line/70" />
+                    <div className="h-3 w-2/3 animate-pulse rounded bg-line/60" />
+                    <div className="h-3 w-1/3 animate-pulse rounded bg-line/50" />
                   </div>
                 </div>
               ))}
+
             {!isLoading &&
-              data?.items.map((hit) => (
-                <Link
-                  key={hit.item.id}
-                  to="/items/$id"
-                  params={{ id: hit.item.id }}
-                  className="block bg-white rounded-2xl border p-5 hover:shadow-md hover:-translate-y-0.5 transition-all"
-                >
-                  <div className="flex gap-4">
-                    {hit.item.thumb_path ? (
+              data?.items.map((hit) => {
+                const thumb = imageUrl(hit.item.thumb_path);
+                return (
+                  <Link
+                    key={hit.item.id}
+                    to="/items/$id"
+                    params={{ id: hit.item.id }}
+                    className="card card-hover flex gap-4 p-4"
+                  >
+                    {thumb ? (
                       <img
-                        src={`/images/${hit.item.thumb_path}`}
-                        alt={hit.item.name}
+                        src={thumb}
+                        alt=""
                         loading="lazy"
                         decoding="async"
-                        className="w-16 h-16 rounded-xl object-cover bg-gray-100"
+                        className="h-16 w-16 shrink-0 rounded-tab border border-line object-cover"
                       />
                     ) : (
-                      <div className="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center">
-                        <Package size={20} className="text-gray-400" />
+                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-tab border border-line bg-paper">
+                        <Package size={18} className="text-muted" />
                       </div>
                     )}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900">{hit.item.name}</h3>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm font-medium text-ink">{hit.item.name}</h3>
                       {hit.highlight && (
                         <p
-                          className="text-sm text-gray-500 mt-1 line-clamp-2"
+                          className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted"
                           dangerouslySetInnerHTML={{ __html: hit.highlight }}
                         />
                       )}
-                      <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-                        <span>📍 {containerPathText(hit.item.container_path)}</span>
-                        {hit.item.category_name && <span>📂 {hit.item.category_name}</span>}
+                      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
+                        <span className="inline-flex items-center gap-1">
+                          <MapPin size={11} />
+                          {containerPathText(hit.item.container_path)}
+                        </span>
+                        {hit.item.category_name && <span>{hit.item.category_name}</span>}
                         <span>{formatDate(hit.item.created_at)}</span>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
           </div>
 
           {!isLoading && data && data.items.length === 0 && (
-            <div className="text-center py-12 text-gray-400">没有找到相关物品</div>
+            <div className="empty">
+              <p>没有找到「{initialQ}」。</p>
+              <p className="mt-1 text-sm">试试更短的关键词，或者换个说法。</p>
+            </div>
           )}
 
-          {/* Pagination */}
           {data && data.total > data.size && (
-            <div className="flex items-center justify-center gap-4 mt-8">
+            <div className="mt-8 flex items-center justify-center gap-3">
               {page > 1 && (
-                <Link
-                  to="/search"
-                  search={{ q: initialQ, page: page - 1 }}
-                  className="px-4 py-2 border rounded-lg hover:bg-gray-50"
-                >
+                <Link to="/search" search={{ q: initialQ, page: page - 1 }} className="btn btn-ghost">
                   上一页
                 </Link>
               )}
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-muted">
                 第 {page} 页 / 共 {Math.ceil(data.total / data.size)} 页
               </span>
               {page * data.size < data.total && (
-                <Link
-                  to="/search"
-                  search={{ q: initialQ, page: page + 1 }}
-                  className="px-4 py-2 border rounded-lg hover:bg-gray-50"
-                >
+                <Link to="/search" search={{ q: initialQ, page: page + 1 }} className="btn btn-ghost">
                   下一页
+                  <ChevronRight size={14} />
                 </Link>
               )}
             </div>

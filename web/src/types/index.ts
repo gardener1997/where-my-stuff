@@ -141,14 +141,15 @@ export interface CreateItem {
 
 export interface UpdateItem {
   name?: string;
-  description?: string;
-  location_note?: string;
+  /** `null` clears the field; omit to keep the current value. */
+  description?: string | null;
+  location_note?: string | null;
   source_type?: string;
-  purchased_at?: string;
-  bought_from?: string;
-  price?: number;
-  category_id?: string;
-  container_id?: string;
+  purchased_at?: string | null;
+  bought_from?: string | null;
+  price?: number | null;
+  category_id?: string | null;
+  container_id?: string | null;
   tag_ids?: string[];
 }
 
@@ -182,4 +183,14 @@ export interface SearchQuery {
   source_type?: string;
   page?: number;
   size?: number;
+}
+
+// Auth
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface AuthInfo {
+  username: string;
 }

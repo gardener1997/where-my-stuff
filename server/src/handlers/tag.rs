@@ -25,14 +25,20 @@ pub async fn update(
     Path(id): Path<String>,
     Json(input): Json<UpdateTag>,
 ) -> AppResult<Json<Tag>> {
-    Ok(Json(tag::update(&pool, &id, &input).await?))
+    let tag = tag::update(&pool, &id, &input).await?;
+    // Tag names are part of the search index for every tagged item.
+    crate::services::search_index::sync_tag(&pool, &id).await?;
+    Ok(Json(tag))
 }
 
 pub async fn delete(
     State(pool): State<SqlitePool>,
     Path(id): Path<String>,
 ) -> AppResult<Json<serde_json::Value>> {
+    // Capture affected items before the delete: the join rows are gone afterwards.
+    let item_ids = crate::services::search_index::item_ids_for_tag(&pool, &id).await?;
     tag::delete(&pool, &id).await?;
+    crate::services::search_index::sync_items(&pool, &item_ids).await?;
     Ok(Json(serde_json::json!({ "ok": true })))
 }
 

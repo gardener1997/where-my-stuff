@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Upload, X, Plus } from "lucide-react";
+import { imageUrl } from "@/lib/utils";
 
 interface PendingFile {
   file: File;
@@ -70,18 +71,18 @@ export function ImageUpload({
           setDragOver(false);
           handleFiles(e.dataTransfer.files);
         }}
-        className={`relative flex flex-col items-center justify-center gap-2.5 rounded-2xl border-2 border-dashed cursor-pointer transition-all ${
+        className={`relative flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-card border border-dashed transition-colors ${
           dragOver
-            ? "border-blue-400 bg-blue-50/50 scale-[1.01]"
-            : "border-gray-200 bg-gray-50/50 hover:border-blue-300 hover:bg-blue-50/30"
-        } ${existingImages.length > 0 || pending.length > 0 ? "py-5" : "py-10"}`}
+            ? "border-cabinet bg-cabinet-soft/60"
+            : "border-line bg-paper/50 hover:border-line-strong hover:bg-paper"
+        } ${existingImages.length > 0 || pending.length > 0 ? "py-5" : "py-9"}`}
       >
-        <div className="w-11 h-11 rounded-full bg-blue-50 flex items-center justify-center">
-          <Upload size={20} className="text-blue-500" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-tab bg-cabinet-soft">
+          <Upload size={18} className="text-cabinet" />
         </div>
         <div className="text-center">
-          <p className="text-sm font-medium text-gray-700">点击或拖拽图片到此处上传</p>
-          <p className="text-xs text-gray-400 mt-0.5">JPG、PNG、WebP、AVIF</p>
+          <p className="text-sm font-medium text-ink">点击或拖拽图片到此处上传</p>
+          <p className="mt-0.5 text-xs text-muted">JPG、PNG、WebP、AVIF</p>
         </div>
         <input
           ref={mainRef}
@@ -98,15 +99,15 @@ export function ImageUpload({
 
       {/* Preview grid */}
       {(existingImages.length > 0 || pending.length > 0) && (
-        <div className="flex flex-wrap gap-2.5 mt-3">
+        <div className="mt-3 flex flex-wrap gap-2.5">
           {existingImages.map((img) => (
-            <div key={img.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border border-gray-200">
-              <img src={`/images/${img.thumb_path}`} alt="" className="w-full h-full object-cover" />
+            <div key={img.id} className="group relative h-20 w-20 overflow-hidden rounded-tab border border-line">
+              <img src={imageUrl(img.thumb_path) ?? ""} alt="" className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
               <button
                 type="button"
                 onClick={() => onDeleteExisting?.(img.id)}
-                className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                className="absolute right-1 top-1 rounded-tab bg-signal p-1 text-white opacity-0 transition-opacity hover:bg-signal-deep group-hover:opacity-100 focus-visible:opacity-100"
               >
                 <X size={11} />
               </button>
@@ -114,24 +115,24 @@ export function ImageUpload({
           ))}
 
           {pending.map((p) => (
-            <div key={p.id} className="group relative w-20 h-20 rounded-xl overflow-hidden border-2 border-blue-300 border-dashed">
+            <div key={p.id} className="group relative h-20 w-20 overflow-hidden rounded-tab border border-dashed border-cabinet/60">
               <img src={p.preview} alt="" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
               <button
                 type="button"
                 onClick={() => removePending(p.id)}
-                className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                className="absolute right-1 top-1 rounded-tab bg-signal p-1 text-white opacity-0 transition-opacity hover:bg-signal-deep group-hover:opacity-100 focus-visible:opacity-100"
               >
                 <X size={11} />
               </button>
-              <div className="absolute bottom-0 inset-x-0 bg-blue-500/80 text-white text-[9px] text-center py-0.5">待上传</div>
+              <div className="absolute inset-x-0 bottom-0 bg-cabinet/85 py-0.5 text-center text-[9px] text-card">待上传</div>
             </div>
           ))}
 
           <button
             type="button"
             onClick={() => addRef.current?.click()}
-            className="w-20 h-20 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-0.5 text-gray-400 hover:border-blue-300 hover:text-blue-500 hover:bg-blue-50/30 transition-colors"
+            className="flex h-20 w-20 flex-col items-center justify-center gap-0.5 rounded-tab border border-dashed border-line text-muted transition-colors hover:border-line-strong hover:bg-paper hover:text-ink"
           >
             <Plus size={18} />
             <span className="text-[9px]">添加</span>

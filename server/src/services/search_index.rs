@@ -30,27 +30,51 @@ pub async fn sync_item(pool: &SqlitePool, item_id: &str) -> AppResult<()> {
     .fetch_all(pool)
     .await?;
 
-    // Container name + label
-    let container_info: Option<(Option<String>, Option<String>)> = sqlx::query_as(
-        "SELECT c.name, c.label FROM containers c
-         JOIN items i ON i.container_id = c.id WHERE i.id = ?",
+    // Container path (root → leaf), so searching a parent container finds items in nested ones.
+    // `depth = 0` is the direct container; its label is indexed separately.
+    let container_rows: Vec<(String, Option<String>, i64)> = sqlx::query_as(
+        "WITH RECURSIVE anc(id, name, label, parent_id, depth) AS (
+             SELECT c.id, c.name, c.label, c.parent_id, 0
+               FROM containers c
+               JOIN items i ON i.container_id = c.id
+              WHERE i.id = ?
+             UNION ALL
+             SELECT c.id, c.name, c.label, c.parent_id, anc.depth + 1
+               FROM containers c
+               JOIN anc ON anc.parent_id = c.id
+         )
+         SELECT name, label, depth FROM anc ORDER BY depth DESC",
     )
     .bind(item_id)
-    .fetch_optional(pool)
+    .fetch_all(pool)
     .await?;
 
-    // Category name
-    let category_name: Option<String> = sqlx::query_scalar(
-        "SELECT c.name FROM categories c
-         JOIN items i ON i.category_id = c.id WHERE i.id = ?",
+    let mut container_names = Vec::with_capacity(container_rows.len());
+    let mut container_label = String::new();
+    for (name, label, depth) in container_rows {
+        container_names.push(name);
+        if depth == 0 {
+            container_label = label.unwrap_or_default();
+        }
+    }
+
+    // Category path (root → leaf), same idea as containers.
+    let category_names: Vec<String> = sqlx::query_scalar(
+        "WITH RECURSIVE anc(id, name, parent_id, depth) AS (
+             SELECT c.id, c.name, c.parent_id, 0
+               FROM categories c
+               JOIN items i ON i.category_id = c.id
+              WHERE i.id = ?
+             UNION ALL
+             SELECT c.id, c.name, c.parent_id, anc.depth + 1
+               FROM categories c
+               JOIN anc ON anc.parent_id = c.id
+         )
+         SELECT name FROM anc ORDER BY depth DESC",
     )
     .bind(item_id)
-    .fetch_optional(pool)
+    .fetch_all(pool)
     .await?;
-
-    let (container_name, container_label) = container_info
-        .map(|(n, l)| (n.unwrap_or_default(), l.unwrap_or_default()))
-        .unwrap_or_default();
 
     sqlx::query(
         "INSERT INTO items_fts (item_id, name, description, location_note, tags, container_name, container_label, category_name)
@@ -61,9 +85,9 @@ pub async fn sync_item(pool: &SqlitePool, item_id: &str) -> AppResult<()> {
     .bind(description.unwrap_or_default())
     .bind(location_note.unwrap_or_default())
     .bind(tags.join(" "))
-    .bind(&container_name)
-    .bind(&container_label)
-    .bind(category_name.unwrap_or_default())
+    .bind(container_names.join(" "))
+    .bind(container_label)
+    .bind(category_names.join(" "))
     .execute(pool)
     .await?;
 
@@ -83,4 +107,77 @@ pub async fn sync_all(pool: &SqlitePool) -> AppResult<()> {
     }
 
     Ok(())
+}
+
+/// Re-sync a list of items by id.
+pub async fn sync_items(pool: &SqlitePool, item_ids: &[String]) -> AppResult<()> {
+    for id in item_ids {
+        sync_item(pool, id).await?;
+    }
+    Ok(())
+}
+
+/// Ids of items stored in `container_id` or any of its descendants.
+pub async fn item_ids_for_container(
+    pool: &SqlitePool,
+    container_id: &str,
+) -> AppResult<Vec<String>> {
+    let ids = sqlx::query_scalar(
+        "WITH RECURSIVE sub(id) AS (
+             SELECT ?
+             UNION ALL
+             SELECT c.id FROM containers c JOIN sub ON c.parent_id = sub.id
+         )
+         SELECT i.id FROM items i WHERE i.container_id IN (SELECT id FROM sub)",
+    )
+    .bind(container_id)
+    .fetch_all(pool)
+    .await?;
+    Ok(ids)
+}
+
+/// Re-sync items in a container and its descendants (container renamed / re-parented / deleted).
+pub async fn sync_container_tree(pool: &SqlitePool, container_id: &str) -> AppResult<()> {
+    let ids = item_ids_for_container(pool, container_id).await?;
+    sync_items(pool, &ids).await
+}
+
+/// Ids of items in `category_id` or any of its descendant categories.
+pub async fn item_ids_for_category(
+    pool: &SqlitePool,
+    category_id: &str,
+) -> AppResult<Vec<String>> {
+    let ids = sqlx::query_scalar(
+        "WITH RECURSIVE sub(id) AS (
+             SELECT ?
+             UNION ALL
+             SELECT c.id FROM categories c JOIN sub ON c.parent_id = sub.id
+         )
+         SELECT i.id FROM items i WHERE i.category_id IN (SELECT id FROM sub)",
+    )
+    .bind(category_id)
+    .fetch_all(pool)
+    .await?;
+    Ok(ids)
+}
+
+/// Re-sync items in a category and its descendants (category renamed / re-parented / deleted).
+pub async fn sync_category_tree(pool: &SqlitePool, category_id: &str) -> AppResult<()> {
+    let ids = item_ids_for_category(pool, category_id).await?;
+    sync_items(pool, &ids).await
+}
+
+/// Ids of items tagged with `tag_id`.
+pub async fn item_ids_for_tag(pool: &SqlitePool, tag_id: &str) -> AppResult<Vec<String>> {
+    let ids = sqlx::query_scalar("SELECT item_id FROM item_tags WHERE tag_id = ?")
+        .bind(tag_id)
+        .fetch_all(pool)
+        .await?;
+    Ok(ids)
+}
+
+/// Re-sync items tagged with `tag_id` (tag renamed / deleted).
+pub async fn sync_tag(pool: &SqlitePool, tag_id: &str) -> AppResult<()> {
+    let ids = item_ids_for_tag(pool, tag_id).await?;
+    sync_items(pool, &ids).await
 }
