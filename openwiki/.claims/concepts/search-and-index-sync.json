@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:7f5f52f0782ec8f600590c8d8d6411de4f9f4d1577e1175571d6026127e19051",
+  "claims": [
+    {
+      "id": "claim_3e84cb4621564cd5a9786954f92da29a",
+      "statement": "`handlers::search::search` is a pure delegation to `repositories::search::search`, which accepts a `SearchQuery` (q plus optional category_id, container_id, source_type, page, size) and returns `SearchResult { items, total, page, size }` where each hit pairs an `ItemSummary` with an optional pre-rendered `highlight` string.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/search.rs#L9-L14",
+          "version": "repo-lines-v1:sha256:0cb95365bba3262da51b6a55cb953222f59e15a647882c342d9fc45c4a8726e2:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGIyYTBlMmU4ZTBlZTNmMTZhY2EyYTA3ZDIxNjljZTg1MmQ2Y2I2Y2Y2NmJlMDNjMWQwZjU1ZDQzNWViZjk5MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWM3N2Q2NWI5NTU3MDRjM2QwYTBjYmY3Y2I4MjEwOWRiODEwNjU2NjYxMmUyYWZhMzA1Y2NlM2VmZTAzNTEzYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://server/src/models/search.rs#L5-L27",
+          "version": "repo-lines-v1:sha256:68b58379fe9f5694b5e43d516bf25907d7a225c77aea3fe8c3da71876dae049c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MzJjNjJkNWY0YjZmMzVmZGY5NWM1ZjI0MWFjYTg3OGY3ZjZjZGVjNmM3ZjJmOTlhYTRiMGVmNTEyNTYzYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3NzM0MTE5NWVjYzMxMzMyODJmM2FmOTJjMDhjNjUwZjgwMjBjZDY4YTAzMGZkY2FjY2FhN2Y0MGMyZTMzZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkZjVkNTcwZjAyMjU1NTQxODIxNmViZjI2MTMyYTM0ZTQ3Y2U2OWJmY2E0YTEyN2Y3NTE3OGJlNmU3ZTYxNDUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L60-L82",
+          "version": "repo-lines-v1:sha256:c4413110795b4234751a9841e4725c2a1c98fce40adcfc20c03b20db37b2d252:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4MmM5ZWM5YjFiNDRiNWY3MTVmMjZhZGI2NjI1NTI0ZWIzMTUwOTcxYjJjNGJjMmY3OTVmYzBkZGE4MWMzNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzVlOTRhOTA0YWM0OWIzMTU0ZDQ2NzJhNjZlODYyOWI4NmRhYzc0ZTNlMjkzN2JlNjkyN2FlM2RhMTFjNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0NWE3Y2VjYmYxZWEyYzdiNTIwNTlmMDNhZDkwNjU2YmQwMmU5M2QxODFkNTMwNmFiMDYxZDdmMTFlNDZlYmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhYWE4NmQwZWI0NDg1ZDVhYTdkOGMxYmM4ZDcwMGI5MDY1ZDA5YzM0ZWExY2I2MDIyNmZhZDVjOTRmYjZmMzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c72d66470365418cb405626cbe210ac2",
+      "statement": "Both search SQL paths join `items`, so a leftover `items_fts` row whose item was deleted can neither appear in results nor inflate `total`.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L174-L207",
+          "version": "repo-lines-v1:sha256:24a719cda4be6bd119e52a82c4508e9724545ac64c54e0ed8fd1fa0778e1707c:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0M2UyNGYzZjFmODFmZWViMTJkYjEwMzE1YTFjY2Q1YTM0NTA4ZjhmZDhmNmI0YjFkZDU4YzA1NDk4NWRjMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2NTBkMDk2YTYzYjkzZTgwMTM2NGM0Yjk1MzI4ZTMzYjdkMzk2MzA1YThkZDA0NmY0MDJhY2I5OTRiY2M5ZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzNDQ0ZTAzNDgzYzI5OGM0MGY3NzhmOGU4Yjk4Y2I5MDYwZDA4MDkxYTA5MTc1NmE2NzQ3ZWNiY2Q5ZDY0N2IifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc2c1de4fda34faea5f99a35cf180644",
+      "statement": "Search pagination floors `page` at 1 (default 1), clamps `size` to the range 1..=100 (default 20), derives `offset` from them, and echoes the effective `page`/`size` back so a clamped request size is only observable in the response.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L10-L12",
+          "version": "repo-lines-v1:sha256:9febde68f28584a531bcf0ecbc42799f0db0d67b31ca80db13282ccba7ff3009:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRmNzQ5MTFhOTVkODVmZmYzNGM0MGQ3ZTkwNjhhNDgwY2Y0YTc3NDFkYmM3YjVlNGU5YjQyNGRjNTFkYmMyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2MwNzUxYzViZmQ3NWRhZWUzNjc2MmZlOWJiYTQ5ODE4ZjI0NjA5ZDc4YzIyMjI1ZWY4ODI0MTU3YjI2NWNkMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzU1NDhmNGIzMjY2YmMyNzBiNmQzNjgxMzY2MjhjNDU4Zjc4MGQyOTg5MTc4MzAzZDhmOWM5NzU0NjhlZDc0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjA4MjVlMWY1Y2I3ZGNmZWQwNmVkMDY2ZTUxNmQzNjcxNjk3ZTA4Y2EzMzA1M2RhMDQ5MTZlMWM3N2U3YjMzMiJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L77-L82",
+          "version": "repo-lines-v1:sha256:e76efd341b4312a40210eb6a0dabe6a71c616b1f0419959f1f6eeb5aaf81ff2d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM0NDQxNTY3NzllZDIxNGI3MDZkYjk1OWM0Yzc1ODBhZTMyN2I2MWZmOTA3MTgwNjBlMzg0NTc5YTE2ZmQwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQ3NWU5NGE5MDRhYzQ5YjMxNTRkNDY3MmE2NmU4NjI5Yjg2ZGFjNzRlM2UyOTM3YmU2OTI3YWUzZGExMWM1MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTJjYzBkNDRkZGUzOTEwMThhNDU5YzA2YjA5MGVlZWM4ZGY1MDQxODgyOTczMjAyZDBhNzY1ZmM5MzU2NGNhNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWFhYTg2ZDBlYjQ0ODVkNWFhN2Q4YzFiYzhkNzAwYjkwNjVkMDljMzRlYTFjYjYwMjI2ZmFkNWM5NGZiNmYzNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f77d6a0b435a497887d754796ffb1ef6",
+      "statement": "Query planning branches on `q.chars().count() < 3`: fewer than three characters uses the `LIKE` fallback, three or more uses `MATCH` on `items_fts`, and because the test counts characters rather than bytes two hanzi take the fallback while the trigram tokenizer's three-character floor makes the FTS path unusable for them.",
+      "evidence": [
+        {
+          "resource": "repo://server/migrations/0001_init.sql#L64-L74",
+          "version": "repo-lines-v1:sha256:6013a74b349ea40e1c3419bb644f3cd14082537e34379aeeb6d59b2786934101:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZmQ1YjRkOGUzMDMwMmEzNjY5MWJjODk1Mzk5YzA4ZTVkMDI0ZjQzNzEwNDEzOWNhYjA0NzY2MTBmMTZjNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3N2I3ZmZlYTcxOTA5ZjMwY2VkZWU1OTBjY2RjOGE3YWRhOTQzZTY1ZWYwNzJkMTM1NDhjOWNlZmNhNzA4NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L14-L21",
+          "version": "repo-lines-v1:sha256:e55eca3c449c377476e27ae4c3c549ef5af940eeda119e5d4989994187f013c5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZjOTYyZGFhNDE2OWUwMmE3YTA4YzBiZTQwNzcxZDY5OThjODlhZmExM2Q5ZTgwMzQ4NjQ4NzVmMTdiZTY5ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODA0ODAyNDNhYWFjZGEzMDc3MmExZTY4ZDQ4NDk2NzhlNmM5YTk2YTM4NmY1ZTAyOGE1Y2Y2MzY5YmRjNDMwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTU2Njk2ZGYwNTNkMWU1MmMxYmFlZmQzNzMwMTBmMDJiZWUyODAyNjlhNjBmYTlmYWRmZDk3MjgzYTQyZmNkZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_071a9931cce7490aae6e4b9a4dd1bdb3",
+      "statement": "The short-query fallback binds `%q%` six times over `i.name`, `i.description`, `i.location_note`, the immediate container's `name` and `label`, and the category `name` (via LEFT JOINs on `i.container_id` and `i.category_id`), orders by `i.created_at DESC`, and uses two hard-coded `0..6` bind loops whose literal count must be kept in sync with the WHERE clause.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L99-L162",
+          "version": "repo-lines-v1:sha256:8d8b5dd7655792b31acfda3cffd32ac803f9f52bc6d7cfcf4686b4aec1604bec:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1ZDM0MTgyNDhmODlmYTcwNWJjNzczNTk1MTI5OGMxOGUxMGFhNGFkYTMyN2M0NzE5MTgyOTMzMTY5NWQxZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5MzJkZDdjZWE5M2MzZmEyOWQxNmYyOTE1ZDI2MmJiZTAwNTQwZjdlYjkwNTVlZTc4ZjI1MWY1ZTVjNTFjNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwN2JkNWY3YjIxNWZmZTViMDE5YzNmMDZkMjQ2YmNkNjhlODNhYzkzMmJhNDAxM2ZmMzQ3NjUzZGZkMjA3OWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_97860b4d1cdd48ee8e61509c222114fc",
+      "statement": "The LIKE branch projects `NULL as name_snippet, NULL as desc_snippet` and no `note_snippet` column at all, while `SearchRow` declares three snippet fields with no `#[sqlx(default)]` annotation — so short-query rows are mapped against a result set missing a column the row type expects, making this the least-verified part of the subsystem and the thing to fix by aliasing `NULL as note_snippet`.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L131-L145",
+          "version": "repo-lines-v1:sha256:b8972f0f6dea411e432b3565c34dcfbd3c242289a56a9d897711750afcd89fe3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwZjBlYzMxZTIyYmE3MGUyYmZjYjNhYTFmYjE4YWQyNzQ3ZWY5ODU0NTI4OTliZjljZTA3NzA3MGIyZTdmMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0ZTVjNWUyOGE0MDBkYTBkNzVlMDZjMzNjY2MzZTUzZDVjZjJiNWM1NGYxOWY1Yzg3MDUwYWJmNGZkMWZkYzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjOTVlMDkxOTdhMWM5MGRiODQ4ODMzMjVkZTM2NWFhN2I2MjM4NjBiNmZjMjM2MmQwZjZkZTJlNzI2YjEwNTAifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L224-L238",
+          "version": "repo-lines-v1:sha256:05dd3930641c316f12dabd6550c12cd9cc107eff93d5cb7a2a97c31087df8529:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NzE1OTBjZjIxMDQ2MWNhMWE1OTMyMWM4NmNmMTA2N2FhZmJiZTNjNmZkNWZhMjk5ZWZkMGYyY2JiOTExYzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxMzNhNGU0YzQ3ZWI5MDJlY2U3MmUwNTNlNjYyNTYxOGM5NTRiM2Y0MDZiMjNlNTk3ZmE4MTA5MmI4YzBjZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA4OTQ3YWI2MmU2OTVhN2QzYzQ0YTMyMmFiZWQ5NjE3N2Y1YzUyNWE0NDczNTE0NzJlNmIzNzljZTU4MDgyZTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e436af1189a5415585ffcf97c717a37c",
+      "statement": "Because `q` is only trimmed and never validated for emptiness, `GET /search?q=` becomes `LIKE '%%'`, which matches every item (name is NOT NULL) and returns the entire inventory newest-first; the SPA avoids this only by disabling the query when `params.q.trim().length` is 0.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L106-L113",
+          "version": "repo-lines-v1:sha256:71f7d56e1023ddb6f770be278e14c979f6eb70015b4972a5582b3de46042df38:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI2YWM4OTNlZmVlMzcyNmFiOTJmNDkwOWJkNmFjMWI0M2VjY2QzMTllM2E3ZmE5YTM0ZDJiYTM1Yzk2ZmYxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjM0YTFiYzg2NzZiNTVmNWNlNWEwYWI5OTg2NjVkNWMzMWM1NDVlZDllOWE2YWI3NTAyMTdjMWViOGIwMDBlMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2ZlNzk3MTI3YWVkNGM4NmMzYzcxZWM0MzE5ZmZkZjVmODU1ZTY2ODc3MzBlYWFlYmY5MTcxZDM5ODdiZWY0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2Y1MWMzOTZlMGM2OGE1MTQzYzg2YTJiMzQ1MGIzZWE3Y2JmOTQxOThmNDk1NmRkMTY0NzlhMWQ4NjkxYmM0OCJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L14-L21",
+          "version": "repo-lines-v1:sha256:e55eca3c449c377476e27ae4c3c549ef5af940eeda119e5d4989994187f013c5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZjOTYyZGFhNDE2OWUwMmE3YTA4YzBiZTQwNzcxZDY5OThjODlhZmExM2Q5ZTgwMzQ4NjQ4NzVmMTdiZTY5ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODA0ODAyNDNhYWFjZGEzMDc3MmExZTY4ZDQ4NDk2NzhlNmM5YTk2YTM4NmY1ZTAyOGE1Y2Y2MzY5YmRjNDMwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTU2Njk2ZGYwNTNkMWU1MmMxYmFlZmQzNzMwMTBmMDJiZWUyODAyNjlhNjBmYTlmYWRmZDk3MjgzYTQyZmNkZiJ9"
+        },
+        {
+          "resource": "repo://web/src/hooks/useSearch.ts#L5-L11",
+          "version": "repo-lines-v1:sha256:db837ef561a7caa3a2f46a1b9c066f2bbcbacd0ab02610c2bca7f7a173b37167:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVhNzY1NDQ1YTdlMjYzZjMzMTU3MjBmNDUzNThhMDAzODUzNDBkYjFiOWJmNTBlNTM1YTY4NTRlYmJjOGU1NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNThmNmFiYWI1YzNhMjg0MjVkZDg0ZGEwNTdlZDg4NWFhYjViMGUyMzVhOGQyZWE3OTVkYzUzZjRmODE3OTA0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0a8e32e5dba54f0f9477a092f2be7d3b",
+      "statement": "The FTS path wraps the query as a double-quoted phrase (`format!(\"\\\"{q}\\\"\")`), which neutralises FTS5 operators (no prefix matching, OR, or column filters are reachable) but does not escape embedded double quotes, so a query containing `\"` produces an unterminated FTS5 string whose sqlx error maps to `AppError::Internal` and a 500.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/error.rs#L30-L37",
+          "version": "repo-lines-v1:sha256:96b97d205f2c42e72c28e27ae4207f64125dc6df24cfee3a463c295b675c1f7c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODI3NWJlY2U1ODU2Y2ZlMjQxYjYyM2I3OWJjMDUxMjQ2NjM4NWFjNDgwZmJlYTA4NzM5ZDRiYmFmNWU4YTM4MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTllNzYzNTVjZjExOTk0ODBjM2Y5OTgzNmIxNDg2Yzg0MWQ4OTFmYWFkOTA0YzYwOGUwOTMwMjJkMzc1N2FlZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWRhNDgxOTZiZTYyMGFlOGFjODliYzAxOTE2YTgzMjBhZGM1ZDA4YTNjYzQzOGIyOGUwYTczM2RiMGYwYmI5MyJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L171-L178",
+          "version": "repo-lines-v1:sha256:9b9a69af8aff7919220d27f96e5d903f3e598fded2f926ed050f3977d11577bf:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjY5MTc1ZTlkMDdmMzk0YzM3MmQ3YjU1ZGQxZjUyOGUyMzE4MjhkMjBkNjllZmQxOWE5MDY1YTdiM2RkZTNiZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODRlNDIwOGNkNmZmYjhjNGEzNTQ3YjJmNTRhZGExOTk3OGMzZjM2NWU3OGY5NTAyZWY1MTQ1Y2RkMmFhODU0MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2ZlNzk3MTI3YWVkNGM4NmMzYzcxZWM0MzE5ZmZkZjVmODU1ZTY2ODc3MzBlYWFlYmY5MTcxZDM5ODdiZWY0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhkYjFmYmYyOWZiOTk1YWExOTJkNmRjYThkMjkwZDFjMThiYWU2YWVhMzg1ZmY5MGVjNDk0NTJjN2QzNzkwNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_df1bbb052e344be097e74e47643f4b70",
+      "statement": "Each FTS hit carries `snippet(items_fts, 1|2|3, '<mark>', '</mark>', '…', 20|32|32)` and the list is ordered by `rank`, so `items_fts` column order is an API: columns 1-3 are addressed positionally as name, description, and location_note.",
+      "evidence": [
+        {
+          "resource": "repo://server/migrations/0003_item_location_note.sql#L1-L15",
+          "version": "repo-lines-v1:sha256:94384ad474f5cf29cd8fa02da98e7d1354a380b64d730d2027f0f8e9932321a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxY2I5OTU0OWVlYjY5NWYzMDZhODAxZjcwY2U0NzVhODhiNjU5ZTlmMjZkMWNiOWIzZGJmMGEyNmJlOWFmYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L198-L205",
+          "version": "repo-lines-v1:sha256:a66ea43b84e70f105554e168becc7f559d2cf3f7373282dd2f234c3c3244fa66:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjczZTFhN2JjNWRjZWRlN2QyYjQ2YmMyMzUyNzZhY2VmYjI1MDA2YWQwMDRjNGExNTY2NmIzMGZjMThjOTU5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjcxZjc4M2JiNjY0YzJiOGU2YmU4ZTJjMGViYzM2YmIwZWRlMjcyNWU4NDc5MTAwMmJhZDYxNDliZWI1ODQ1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGZkNGM1M2IzNWJhMzEwZmFlYjA1NmMxOTc0YjViMzQ2YjFmMGQ5YjFmODA2NjA0YzcxYTFjMTc3ZDQ3NjBmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTlhZDExZjRiNjViMjM1MTY0ZDJkNmJmZjNlZTlmMTk5OGU2M2FjZDY2NjkxMDc1NjQwNzkyMWQ2ODkwZDE5ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f44f75cb77574c8288779210ee76812a",
+      "statement": "Search filters are assembled by one helper that seeds the clause with `1=1` and then appends `i.category_id = ?`, `i.container_id = ?`, `i.source_type = ?` in that fixed order, with binds following the same order in both the count and list statements; search has no tag filter and no filter on the FTS columns themselves.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L179-L219",
+          "version": "repo-lines-v1:sha256:89ec303acc86a90a1634e9ebfcbdadaa8d3a801802c6e2f1f1370ac52875151e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2OWY1ZGQxNDdjYzBkOGVmYzhmMDQwNWMwYzQyZTNjMmY3NTc5NmE3YWVmNzJiZGMzMDQ0YzVhZjIwMTIzMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkMWJmMWYyODczNGY0NWRjZDdkY2Q4Yjk5OGUwOTkxNmQwMDI5YmY4MTRiOTViZDk1ZDBmZjFiMDFjZTg0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ1YmRmOWExMzVlODA3NjE2NzYxMjAwZjNmMDYzYWI1Y2YxYjIzYTI5Y2ZmMGVhODIyOGVkYjZkMjU4Y2VjZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2YjM2NTM2NmVkMzJhOGEyN2YyZTlmZTc4NzU1Y2U0OWZkMDk3YjYxYTllMTAyM2MzNTIyM2NhMGVhODMyMDkifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L85-L97",
+          "version": "repo-lines-v1:sha256:893b2f0fcf79ba07acf66214b69233637095df5a928d7a9c8e7dba3c2cdecd85:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxOGY5NDc1OGFlMmNmOTNkNzUwZTNkMmMwNjg2MWMyMGQyZTAwZThiMTBmZjhlMzI4ZTA2ZjEzYTRiNTQzNTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNjNjNGQxYWY4Y2Q4OWJiMGJkZDc2NTdmZmNiZjY4MDZhNjEwZDc5ZDZjOGQ0YzMwN2MyNDFkZjM5MDA1MjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1MzAzMmU3ZTgxMzE5MTU4MzZiYzBlNjM4MjMyNzJhN2Y2M2Y3YWJjMmVmNWExNjdmZjA0NzBjNmIyN2M4ODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8fa0329c1462492b9e01d3067bdeffb1",
+      "statement": "Highlight assembly keeps only those snippets that contain `<mark>`, joins them in name, description, location-note order with `\" … \"`, and otherwise falls back to the item's description truncated to 80 characters plus `…` (or null when there is no description); since `snippet()` is per column, a row that matched only in `tags`, `container_name`, `container_label`, or `category_name` produces no marked fragment and therefore no highlight.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L198-L200",
+          "version": "repo-lines-v1:sha256:e75e05c0d21464dc095baecdcfa787cb4e2e13ee0be4840f0eb9a6279f225346:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjczZTFhN2JjNWRjZWRlN2QyYjQ2YmMyMzUyNzZhY2VmYjI1MDA2YWQwMDRjNGExNTY2NmIzMGZjMThjOTU5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NhM2EwZWQ2NmM3ZGM1MTlmZDhiMDhjNDY4NzM3YWJlMjMzNDBiNzEyYjJjOTBmYmVmYThmYjMyODFkY2UwOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGZkNGM1M2IzNWJhMzEwZmFlYjA1NmMxOTc0YjViMzQ2YjFmMGQ5YjFmODA2NjA0YzcxYTFjMTc3ZDQ3NjBmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWE2ODI5NTkzOTYxZWE5N2Q5YTAyMWU4YjA3ZWIxODhmMTQ1OTAwY2EyYjYxODIxNjI3NWM5ZTE4NzI2NTlkYiJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L30-L58",
+          "version": "repo-lines-v1:sha256:1784af32cf29e11afe1655b386eb63b2743d1de702b5bc028335639bdfa2d3d8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1ZTRkMjVhMjliMTkxOGU2Yjc1MDEyNTFkNWEzZDhiMzBjYzAwYTNiOTViMzQ2ZmY2NjZhMzMwMjc2NWY0NmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1Y2RlZjgwODVhZTc0YWI2MzZkNjQ1OWY1YzZkNWZiZmIwZGIyNjRmMWIwZDc1YmFjNTE5YzliM2Y2NzE3YWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4MzM1Yzg2YjE4YzJhY2ZiN2MyYmI5NDQyOTYwMWFlMjY2OWFlZDkxZDI3YTViYmIwMjMzOTVlOGVmZGQyNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhNjA3OWE3NjQ1ZjRhMTg5ODliYmMxMGI0MDkyNjJhY2Q1MmQ4MzBjZjdiMDgzYThhZTIxZThlMTM3MjRmNmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_571bade3524b447488023e13aee77560",
+      "statement": "The container breadcrumb is not read from `items_fts`: after rows are fetched, each hit with a `container_id` calls `container::get_path`, which issues one query per ancestor level, so a results page costs one query per hit times its container depth.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/container.rs#L42-L55",
+          "version": "repo-lines-v1:sha256:510fb0dbae72ffd47922586160fa10f372d6b6135660fc0513f1b1a941506a3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZTRkOTQ4MGNhNmQwMjY1YWI5MDNmYTQ5ZTMyOTFmYjMwMzkzNzA2NWFmZjI4MWYyOGY0ZTM3ZmM1YWJjZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YzFiNjA2MzRhYzNkZWZhZDY5ZjdhMTVhNDlkN2JiNmYxZDY2YzBmZjk3NGJhNzYxZGRmYjg4NmI5YmU4ODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiOWEwMGJjYWU5ODczYmQ3OWFmNDhiNDI3MTEwNWZiYjk2MWQ5YTczZmE2NTdkNDU1OTMxN2UwZWMxNWYyMWUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L23-L28",
+          "version": "repo-lines-v1:sha256:7e84ec260a35656f0ad4b5c6d80870b70946e4703e742eb62b7a52075dfc6ffe:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE4YmY0ZDk0YTczMmY3ZTU2NTEzZjExZGY4MzQ2NjQ1ODNmNjJhZmU5ZjUzZjFhMDJjNzZiMzY0MzY5YjI3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzVjZGVmODA4NWFlNzRhYjYzNmQ2NDU5ZjVjNmQ1ZmJmYjBkYjI2NGYxYjBkNzViYWM1MTljOWIzZjY3MTdhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg2YmFjZmViNTcyNDU0MGUzMmQ4MmUyMDcwYWQ1NmY2OGU0MzUyMjc0ZGNhMjdlMzM2ZDVhMTFjYzUwOTRkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2M3YjhlYzVkZWYxNjE0YzllOTg0NjlhMTA4MWNjODJiZjA5ZDdmZTU2NzIzMmMxZTQwNjdiYWMzNjY1N2I2MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3989ffa055a4aa197d12ba624dbe9a7",
+      "statement": "The frontend renders `highlight` as trusted HTML via `dangerouslySetInnerHTML` behind a truthiness guard, so the `<mark>` markers and any user-entered item text inside the snippet are interpreted as markup — the fragment is escaped nowhere on either side.",
+      "evidence": [
+        {
+          "resource": "repo://web/src/routes/search.tsx#L88-L94",
+          "version": "repo-lines-v1:sha256:3642f865de16437e8d1dff3daeb95b8a376d0abfe513e123e8b751bf188ba255:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q1YWQ2YjI3YTY4ZTY2OTQyZjZmZmVlNDhhNGRkYTNhZjkzYjBhOWZlYWQ2NmI1ZDBhODQ4MTM3ZWQ2MDQ4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTBmYmM4YWMyM2ExMTVjY2EwN2NmNzQ1NDE1ZGY0NzY3NWRmYWUyOGViM2YyOGRlZGUyY2I3MmRiOGNhZTc0OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDUzMmVkNWE3MmY5OWExMjE5M2RhMDFhNGNhZjVkZjkxMzQ4YzNkOTYwOTA2OTQyZjgyZTlmMDk1Y2ViM2ExOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjcwYTUzOTE0MGQyMzI4NWJlYTgxYjE2ODk4NGFhYTdiNTVlZWQ1NWJkMTUzZjg2ZDIzMzFiMzA2NDg3NWVkNiJ9"
+        },
+        {
+          "resource": "repo://web/src/types/index.ts#L110-L120",
+          "version": "repo-lines-v1:sha256:55cd519a3362e2911c3bc475f46fffbc4aa5e9f7ae08fddeec518d3592e33e16:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhMWY4YTBkNzE3MTdlYTZiYzRhZjE5N2Y5M2U1ZjcwNmY1NGY5YWRhZjkzZTNmMWY4YjI2ZmFkMjg5YTE1NWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjYjAyY2MyNjM4YWU5ZWQwYmEzN2JjZTllOWNkZTE4MzU5NTI0MmExZmFhZDhkNDdmZWMwZjcwM2MzOGYwZDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMGQ1ZTk4NzUxOThiNTY2ZmM0YTJjZGJiODkxNGVhNzg3MmY1ZTM1ZmJlNWVjMTk0ZjQ3YWUzZTdjYTIxNmEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_abc3b7bcac804db892355bba85bff984",
+      "statement": "On the client, `q` and `page` live in the URL (coerced by `validateSearch`, rewritten on submit, changed by paging links) and `useSearch` keys a TanStack Query on the full params object; only item create/update/delete invalidate `[\"search\"]`, while tag, container, and category mutations invalidate their own lists and never the search query.",
+      "evidence": [
+        {
+          "resource": "repo://web/src/hooks/useCategories.ts#L20-L48",
+          "version": "repo-lines-v1:sha256:c744fddb1f4ff2765d70969a3d2439ce2715615282f500afdeb089c301acd5a9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NmMyZGM3NzZjOTk3YjBhMDg3MjEwNDJhZmU0YWY4MWRlYWViODIxN2ZjMGY4YTczYmYwYWMwNTkxYWFmM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3M2ZmMTQwYTZlZGNhYmU0NTg0ZmRmMzExZDMxNTNjMTA1YjM1ZTRiZGVmZTQxNDYwMjE0NmMwZDQwNjFiZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMWJmMmE1NjhkYmY2MmM0ZTQ4MGNiMTliOGZjM2QxNTNjMzIzMmRjYjc1ZWQ1ZDE5MWIwZGMxODE4YzY3MzIifQ"
+        },
+        {
+          "resource": "repo://web/src/hooks/useContainers.ts#L28-L46",
+          "version": "repo-lines-v1:sha256:01aae550c33a263989886af93d9769e55b48f2aefc2bf407e354278d8e2b57da:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NmMyZGM3NzZjOTk3YjBhMDg3MjEwNDJhZmU0YWY4MWRlYWViODIxN2ZjMGY4YTczYmYwYWMwNTkxYWFmM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFmMGNkYjk3MmE3YmZiN2VkMjQ2ZjlmZjY3MjM4NWU1NWY0OTY4ZmMxMTA0M2RjNWI2ODRkNTFkZmEzMWRiY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjY3Nzc3NWM3ZmYxZDEzOWU2YjgwMDkxOTVkZjYyNjdkZDQ3Nzk2YmU0NjQ2ZDU4YmYwNmRjOWVlNjdlY2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEwMWJmMmE1NjhkYmY2MmM0ZTQ4MGNiMTliOGZjM2QxNTNjMzIzMmRjYjc1ZWQ1ZDE5MWIwZGMxODE4YzY3MzIifQ"
+        },
+        {
+          "resource": "repo://web/src/hooks/useItems.ts#L20-L52",
+          "version": "repo-lines-v1:sha256:32e7ce3a11ddc8f22c3adc52adabf95a7944d048d382d20a9f0888029fce2862:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNGFmN2JhOWEzZDZkZThiMjEyNTZmZTQwYWM4NzNmZTRiMjhiNzY3YWRkMjVlMmU3MWJkNjY2NmMzODhkOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkMGYyZDNhM2FhZGEyNzU4NjQ1NzhkMGE0MzkxNTYzOGQ1NDNmZWNhMmM5NDg1OGRiOTQxMjExZTg2Y2VmMmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://web/src/hooks/useTags.ts#L20-L40",
+          "version": "repo-lines-v1:sha256:056fd427c91a216bb1dd73d1983ecc1efffb3b7d7fe829a12c211fe67587ef81:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyODcxMzk0MjJmZWUyOGZmNDBkYTQzYTA4ZWJmZDFjZDJlZjU3Zjk1ZDZiYmY3ZTNlMDllM2Q0ZDUxYjVjMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4ZTg1ZTk2ZGZhMDUyYWYwYzBkNGE1Y2Q1ZTZmNWZmMGZhODdhMWM3YTc4MzAwYmUwYTcwODQ4OGQ3MzY0OGUifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/search.tsx#L7-L27",
+          "version": "repo-lines-v1:sha256:450790026a4c89d149f9ec7b649836c996618300f67dda3b0662685512c7e9c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMzRmYTdhZjhiZjU4Y2JmYjhhYWY0ZGMxNDVkNTEwMTNjNDA3N2IyZGM5ODQ0ZDc3OTQwZjhjNzhlZGJhNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyYmRiYzQ1ZjQ5YWYyZjNkNjIzOTYxOGQ0YTYwOTU1YmQ4NjI5MGE4OGE4ZjVlYmRmYTNhYmMxOGZjZjdkZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2MDc3ZmNhMDM4NWFlNDQxNmZlY2I5ZDE5YTIwYjcxNGQ2ZGQ3MGY1ZjA5ZDI5MDgxMDE1NDYwMzQyNThlOTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_78b1983166f14679944d8c4f50143b5d",
+      "statement": "`items_fts` is maintained only by `services/search_index.rs` plus one raw statement in the item delete handler — there are no triggers and no external-content declaration: item create and update handlers call `sync_item` after the repository has written `item_tags`, item delete issues `DELETE FROM items_fts WHERE item_id = ?` directly in the handler, and `main.rs` calls `sync_all` between `db::init` and binding the router with failures reduced to a `tracing::warn`.",
+      "evidence": [
+        {
+          "resource": "repo://server/migrations/0001_init.sql#L64-L74",
+          "version": "repo-lines-v1:sha256:6013a74b349ea40e1c3419bb644f3cd14082537e34379aeeb6d59b2786934101:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZmQ1YjRkOGUzMDMwMmEzNjY5MWJjODk1Mzk5YzA4ZTVkMDI0ZjQzNzEwNDEzOWNhYjA0NzY2MTBmMTZjNzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3N2I3ZmZlYTcxOTA5ZjMwY2VkZWU1OTBjY2RjOGE3YWRhOTQzZTY1ZWYwNzJkMTM1NDhjOWNlZmNhNzA4NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/handlers/item.rs#L28-L58",
+          "version": "repo-lines-v1:sha256:eb7cd210fd3bc241b4fd51124d8216c691d115fb35a7aa435a4a76c9ac141268:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0MzBiYzNhYWViYzg3ZTk2NzM5N2M3YzVlOGQ3MTFiNWUxYmMyMDExMzRkNzczYTEyMTU1MGVmNzRmNjllZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZGQ1MWI5NzNhZWViZTg4NWFmZjNmYzEwNmEyNjBjOTI5YzE2ZWUxMjg0YTk0ZGU0YWVmYTcxMGIwMjE5YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhZGJlMzI0MTVkYmRjNGViYjRmNDJhOTc2ZjAwNjMwZmNkYzZjOTUwOTZlODkzYWNjZGIwZjNiYzZjZTc4NTkifQ"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L33-L38",
+          "version": "repo-lines-v1:sha256:cc4ae8d0fc47feee3923c16c5042d552f8817c72b5c39cb8a6666a5967088521:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzRiNmFhN2FhNzlhNzVmZGFhMjIxM2M3Mzk4N2Y0MjIwOTE3YWI3MWFlYTQ5Mjg3N2U1Zjc4ZTRhMjQyOTEwYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWE2YWM3NDk2YjllNzA1MTRiOTkyNjkwOTdlZDMyNWIyNGQ0OTY3ZjM5MGIzMWJkMWM0ODVlZGUyZjhhZTk1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTFhODMxYjlkNjdhNzNhMWIwNTVhMjgyN2Q4ZjkxMzYxMTIwNDdhZjFhODA1ODFjZWMzZjlhMjY3YjU5OGYxNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_451ccfcb8dd44071a83af446ccb915fc",
+      "statement": "`sync_item` is a delete-then-insert of a single index row that re-derives every indexed field from the source tables on each call, is not transactional (an error between the two statements leaves the item unindexed rather than duplicated), and returns `Ok(())` when the item no longer exists — making it the safe repair primitive and the reason `sync_all`, which truncates the table and loops `sync_item` over every item id, is the only bulk rebuild path.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/services/search_index.rs#L7-L71",
+          "version": "repo-lines-v1:sha256:5786c1f9dfb1c15d35fe3bd8b412c93a4c79132ac135e8f34014c659efe572c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMjU3NjMyNmI4OTU3ZjMyYzkyODliMzRiY2JiYzZlOWFiYzI3Mjk4NzBiM2QxMTU0OWUwMzUwZjQzZTgzMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhmOWI4ODFiNDI2NGJiNTQ2YTViOTE5MDk5ZjNlNmM0N2ZlMTE4ODBhMjcwMDRjYjIyM2ZkMTA3MTBjMzQ0YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3OGIxZTY4ZTI2YjI3NDA1NjlmNWNhYTBlZjVhODg2MDQwZWIwOTExOGIxYWQzOGQwYTg3MmMwMTdlYjNkMzkifQ"
+        },
+        {
+          "resource": "repo://server/src/services/search_index.rs#L74-L86",
+          "version": "repo-lines-v1:sha256:17cb364c4007865fe8b2d34994ac117c8c250070776567a6ea27f99b60f93377:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2ODEzMWE2NWUzMWY4Yjg1ZDFhMDFmNzM3MDU1Y2E1NDdjOWY5MTc5YTUyNjZjN2M3NTc0ZDk5MjAzZmE2M2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhOGJiYzNlMzQ0Y2MzYTNhNmFlYjVlMmEwMzA5Yjg0ZWFjOTNlZjc2YjNlNjYwMDJmYWZlNTQwOTc5ODc0MDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f91a6904628d4b84a899251d01bf51e6",
+      "statement": "The indexed text is the item's `name`, `description`, and `location_note`, its space-joined tag names, the immediate container's `name` and `label`, and the category `name`; ancestor container names and the purchase fields (`purchased_at`, `bought_from`, `price`) are never indexed or matched, so an item is not findable by the room above its box.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L99-L145",
+          "version": "repo-lines-v1:sha256:ae7c488254bccde456ebc501a498ad6b4aecad7605ef19a4dd991e2a7304e88c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1ZDM0MTgyNDhmODlmYTcwNWJjNzczNTk1MTI5OGMxOGUxMGFhNGFkYTMyN2M0NzE5MTgyOTMzMTY5NWQxZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5MzJkZDdjZWE5M2MzZmEyOWQxNmYyOTE1ZDI2MmJiZTAwNTQwZjdlYjkwNTVlZTc4ZjI1MWY1ZTVjNTFjNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjOTVlMDkxOTdhMWM5MGRiODQ4ODMzMjVkZTM2NWFhN2I2MjM4NjBiNmZjMjM2MmQwZjZkZTJlNzI2YjEwNTAifQ"
+        },
+        {
+          "resource": "repo://server/src/services/search_index.rs#L15-L68",
+          "version": "repo-lines-v1:sha256:10fc11bbe21e775095a2a4763346516708844b76c087e9a68822cf196c49a2a2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwOTU0M2M5ZTlkZjQ5ZDdjZmE0MWFhMTY0MmFiZWJlNGE0NDQyMWU1ZGMzZjU1OTgzZGZmOTIyMjU2NWI1MGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0NjI0MmE5ZDY5M2VhMTVkZmJiY2RkN2I3NmYxYmNhYzNjNGVlMGVlMWY4MWU5YWM2YmExODE5YTQ2ZDQxOTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlODI3NGYxY2FmZTdkZmNjY2JjMThmODk2YzNmZDNkMjkxZDhlOWUyNzcyMjlkMWFkMzI2YjgwZTA1ZDhmYjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExZmIzNmYwNDZkNDFlYmExZjMyMzRjOTg0MmFiNGIyZDM0NzUyNmQxNjQ3OTY4YjU4NWU5MGMxMThlYWU1ZGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c58099ec075946df9786e257bfce16ec",
+      "statement": "Drift is structural, not accidental: tag rename/delete, container rename/label change/delete, and category rename/delete all write rows that `items_fts` folded into its text but issue no FTS statement, so old strings stay searchable and new strings stay invisible until the next process start runs `sync_all`; the LIKE fallback is unaffected because it reads live tables, and any new write path that changes indexed text must call `sync_item` for the linked items itself.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L50-L58",
+          "version": "repo-lines-v1:sha256:3f01fb785ed39989eb6b1987da909a0469448e711fe199fc162bd216c1a253ea:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE4ODYxMDBlZDA0Yzg0ZmI2ZmNlMmIyM2ZmYWVhMjQ0OWUxNWExYmY3MjlmYjkxZDQ1YjdiNDQ0YzU0NGVkZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzk2YzM2NGEzZjMzMTQ4NzU3MjFlZjBlMTRmNWJlNWNlODk1NzQ4M2VmMmZlZjFjZWIwMDIzZDRiNzc3NWU0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzhlNDM5MmYyOTdmOGY4ZDJmYjRkYmM3YmJjODIwNzU0YmRlMDdiNWY4NGM2MzU3ZjA3ZjUwM2U4MTM4MGRlNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTE0NDFlOWQxMGM5ODgzYTRkMjgzYTJkZDE4Njg1YzQxNzFmNDZiOGI1MWY5ZmZlYzkzNTM4ZDE0ZjRiNTdiOSJ9"
+        },
+        {
+          "resource": "repo://server/src/handlers/category.rs#L26-L40",
+          "version": "repo-lines-v1:sha256:d405ba92d698f533b274fdde9edcdadce92e039595ce60cc1b99d8c83be18f4d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MTE3ZmFjNzg2MTIwZDhjZDgxYTYwZDBhMjMzMGNkOGY1ZjkzZDk4MjQ3YzM3OGFiMTRkMDE2YzM4MzNiYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhNjFmZjFmOWY4YWZhZjViMDg1ZTcyNGI2MmQzZGRiYTRkYzI0MDA4YzhlMzliYzgzNjViNWZiZTkxMTM2MWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/handlers/container.rs#L65-L79",
+          "version": "repo-lines-v1:sha256:8d99cc001644c582029503b90a0e750a39e0c90580e3b9a18eebd4cc433540d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MTE3ZmFjNzg2MTIwZDhjZDgxYTYwZDBhMjMzMGNkOGY1ZjkzZDk4MjQ3YzM3OGFiMTRkMDE2YzM4MzNiYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3OGY1Y2YwZGIzOWE2MTc1YzVjMjFlMGIwMjBjZjdlN2EyM2Q0NzZiODRkOTQxN2ZhYmVmZGEwMGE3Njc0NzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhZGJlMzI0MTVkYmRjNGViYjRmNDJhOTc2ZjAwNjMwZmNkYzZjOTUwOTZlODkzYWNjZGIwZjNiYzZjZTc4NTkifQ"
+        },
+        {
+          "resource": "repo://server/src/handlers/tag.rs#L23-L37",
+          "version": "repo-lines-v1:sha256:f8db0f9a17c3282fc392732da2255c990bcc20867d8a20cf454b8d23efbc1428:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1MTE3ZmFjNzg2MTIwZDhjZDgxYTYwZDBhMjMzMGNkOGY1ZjkzZDk4MjQ3YzM3OGFiMTRkMDE2YzM4MzNiYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzNzQ0YjUzNTZhNThiMjc5MGU2NWQ2MzMwNzdlYWE1NzM4ZDE5ZTczOGY0OTIyMTM4NzFiYzBjNjIyN2Q4MWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyZDUwZmJjZDdhMTY5ZjQ0MTJmYjFjNjRiMzBhZTkyNjk3OWM0NGE2NWVjNzVlNGM1M2M4NjFiMzE1ZmIwNTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/tag.rs#L41-L56",
+          "version": "repo-lines-v1:sha256:7a6697d245a2ca5ed783070fe28f0d9ed4f5f66aeb2635f1192c7b1cde985aa4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyZjRlOTZmMTkzOGQzOTJjODU3OTQzZWVmNzQ2ZTE0MjAwM2ZlOGMxOGZiMTljMTdjZWFhZThlOWQwMjA4YjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxZjdmZDM4NjA0ZjE4Nzg2NzE3MjcxNDJhMzg3ZGMwZjQwMjdhNjg0NDRjNzA4ZTU2ODQ4ZDRhNTU0OGU1YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3OTE4OTI1ZmNhZTZjNWRiNjQ4NWFmNDk2ZTJmNTE5NzFjNDcyZjExZWVlMGY1NjQ3OTgzZTIxYzJjYjgxMmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_740a4fbcbd24458ea5985abe5ee94745",
+      "statement": "Because the list query joins `categories` live while the indexed copy of `category_name` is stale, one hit can display the new category name (and breadcrumb) while still matching the old indexed text — the displayed and matched values can disagree until a resync.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/search.rs#L192-L207",
+          "version": "repo-lines-v1:sha256:93db75ba851c36ed2139cc27501a85a7194a2482a9ebf07e580549a2f4c94491:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwZjBlYzMxZTIyYmE3MGUyYmZjYjNhYTFmYjE4YWQyNzQ3ZWY5ODU0NTI4OTliZjljZTA3NzA3MGIyZTdmMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0ZTVjNWUyOGE0MDBkYTBkNzVlMDZjMzNjY2MzZTUzZDVjZjJiNWM1NGYxOWY1Yzg3MDUwYWJmNGZkMWZkYzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIzNDQ0ZTAzNDgzYzI5OGM0MGY3NzhmOGU4Yjk4Y2I5MDYwZDA4MDkxYTA5MTc1NmE2NzQ3ZWNiY2Q5ZDY0N2IifQ"
+        },
+        {
+          "resource": "repo://server/src/services/search_index.rs#L43-L49",
+          "version": "repo-lines-v1:sha256:d239a17a7dc2e42678b5ae4d0b1a38edbcd25187719cb652166d49200efbe297:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTczNDYwMzZjMjI4MjY5NTc4YTRiNjBkMDZmZGY0MDEyODI0OTA3NTczOTQzNWIzMWNiYTE1YWRhZTI1NzViMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQ2MjQyYTlkNjkzZWExNWRmYmJjZGQ3Yjc2ZjFiY2FjM2M0ZWUwZWUxZjgxZTlhYzZiYTE4MTlhNDZkNDE5MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2Q0NmYxMTIzOGFiZjcwYTI4ZTY0ZjBmMjMxZTcxZDc0OGEwZDdiZDg3YTEyMzAyMzQwODgxM2JjNGNmNjI2NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTkyOTUxNDI0ZDYzYTg4NzkyYTM4YmRmZTU5M2Q1ZjhjY2YxNTdjM2RiN2Y3OWY0MThjNTkwNTM2MWYyOTg4YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d2379917e7640c094e23c037db03e8d",
+      "statement": "Adding a searchable field requires five coupled edits — a migration that drops and recreates `items_fts` with the new column, the `sync_item` INSERT list plus its gathering queries, an added `snippet()` call at the new positional index, the LIKE fallback's count and list WHERE clauses together with the hard-coded `0..6` bind loops, and no change to `sync_all` — and all tunables (tokenizer, snippet sizes and tokens, `<mark>` markers, ellipsis, page defaults, three-character threshold) are hard-coded rather than configurable.",
+      "evidence": [
+        {
+          "resource": "repo://server/migrations/0003_item_location_note.sql#L1-L15",
+          "version": "repo-lines-v1:sha256:94384ad474f5cf29cd8fa02da98e7d1354a380b64d730d2027f0f8e9932321a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxY2I5OTU0OWVlYjY5NWYzMDZhODAxZjcwY2U0NzVhODhiNjU5ZTlmMjZkMWNiOWIzZGJmMGEyNmJlOWFmYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L109-L159",
+          "version": "repo-lines-v1:sha256:89c46ba16c74deb17f8adaea614e576a1866912c342213733da987cc500722e8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY0M2UyNGYzZjFmODFmZWViMTJkYjEwMzE1YTFjY2Q1YTM0NTA4ZjhmZDhmNmI0YjFkZDU4YzA1NDk4NWRjMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkMWJmMWYyODczNGY0NWRjZDdkY2Q4Yjk5OGUwOTkxNmQwMDI5YmY4MTRiOTViZDk1ZDBmZjFiMDFjZTg0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxMzg1NTY0NjY0OTA1MTY5NTc4ZTdjYzQxYjQ1OWE2YmIwN2YzMmI5Yjk4NzBiNDczNDE3NTY1YTc1OWFkOWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2YjM2NTM2NmVkMzJhOGEyN2YyZTlmZTc4NzU1Y2U0OWZkMDk3YjYxYTllMTAyM2MzNTIyM2NhMGVhODMyMDkifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L198-L205",
+          "version": "repo-lines-v1:sha256:a66ea43b84e70f105554e168becc7f559d2cf3f7373282dd2f234c3c3244fa66:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjczZTFhN2JjNWRjZWRlN2QyYjQ2YmMyMzUyNzZhY2VmYjI1MDA2YWQwMDRjNGExNTY2NmIzMGZjMThjOTU5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjcxZjc4M2JiNjY0YzJiOGU2YmU4ZTJjMGViYzM2YmIwZWRlMjcyNWU4NDc5MTAwMmJhZDYxNDliZWI1ODQ1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGZkNGM1M2IzNWJhMzEwZmFlYjA1NmMxOTc0YjViMzQ2YjFmMGQ5YjFmODA2NjA0YzcxYTFjMTc3ZDQ3NjBmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTlhZDExZjRiNjViMjM1MTY0ZDJkNmJmZjNlZTlmMTk5OGU2M2FjZDY2NjkxMDc1NjQwNzkyMWQ2ODkwZDE5ZiJ9"
+        },
+        {
+          "resource": "repo://server/src/services/search_index.rs#L55-L68",
+          "version": "repo-lines-v1:sha256:2aac3e138121ae3b4c806e0966cc63f69f29975ea400ea53090e9ee77f99eb0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNDVkN2Y1ZDcwZDIwMmJjZmJkNTY0YjU2ZGFhYzYyZmYxMzU0NTEyMDU5YzcyZTU4YzA2ZjMzMjY1MmMyNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0NjI0MmE5ZDY5M2VhMTVkZmJiY2RkN2I3NmYxYmNhYzNjNGVlMGVlMWY4MWU5YWM2YmExODE5YTQ2ZDQxOTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxMTFhMTc5ZThjOTcyOGI0MDVmMDlmMzg1N2RjNzhmZWNiNzQ3OGM3NmY2ZDM3YzQ0ZmY1ODRhZGJhYzFjNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExZmIzNmYwNDZkNDFlYmExZjMyMzRjOTg0MmFiNGIyZDM0NzUyNmQxNjQ3OTY4YjU4NWU5MGMxMThlYWU1ZGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_41470a971ca941379d94898369fc8040",
+      "statement": "There are no automated tests covering search or the index (AGENTS.md records `server/tests/` as empty), so verification is manual: comparing `COUNT(*)` between `items` and `items_fts`, inspecting one item's indexed `tags`/`container_name`/`category_name` for drift forensics, and probing the same term at two and three characters to cross the LIKE/FTS boundary.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L31-L32",
+          "version": "repo-lines-v1:sha256:5976a6d2393b7da9363e192ddd986cd1a74f1ec1437dec94de9197a458a08e40:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDYxMGEwYzA5MjdhN2FlZThiYTIyZGRlOTVkOTYxNDdmN2M5ZGQ0ZjkzNjU1MGVlMzIwNjU2ZjZmZDlhMzA2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2UzMDgwZjIyMjg1N2QyNGU2MWI5OGM4ZTZiMTYzYmEzNjk1ZjUyNDUzYzVlYzkwNzI2ZDlmOGE5ZjNiZGIwMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDQ5ODM3NTdkMWVhZTNmZTM2M2EzMTI2NzgyMDlmM2QxMjcwOWNhNWQ4MWFmMjQ1ZWQwYzUxYzcxMzdhMGQxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzk1YTIxYmJjY2JiNDhlMGE4MTBlOGM2NTIyODNlMDBlNzUxNjQ0YjVhYmIyNjc5YjUxYzMxYTVkOTdhMDI2NSJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L14-L21",
+          "version": "repo-lines-v1:sha256:e55eca3c449c377476e27ae4c3c549ef5af940eeda119e5d4989994187f013c5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTZjOTYyZGFhNDE2OWUwMmE3YTA4YzBiZTQwNzcxZDY5OThjODlhZmExM2Q5ZTgwMzQ4NjQ4NzVmMTdiZTY5ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODA0ODAyNDNhYWFjZGEzMDc3MmExZTY4ZDQ4NDk2NzhlNmM5YTk2YTM4NmY1ZTAyOGE1Y2Y2MzY5YmRjNDMwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTU2Njk2ZGYwNTNkMWU1MmMxYmFlZmQzNzMwMTBmMDJiZWUyODAyNjlhNjBmYTlmYWRmZDk3MjgzYTQyZmNkZiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T14:40:20.132Z"
+  }
+}

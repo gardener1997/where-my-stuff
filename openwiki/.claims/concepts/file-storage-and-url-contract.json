@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:27bd69fd56801c9b4f0be4142cfbf001ee1c8c4400499ad3ec93be5c87536b6e",
+  "claims": [
+    {
+      "id": "claim_8a90ceac0c494fe2bf8765959d338a9a",
+      "statement": "Item and container image paths are stored relative to image_dir with the subdirectory included (items/{uuid}.{ext}, items/{uuid}_thumb.{ext}, containers/{uuid}.{ext}); main mounts image_dir at /images via nest_service(ServeDir), and the SPA composes media URLs by prepending /images/ to the stored string.",
+      "evidence": [
+        {
+          "resource": "repo://server/migrations/0001_init.sql#L34-L41",
+          "version": "repo-lines-v1:sha256:9bc918c5e3f0dd09b51ce3ac41cea5384af60d5925aa5389bd1b9651849e923b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZmYjY3NjUwNDY5ZjZmZmY1ZWY5MmRmZmI3NDQ2MGZlODcwODU2OGI1ZTAwZDZmMzdmMGE4YzgwZTA5YmRhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5NjdlYzFlZDM4MzZmOGViMTdhZmYxNzJiNWJmZWY3ZGU2MDQ4NWE0MzljNmNhMTFjNTkxZTE3NTU3MzlhZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2MxZmNiMTUyOWU5ODBmOTk3ZTNiMmQ0YmQ2OTFmN2QyYTAxYzcxOWIxYTRkZTU0NTQwN2UyYWY0OTFiNGUzOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDk1YWQ4MTkxMjJjOTdhZjMwMWVjZGFiZTJmMzM4MmI5ZTdmMDk4YjIwODU3N2YxZGMwYTk3ZWRjMDcwOWVhNyJ9"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L43-L48",
+          "version": "repo-lines-v1:sha256:3f90506f2381a920beef8056caebca63fdb0a072166343ea50a33c8a1d4a8eb0:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTdmNjAzMjgzZGU4NTRjNzdlNDI5NDEzNGRlZjE3MjYyNjkxN2UxMDc2MGZhYWE5MTdlZDI4NjhjYWViNjJjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RiODRjMThmNDI3YjIxYjY1OGNiZmRkYjk0YjIxMjI5MDMwMWQxZjNmNjcxNWZmZGQ4YTdmMzcxOGYzYmM4MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTM0MzZlMjk2MWUwNmNjZWZkYjYwZGE2ZGYxMjJlYTgyMWRiMzJmZmY2MzZkYmJjYTY1MDc4MDBkZWJmOGEwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjA0ZTNhNjhhYmNiZTUwZWNlZjIxYjY4OTk1YzYzYzYyYzk2NzdkMmYwYTJhOWE4ZmQwZTdmMWZmZjllOGNjZSJ9"
+        },
+        {
+          "resource": "repo://server/src/services/image.rs#L43-L56",
+          "version": "repo-lines-v1:sha256:32558b3293603ac94f7874d6a766ffc2748e04901ba861eac433216e901de835:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4N2U5MTI1NTE0OGIwZDU1MTNmZTM0ODkzNzkzNzM2MDYzMDk0MGYwOTE2ZmE5ZjRmMzdlNzc1MjY3NjhlYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyZjk5NjQyZmJhZWQ5NGYyOTVlNGJlMjRjZDE0ODFkN2MwMzMwODYyNTE5ZTI2M2JmMTZkNWQ5YjMxM2YyMDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5M2RmN2E3OGE1NWIyMmE3NTgwMzE0ZTFiYzUzY2NiYWU4NjUxMjEwYzBkNWMxZjY2MjdlMjU5NWZiZjRkZjAifQ"
+        },
+        {
+          "resource": "repo://web/src/components/ui/ImageUpload.tsx#L100-L114",
+          "version": "repo-lines-v1:sha256:3d0275cf9ff55267c0225840024c8c25d2d0afc46427cc0ceb92fd0d07c9781d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NjdkODYzM2U1NGIyZWNlYWVhOGEyMDliZGI3OWJiYTEwZWViMmZiYTcxYTI1MjYwMTk3ZWYxMzE1MmRjNDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMWRjZjE5MTUzZGU2OTI1YTY4NGI3MWVhMDQ0MDFhNjA5MDhkYWMzOTVhYjNhZDE2Y2Q0MjZmY2ZmNjgwNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3NDQxZDEyM2M2NDI0Mzc3YzFlNDBlZjZmNDMwNjIzMmZmZDVkZmI2ZmVlNzUyODEwNzJjNzBlYzAxZGJhMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzOTBlY2JiM2I2MGEyYTI1YTMyZjc4ODk3YzExNDA5NGRlOTAxYTI1ODUwNGYzMDc0NzIxNWVhNTE2YjNkNTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_98a3ea855a304521823f0edaecb9e013",
+      "statement": "PDF storage uses a different path shape than images: upload_document writes to docs_dir/pdf/ but stores only {uuid}.pdf in item_documents.file_path, docs_dir is mounted at /docs, and DocumentList therefore prepends /docs/pdf/ rather than /docs/ to the stored value.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/item.rs#L150-L160",
+          "version": "repo-lines-v1:sha256:1d68338edde1ff9ad48d0a2ee50e214c29ce115a5e706fd749fce8d53bd8e956:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFlZDMyNzgxNDVjYWJlM2U1MmFkNzM2YTA0ODY0Mjg2YTQ3NjgzZDU1MTNkMzMzNjZiYzY3ZmU3YWQ4Y2I1NzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwZjliYzQ5MmIwZjFjZmEzMTIwNTM4ZWJjYWYyMDAxNDU3NzIwZTBmMjNiNDgxOGE0NGI3YzNiM2VhOGY4MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI4YTljYjU5YzkzNWQ2MGIxYmUyMDQ1OTlhMzkzYjdmOWNmOTE4NGZjNGY4NmY4MWY0NDU0NmNiYjNmNDlkZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk3ZjQxYTY1ZTU0YWQ3ZWFkMmNmM2Q3YWY1N2Q1YTIxYmNlMTE5NmQ5ODQyY2JkZDMzM2EzODVhYWQxMWI5YWQifQ"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L48-L48",
+          "version": "repo-lines-v1:sha256:3db84c18f427b21b658cbfddb94b212290301d1f3f6715ffdd8a7f3718f3bc81:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RiODRjMThmNDI3YjIxYjY1OGNiZmRkYjk0YjIxMjI5MDMwMWQxZjNmNjcxNWZmZGQ4YTdmMzcxOGYzYmM4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RiODRjMThmNDI3YjIxYjY1OGNiZmRkYjk0YjIxMjI5MDMwMWQxZjNmNjcxNWZmZGQ4YTdmMzcxOGYzYmM4MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjQ0Yzg0MmYwODJlZTY1OWM1ODYyN2ZmMmI0YmFjNmM3MjYyMDE5OWE3MzU3Njk3ODU3NTAzZjcyOTNlNDg1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjA0ZTNhNjhhYmNiZTUwZWNlZjIxYjY4OTk1YzYzYzYyYzk2NzdkMmYwYTJhOWE4ZmQwZTdmMWZmZjllOGNjZSJ9"
+        },
+        {
+          "resource": "repo://web/src/components/ui/DocumentList.tsx#L12-L14",
+          "version": "repo-lines-v1:sha256:ec9900435d59a3893e098aae3fbf8aed2f263332bea101a7a7e4c5057f43abcf:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGJhNjQ4ZmUwZDNhMTllNjM5OTA2MGZiODU4ZjI3N2QxZTI2YTZhM2UwNDNmOGQyMTA3MGQ0NTI3Njg4MmQwMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2QxNDIyODlkNGE4MDhkMGE4YWNkYWRhMGJjMmJhZGQ1ZTg4ZGJhODcyYTg1ZGQzZWZmNzFlYWFmYzlhNzJmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWQyZTg1Zjg5ZmE4YmQzZWY2ZWQ5MGI5MTA3NzgxYzdkYjk1NjFlN2JmNzQxMGI4ZTYwNzJiNmJlYzQ4YmRjYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2c6604f820ca4ff8b5734beeb7b020c4",
+      "statement": "save_image validates in the order size-then-extension: it rejects a part whose already-buffered bytes exceed max_size, then requires a lowercase extension among jpg, jpeg, png, webp, avif, and only then writes the original under an id-based filename ({uuid}.{ext}) — the client filename contributes only its extension, never the stored path.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/item.rs#L72-L89",
+          "version": "repo-lines-v1:sha256:b043434380d4625706101d66084bdbf481897d342beb72cbf8adb8bfad52436b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyOWZlMWEzMDFmMDZiYTQ5ODE3MDQxOTkzZmFmN2ZiNDlhNWI5ZjAyZDMxODhkYzYwZTRiZWI4N2Y1YTU5NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViYjJlMjY3Y2RhM2VhMmQ5OTEwZGE2OGM1YWI5MDE2MGM5ZTAxOTY0OTIxYTIxYTEzMTM2MGFhZDFmMWUwMWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxZDdjNzk4MzY0NTE2ZGY5NGZmNzAyYjVhNzI4MmE2ZDY0ZGZkNTJkZjkzZjlmYzg0MjJlZDdlYmQ1MDBlNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwYmJkZTE3MTkxMTk0Yzg1ODljMDM0NjIxZDI0ZmViZmMzMGRjYzAwZmQzOTc5MmE1Y2ZjMThjNDRlOGFhYzIifQ"
+        },
+        {
+          "resource": "repo://server/src/services/image.rs#L7-L63",
+          "version": "repo-lines-v1:sha256:7644a9043a384ac2c86e6a5a70fad559101eee0680406b2b59f378013f97d6a8:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNWFmZjk3NjRhNGExMjYyOTkwZDU5ODg5YWExMGI3NzEyYTZjYzdmY2Y2M2I5YjhlZmIyOWY1MjA0NzMwNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2ODQyMDQwMTI5Y2VkNTU3NWY3NDVhNGQ5OTIwZGNhYmJkOGYxMGExNDg4YTRlNmE2NWQ1NjVlZWVlMGJmYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1YjdlNjRkODI5Y2I1OGIxMTRiZTIyZGEzYThjODRkMGMxNTA1ZTMyZjM3YzRkY2UxZGQ5M2U0MzA5ZDdmMGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dac8c74cef944234a3df93bf3e57c29f",
+      "statement": "Thumbnails are generated by image::thumbnail(300, 300) into {uuid}_thumb.{ext} with jpeg normalized to jpg and the encoder chosen from that extension; AVIF short-circuits before decoding and returns file_path as its own thumb_path, so an AVIF image has no separate thumbnail file on disk.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/services/image.rs#L57-L91",
+          "version": "repo-lines-v1:sha256:ee9ed87537030897edbb2d1f223a1790e3d24628f16f938cd898f131f8d5c723:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjMTFlN2U5NTJhNjFmZmRjMmQ0N2U5ZGRmOTE5ODBlMmI4NTM4NDg5OThjMjc1MzJlOWVkZWRlOGQ2NzkzNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0NzVlOTRhOTA0YWM0OWIzMTU0ZDQ2NzJhNjZlODYyOWI4NmRhYzc0ZTNlMjkzN2JlNjkyN2FlM2RhMTFjNTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5Yjg4YTYzMzM3NmRjOTM2ZjI3NjIxNjJjMjNlOTFhMGUzOWVkMDdlMDBkZDBlNDI0Y2FjZTdkZTBiNzI3YzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzYmM0YTgzNjQ3ZTRhZTY4MTMwM2E3NTk0Yzg4NGY3MjJiMzYzOWUyNWYyYzU4ODhjZWE4NDQwNTFmMjMzYzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d5756e32464d4a06a0fc92c6322f0f9e",
+      "statement": "The container image endpoint reuses save_image with subdir \"containers\" but persists only saved.file_path via container::set_image, so its generated thumbnail is written and never recorded, and no SPA client calls POST /containers/{id}/image even though the route exists.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/container.rs#L81-L116",
+          "version": "repo-lines-v1:sha256:98c5153387b7cc5fa2d4dab6f9f8d6859d812692eb4cc48f2e5c32ba30179316:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyNzBjYTIxOWFjNTJhZDYwYjkzYjM2YWUwYjc5NDhhYzJhNTQ5ZmUwNmE2NDg2ODJjZmI4M2UzMWZkNGI5MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzMDJiZGZmNTM4YTMwYTNiMjJkMTBlYWM1ZjcxMTAxYzczMjI4MmJiZWRmMWU4NTM1NzAzZDczMjY3MDc2ODYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYTg3MTZmYmM2ZmJhM2U2NDI1ODc5ODhjOWE2MjAwYWQzODBiZWFjODRiNGUzOWViZTViMjI5NmM5ZTkzMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L107-L114",
+          "version": "repo-lines-v1:sha256:44f8c629b28eac0f3fe9337adacf0e13ce27ea54eb6c773c89b77b39d1fa1e5b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGQyOTBjNTYxYzNjNWE3Nzc1MDA2NGJkODZiOTA1ODU5NmFjYjQyZWZmYjBlZTVhNDczN2Y1YzMyYWRlNmRjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzVmNmY0NjZlNTljZmMzMDcwM2M0NWY3MmFmNjVkZTU0YWMzNjNkMzU0Y2MxYTMzMzAzNTBhY2Q0NTI0MzRjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmU5ODRiMjhmYmJiYWQ0Y2FlOGRmYmYzY2QyMzBmNjRmZmI2Mjc5NGUwYmM4NDY5MDQ4ZmNiZTM5MjYzNWVjYyJ9"
+        },
+        {
+          "resource": "repo://server/src/routes.rs#L17-L27",
+          "version": "repo-lines-v1:sha256:490462fab6873387235eb49688548684aaf78b2dd042c30b2fd2d59d250a4d3b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NDBmMWQ0YWZiYmYzYTU3OTZmMjIwYjU5MTZhNTU0ZjliMzJiMTAwNjhiMjNhNDQyMjY5MjFkNDE5Mzg1ZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzYjMzNzQxNGMxOGJjYmU2MDViNTVmMGVmOTdkYjAwYjk5YjRkYWI1ZjFjN2JmM2Q3NDljZTRkZGI1MjlkNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNmRhOTc3MDQ3ZjExOWM5MTE1MjIyODBmYmE3NjU4N2I0YWIwZWMwMjk5MmZiNjY1MDA1MzE3OTZmYmIwNTkifQ"
+        },
+        {
+          "resource": "repo://web/src/lib/api.ts#L50-L68",
+          "version": "repo-lines-v1:sha256:0cd03c43b161adf08f068841c5daccf649cca02bdcfe6fc664dbc47abc9bbd65:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmOGNiMDFlODEyYjM4ZDFhYTVmODdiMTY1YzJhOTkyNjc4ZjI3MGMzNjhiNTg4ZGE0Y2E5MzhiMjYwMjlkZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YzY3ZGMxYzc0NWExZTBjZTc4YmU1ZDhhZjVjZDI2ZjNkZGMwZDI1MGRlM2ViZjM1ZjRlZWVjOTIxYzhkZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4NWRkOTA3MjJmMGVlYTc0MzNiYWRkMTI3ZGI4MzcxZGFiMDk0NDgyNTIwZTAxMGE3NzNlOWUzNTBhYjc4MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlZmQzNTRhOGM3MTUyYWYyMGY1ZTM1N2YyNWNkMDJhZTI1ZTRhN2I5ZmY3YzVhZDk3Yzg2MTZjZGU1MWQ0ZDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_84f8ff0fceab482888b4eac181720409",
+      "statement": "Item deletion removes image originals and thumbnails from disk but never the item's PDFs, and container deletion touches no files at all: item::delete takes only image_dir and iterates item_images, container::delete is SQL-only, and there is no route to clear or replace containers.image_path without orphaning the previous file.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/container.rs#L81-L121",
+          "version": "repo-lines-v1:sha256:0b3463cac42fa1971f9a98ee8650bf7792a49122a474b438a226cba610b4ed3e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyNzBjYTIxOWFjNTJhZDYwYjkzYjM2YWUwYjc5NDhhYzJhNTQ5ZmUwNmE2NDg2ODJjZmI4M2UzMWZkNGI5MjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYTg3MTZmYmM2ZmJhM2U2NDI1ODc5ODhjOWE2MjAwYWQzODBiZWFjODRiNGUzOWViZTViMjI5NmM5ZTkzMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/handlers/item.rs#L47-L58",
+          "version": "repo-lines-v1:sha256:bb598ff9c1bb355ec6a95f729500ed79ff1ecd4ec9833103881c48757469d08d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwYTQ3MjcyODJlOGNiNTdiYjdkMjQ1YTU4OWI4ZjNmNzc2ZWU4YWJhMGIzZjU0ZTdjNGUwOGE5MGU1ODFhY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0ODFmYjIyZjc3M2U2NmNjMTFiOGI1NmU4ZjhhNjk1MGE0MTAzZjU0MjcwNzNhNzRlOGJkZTU2YWIyYzFlNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhZGJlMzI0MTVkYmRjNGViYjRmNDJhOTc2ZjAwNjMwZmNkYzZjOTUwOTZlODkzYWNjZGIwZjNiYzZjZTc4NTkifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L91-L114",
+          "version": "repo-lines-v1:sha256:33d3f2b77380b69d27922553cbf7202576267b57a0e1cdbcdcd418b6c98273f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMzFkZGZjOTdjNzYzODllNmE4OGViMmRlYWNmNDM5ODZmNDA3ZWVlMzgwMDM3NGM3MzQ5YmUzYWY5NzhjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTE3YjgzN2EzYTQ0ZmY0NGVhMjJlZGExYzBmM2MyMzU4NjczMWZmN2M3NjBkZGE3YTcwYmUyYWMyMjM2YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlOTg0YjI4ZmJiYmFkNGNhZThkZmJmM2NkMjMwZjY0ZmZiNjI3OTRlMGJjODQ2OTA0OGZjYmUzOTI2MzVlY2MifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L222-L243",
+          "version": "repo-lines-v1:sha256:75c300b0f3ad34bf1608aa9042db297c92d1032f4cb32348466915a24123d1ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwOWNkMmM3NGI5MDQ4MTM2MjQzYWRlYTk3YTY1NmU3ZmY1OGY2ZTgyM2VmZWE2NDE5ZmU2NzAwZGYzZjAzN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTE3YjgzN2EzYTQ0ZmY0NGVhMjJlZGExYzBmM2MyMzU4NjczMWZmN2M3NjBkZGE3YTcwYmUyYWMyMjM2YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhZmQ1Zjg0NGFiN2ZmOTM5ZjVlNDg3NjMyZTdlMWQ4MmViYWE1NjA5NmEwZjlmMzY4ZDg5MDU2NmI5ZmFjYWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d4a2fe44db9416d8377900696b22c28",
+      "statement": "Delete and validation ordering leak files: save_image writes the original before image::load_from_memory validates it, and both image handlers write files before inserting the DB row, so a rejected non-image or a failed insert leaves files in image_dir with no compensating unlink and no reconciliation job.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/container.rs#L104-L112",
+          "version": "repo-lines-v1:sha256:1c3f7bea6734fecb1d8052259f83acefafd6d5f78cab04d7754932807782b59e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE5ZTQ4YzI5YTRhNmM0MjgxOTY0NjA5YzIzMzJmYWE1YjUwYzM4ZWI0OWJiNzlkM2I3M2I5N2ZhOTg4NjM0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA2MzAxZThmZjhkMGQ2ZGZmZTVjMzFjMjY0ZTgzOWFkMWNlMDU0OGIzNzU5NjA1ZTY1YmIyNjNiYWMzODVhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTE5ZTVlZDBiNDg5MmIxNGI4YzE4OWVhYTc1MGVkYjk3OWU1MDZmMjFmYWU2ODUyNjQ5NjM5NTc2YzBiZmIwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTkzZjA4Y2EyY2NlYTczOGYyMWQyZTE0NTc0OThiYjgzMDU4MmFhMGFiNWU4ZDc3OTlhZTFjMjUxNzRjNmZhNCJ9"
+        },
+        {
+          "resource": "repo://server/src/handlers/item.rs#L83-L92",
+          "version": "repo-lines-v1:sha256:204dd5bdc98257136ed25f9d3e40d342f17816e81bb72c5d38d83c2267dd608d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhOWU0OGMyOWE0YTZjNDI4MTk2NDYwOWMyMzMyZmFhNWI1MGMzOGViNDliYjc5ZDNiNzNiOTdmYTk4ODYzNDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyNmVjODc2ZGY5ZTg0ZmMwOTNhZWJkMjBiMjI2YTMzYTYzYmZkZjYwMmE2NjYwNWNjYmEwM2ZmMzYyODExOTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxOWU1ZWQwYjQ4OTJiMTRiOGMxODllYWE3NTBlZGI5NzllNTA2ZjIxZmFlNjg1MjY0OTYzOTU3NmMwYmZiMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgifQ"
+        },
+        {
+          "resource": "repo://server/src/services/image.rs#L51-L67",
+          "version": "repo-lines-v1:sha256:179a4f4bc1a9dacf42b01b426cf57a9e97c670bdd48c2a74bb45bdf90fbf8756:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkOGQ0OTI2NzdhYjE0MDU5ZjE0MjNhZTdkY2I3OTE2YzZmYzE0YjkzYzYxMjBhYzY2NWEwMmI0ZjNiNzhmNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiOGI1ODRhZmRjMDMxMGNkMDgzMTk2MDNhMzhjZGE4ZDExMGZiNzk0YTMzNTFmMTdkNThmZGQ2YTZhYWFiYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg0MjVkMTZmOGFlYmYxNjA1NjFlNTNjNmM3MzQ3MmRhYjlkZDQyMjdmN2I2Mzk3Mzg1NjU4OGYwMGEzYTdhMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjODdlMGU5NTk5YjFiNWMwMTE1NzE2ZmM1YTMyOTZjZTVhNGZkZjQwOGM0ZmE1YmViZGEwNGVlOTFmZjdkNzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f14ed82317045188463a15d8af11d88",
+      "statement": "Because serve_image stores the first-uploaded-order thumbnail in ItemSummary.thumb_path (lowest sort_order) while add_image assigns sort_order as MAX+1, list and search views depend on the lowest-sort_order item_images row's thumb_path existing on disk, and it is NULL when the item has no image.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/models/item.rs#L21-L32",
+          "version": "repo-lines-v1:sha256:8a827c9bfa78ac50fb1a719190203fffd0a4c6553d2becc2a2b342b5bccd1167:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllYjgzNWQ1YjZkNGYxYjk5YWRmNDJhYThlZWZhZmUxOGZjNjkxZjM4NWE3NzUwNWJlZmQwMTk3NzEzNGU3NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhhNTYzOWQ5YjE1ZmMxMGRmZGMyMmYzODJmOWU1OTJhMDc4ZDZhYjE1YjFlNzUzOTA4YzhjMDQ0MzAwMzViODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwMGY5ZGM5ZjI5MmNiY2ViOGYzNzY3YmM3MTgwNTViMGZkMGZlYmI3NDBkM2VhYjE4NWNiZGU4OTI0Y2Y5ZTEifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L260-L294",
+          "version": "repo-lines-v1:sha256:8b5b59ed8af135fe15e8857f296a799ac91dc652eaad62e52e4228650f9165b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNDBkYzBmNGQwMGE4ZGQ5OWFlZmUyNzQxNzIzMjJlNDVmOWE1ZWQ3MTUwODg1Nzc4ZTcwNzZhYzc1ZWE0NjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZjZmNDY2ZTU5Y2ZjMzA3MDNjNDVmNzJhZjY1ZGU1NGFjMzYzZDM1NGNjMWEzMzMwMzUwYWNkNDUyNDM0YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlN2E4OGI2NDljZGZlYWNkYzk4MmY5ZDNjZDMzZTc5NmExMjMyM2RkYmIwMGM1OWUwMmFlOWU4OTAxMmYzY2EifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L50-L61",
+          "version": "repo-lines-v1:sha256:83eb17063d79252e4bac14f1ae2c36c3b9781492517fda05cf63902271f8bad3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwZjBlYzMxZTIyYmE3MGUyYmZjYjNhYTFmYjE4YWQyNzQ3ZWY5ODU0NTI4OTliZjljZTA3NzA3MGIyZTdmMGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTQyMDhjZDZmZmI4YzRhMzU0N2IyZjU0YWRhMTk5NzhjM2YzNjVlNzhmOTUwMmVmNTE0NWNkZDJhYTg1NDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4MTI1Y2Q1NmEyZTAzMWJmZDA4Zjc4NzE4ZGM5MjU0YjdiMmQyZjFmOWU3MjJjM2VjZTBlYzRlZmJmYjU3NGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1MjliYjQwYjZlYjRiZWY0NDZlNzEzYjNlNDEwNjlmZTcwMWE4NzdlYzI0YzQzMzM3OTY1N2JiNzJjOWEyMDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d04afbbedfe740f8a63356f915681551",
+      "statement": "The Vite dev server proxies only /api and the legacy /data/images prefix, while the SPA requests /images/... and /docs/pdf/..., so media URLs are not served through pnpm dev; a proxied /data/images request matches no backend mount and falls through to the embedded SPA fallback, which answers 200 with index.html instead of the file.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/main.rs#L45-L53",
+          "version": "repo-lines-v1:sha256:08c99ca09c589ba8d485eb7ebde9b440efef5c5dab908b73c3312ae671707f55:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI4OWFhNTAzYjIwNTkyYzc2N2VjMzhhMmZlNjNlZjUzNGE2MjI3MzAzYTk2NWY5Zjc0YTdjODY5ODM2ZjAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDcxMDJhZjVmZmYxYTQ1ZTFhODQ5MjNiZjVkM2M1NTI5MjRlN2I2NGU1YWMzOWIzZjgzY2E3YWU4NzFjMzc2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJjNTg5NDZiZjk0MjViYzY3YWI1MzE1ODRiMTJjNzk2ZDRhNTgyMjJhNTcxMWMyYTEzMjE1OGQ3Y2Y3ZDdhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjdjN2VhMDBkMGUxNmNiMmE2OGU1OGNhYjlkNDEzNzE0YWM5ZTAxMzYzZTVmYjdkYzkwYTU4OWE2YWE3ZDA0YiJ9"
+        },
+        {
+          "resource": "repo://server/src/static_files.rs#L12-L29",
+          "version": "repo-lines-v1:sha256:1e71838b3a72803c57363d4cdbba9746254974f53fbad01069e9e2f8c8af4cef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlYzFkNGFlMjVkMzk2YTM3MmJjY2E0ZjE3YWViYzNhYmM3Y2ZiMDllZjczNThmN2Q3NzllOTkzZjQwN2IwMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYzI0ZGI1YjI2YTk0YjcyZjU0Zjg3MDgwODdjMzU0ZGFjMmJlNDk5MWQ5ZGZjMmQyNDBjNmI2MzY3NWNlMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkYzMzMmVjZTNkODkxZGUwOTg2ZjdlOWJmNDhmMmUwYTMyZGNiYzhlNDMzNzI3N2JiMjg4OGU1ODgyNDY5NjIifQ"
+        },
+        {
+          "resource": "repo://web/vite.config.ts#L14-L26",
+          "version": "repo-lines-v1:sha256:777c022bfc3e952d1c431cab2b95a253971845e65e02131cce66d0f3c6f2c64a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwZTY2YWZlMzEwMjMxZDJlNjA5MWE1ZDg5YTYzZTc0OTg1ZmM3YzAyMzY0YTg5OWI0Y2FjZjdmNTI3Mjk2NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczYzc5ZGYzNjhmMTYzY2U5MDNlNDAxMTYwYzkwMmMzOWZmZTUxYzZhZDBkNWNiM2IzYjRjOTdhNDgyYWQ4ZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9d76668d18944c1d9e85895b229c80e6",
+      "statement": "Upload limits are layered: upload.max_file_size (default 10MB) is enforced inside save_image and upload.max_doc_size (default 50MB) inside upload_document, both against fully buffered bodies, under a global DefaultBodyLimit of 100 MB applied to every request as a hard ceiling.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/config.rs#L132-L136",
+          "version": "repo-lines-v1:sha256:10c3e50b35160242b85b7cd1b26621299e38ce0dba52f6b99c4c6da56aedf2ab:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGQ1YTQ3MWYwYmIwNDM0NTk5MDA0Mjk2NjEzMzdiMTQ5ZmM0NzA5Y2MyZWVhYTA3YjBmOTYxZTYzYmYwMjU1MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTZmM2M2MGU1ODcxYmQ4MzYwMThhM2UyNjNiNmE0OGZlODk5MDk5YTMxZWRjN2Q5OWU2MGEwMWUwNTliZGJmYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NGQwMmE4MTIxOTQ0ZDE3NmQyNjVlOWJiOWNjNTlmNmFiODkwYmNhZGY4YWVmZGViZGJiYjRmMmVhODQ0NCJ9"
+        },
+        {
+          "resource": "repo://server/src/config.rs#L34-L43",
+          "version": "repo-lines-v1:sha256:16a380eedcf1f4e28c00df0a5e3dc6ac5790bb4d31856fd6cac51c140890949a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MzJjNjJkNWY0YjZmMzVmZGY5NWM1ZjI0MWFjYTg3OGY3ZjZjZGVjNmM3ZjJmOTlhYTRiMGVmNTEyNTYzYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlNDExNTA5Zjk4MTk1NTU5OWE1ZDlkYjAxNjk3YzE4Njk2NzdlZmY4YTUxNzViN2I5M2Q1MDdlM2QwOTM2MzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMjk4NDk4MWY0ZWIzYmYyYTAwYzYyMmM2NjU0ZTIyNWYzZGQ5YTFlOWYxMmY0N2I2YTcwMzRiMzVkMGU1MWMifQ"
+        },
+        {
+          "resource": "repo://server/src/config.rs#L99-L105",
+          "version": "repo-lines-v1:sha256:dc237cb62043242bc72bbb3cdc102b6643e3765a556aae18dccf41ed9df7e4ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGQ1MGQ0YjA4MDU5ZjgyNzBiZDljYWY0MjcyNzgyY2Q3OGQ0OGM4ZTEzNzUwYTliYWQ1MmJhYjY3OWIzY2NiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjIxYzNmYjNmYmY1YmZiMjc4ODgxYWVlNTkyOThlNzlmMTUzMzBjYTYzMTYxOGI5OTJhMGZkZTkzMzBmODNiYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjZiZDBkMmZmODkzZjBlMmRmMzZjZDdiNjA4Nzk3NTllYmExNjNlODVmZTkyYTk2MjM0YzRiMTUxZjc1NGE4ZiJ9"
+        },
+        {
+          "resource": "repo://server/src/handlers/item.rs#L136-L149",
+          "version": "repo-lines-v1:sha256:f50245653731c73e11f332862354ca408a95c71cb0d06245d5c37f6ad3aed2f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5MWU1YjIwMWQzYzM1Yzc4MDNmODExMmM1ZmY5ZDRjZmNkNjE2OTU1MWVmMjU0OWZhNTdjMzVjZGM0ZWE4N2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjNzA1ZjRkMDEzYTMzZTVkOWIxOTQ5NDlmM2M5MTBlMDQ5ZWFmY2M0NDc5NGYyNWQ5ZmY2YmQ3YjNmYjIxMDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ5MTk2MmZjNjkyZGFlYjNmNjNlYTlhZmZhNzlkMmE1NTUyY2IwNDhhOTM1Yjk0NGQzNGFjNDAwNDBkNjEzOTUifQ"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L51-L51",
+          "version": "repo-lines-v1:sha256:8574522bd40ed034f53537fbd85cf8ff86db7d38378615c7362dea1eec53b519:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODU3NDUyMmJkNDBlZDAzNGY1MzUzN2ZiZDg1Y2Y4ZmY4NmRiN2QzODM3ODYxNWM3MzYyZGVhMWVlYzUzYjUxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODU3NDUyMmJkNDBlZDAzNGY1MzUzN2ZiZDg1Y2Y4ZmY4NmRiN2QzODM3ODYxNWM3MzYyZGVhMWVlYzUzYjUxOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmQ3ZjkyN2QwZDVlOGEzZGQ1OTdhNTJjNDFhMjZmOTYyYjYwNDQwYTA3OWUxNTYxYmYyYWJhMWNlNmMyYWFkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzA0NWVmYTk5NWZlMTA0M2YwMDZjNmY0ZmFlMjU4ZjIxNGQ2MjNlZTgwYzE0MzQ1NzAzNDQ2OTI2NDc5NmIwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1262f2beb7094bb4a192711722fe997d",
+      "statement": "Upload handlers accept the first multipart field named file only, default the filename to image.jpg or document.pdf when absent, fail with a 400 when no file field exists, and reject any non-pdf extension for documents with the Chinese message 只支持 PDF 文件 without inspecting the payload.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/item.rs#L115-L165",
+          "version": "repo-lines-v1:sha256:39fdd6558a0a2ab74b1283dc955b50c8f32557f9d2056871e21769ba4fe386fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MjYyYjU1YzRmMzk1NmNhZTI1NDAxYzhjNDlkY2Y2NGI5YTJlOWZkY2IxMmIyZDJkNTFkM2E2YzM2YWQwY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MzAyNmE4ZDdhOGVjY2FjODAwYjU1MjQwYjM0M2YxOWZlMmZiMzcxMzQ3ZDkwYjViZTllNGI2OGRmNjc5MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkOWJhZjU2ZmU3MDMxYzMzNDhkZDZmNTA2ODFiOGE5MDYwMmU3NzYyYWE4YTI1ZjJlNDBjOTYyNTdmMzhhNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5OGZiYzFjN2MzOWQ0MTQ5MWM1OTgyM2Y1M2U2NjkyNzA4NzI3Njc2MjlkZjgwMTBjZTkyMjhiZTA0ZGIzYWQifQ"
+        },
+        {
+          "resource": "repo://server/src/handlers/item.rs#L67-L96",
+          "version": "repo-lines-v1:sha256:d36daf810246d8cf44a1581bab6b719ee43cfa0da86d8af6b4766646c15a0331:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0MjYyYjU1YzRmMzk1NmNhZTI1NDAxYzhjNDlkY2Y2NGI5YTJlOWZkY2IxMmIyZDJkNTFkM2E2YzM2YWQwY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3MzAyNmE4ZDdhOGVjY2FjODAwYjU1MjQwYjM0M2YxOWZlMmZiMzcxMzQ3ZDkwYjViZTllNGI2OGRmNjc5MTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiODkxMTI5YTVjMmU4NDY1OGIyNmQwODBmNWVkNGJkZDFmZmZiMjJkM2NjNTEzNGNlNDYwMzlhOGVjZjY1NTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNjNmFjYjRkNWZhODM2YTI0NjVmNDk0OWFkZDJlOWY5MGJiZWM4MTRkNDc0NTEzOThjNjYzNjExMTFlNDQxODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f67a43f45724e4594800cf35dfc6d57",
+      "statement": "Storage roots are re-read from Config::load() inside each upload/delete request, but the ServeDir mounts for /images and /docs are fixed at boot from the startup config value, so editing image_dir or docs_dir in config.toml while the process runs makes new writes land outside the served directories until the binary is restarted.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/item.rs#L51-L52",
+          "version": "repo-lines-v1:sha256:fb0d031c03a8751c3dc56e8b684112c29c313197cbbd7d450d9c31519bf393e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFkZDU3NmE0YTZjYTRiMWY4OWZmMmUzZTI1MGNhZTU1MGVmMmVkOTQ2Mjc4YTE0OGFkOTE4MjY3YTRhYWE2YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE5NWZjNDAzNThhMjZhZmJmOGY5ZDljZDQwYjFkYTdiNWVlNzc4ZTZiNzZkOTQwYTg1MmZkODYzZWU4MDViZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjhjNGJlZmU0OGUwNGRhNmQ0NmQ5M2ZjOGM4MjI0YmQ5MzMwMzcwZTFhNzZkZGExN2U5MDllYjU2MmMwM2I1ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmMyNGQyZjUxZmEwN2NmZjZmYjkyYmI3NzY5YzA4ZWNkOTE0OGMyNDQ2NDMxN2E3MjZlZGRlM2NhNjNmOTI0MyJ9"
+        },
+        {
+          "resource": "repo://server/src/handlers/item.rs#L82-L89",
+          "version": "repo-lines-v1:sha256:f27e4fd5819c119c2a14a580d6a834f2d9b1f5a673c885cbfd2e432e44c9f73b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkwOTIwOWNkZjdlOTAwMTUyMzkyOThlYjU0ZTU1YmQ1Zjk5YTQ5OTZkNGQ0OTI5Njk4NzY3NzdjYWMzMjliNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWJiMmUyNjdjZGEzZWEyZDk5MTBkYTY4YzVhYjkwMTYwYzllMDE5NjQ5MjFhMjFhMTMxMzYwYWFkMWYxZTAxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTEzNWYwNzFlMDA3ZjNlNGY4M2Q3YTRkNmIyNjJkNmJmY2QxOTM5YThlYmVmMGQ4YWZiMDNkYmUwZDE2YTkwYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDBiYmRlMTcxOTExOTRjODU4OWMwMzQ2MjFkMjRmZWJmYzMwZGNjMDBmZDM5NzkyYTVjZmMxOGM0NGU4YWFjMiJ9"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L27-L48",
+          "version": "repo-lines-v1:sha256:5d0ca1bc0f8fed2059ba9f2a1aa0ae79ecf6bec3a4af11d144272c51a7116891:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2OWU1NzJmOWZhNDdkZGM2ZjZjNTVjNDU4YTFjYmIwMDc3MmVlMWNhZmM0NWMwOGI1Y2NjZTRkMzQ5MzBiY2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkYjg0YzE4ZjQyN2IyMWI2NThjYmZkZGI5NGIyMTIyOTAzMDFkMWYzZjY3MTVmZmRkOGE3ZjM3MThmM2JjODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhMjNkMjlmZWY4MTFkNDhkMDU0YTQxOWQwMDY4MGM2YjliYmY5Y2QwMTQyYTZkY2Y3ZGQ3MTdkZDY4NWQ5NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwNGUzYTY4YWJjYmU1MGVjZWYyMWI2ODk5NWM2M2M2MmM5Njc3ZDJmMGEyYTlhOGZkMGU3ZjFmZmY5ZThjY2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_669418c81a5d456eb911b600c45caf81",
+      "statement": "Current documentation contradicts the code on this contract: AGENTS.md and both READMEs describe images served at /data/images with filesystem-relative data/images/... paths, Vite proxying /data/images, and formats limited to jpg/jpeg/png/webp, docs/design.md promises an { id, url, thumb_url } response and only jpg/png/webp, and deploy/nginx/wheremystuff.conf keeps a commented location /data/images/ block — none of which matches the /images mount, subdir-relative paths, or the avif allow-list.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L60-L65",
+          "version": "repo-lines-v1:sha256:263a15b8f278434e77b6a7e2e6121ee3a72a944200f692242acefd1488974abc:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWZhM2NkMDIxMjJiMGJkMzY1N2IxNzFkZjgyMmRmZGQwYTNiOGZhMzFiZWFkMmE4OTNkMDA3ZTNiNThjMmVlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU1YTA2MjJhODU0ODZhMWZjOWE2ZWRiYjRmOTAzM2JhMTM1NTA0OWNmMjczOTY4OGEwYTg4YTQyMDA1MjhmMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmVkMjMwN2M3ZmZkMTA1YmJkYTY2MzFkY2FmMTEzOTQyNTA0YTFmYmYyZDE1MmUxNDgzMDU5ZTdkYWY5MjFmMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2QxNDE1ODgwNjM2Yjc4ZTk1MmU3YjdiZjA3MGJlMDk0MTA2MmFiODkxMjAyMmU0YjEwM2I5YmMyYTFmNTQ2ZCJ9"
+        },
+        {
+          "resource": "repo://README.en.md#L112-L116",
+          "version": "repo-lines-v1:sha256:0e17e98e0a48e29a8720f0e9232d27e1e56d0c33e209bfcfe471c663851860b0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU5NWMwMGQ5MDRlNWM1MDAzMjhhMzQyMTA0MWEzMjYzNGRhNmU1YjljMjRiZjIzOGQ1NzQyOWIxOTQyYzQyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTFiZDk1YzdjN2ZmNDM1NmUwYjI0OTk0MmI5ZTFlNDEzNjY5YWQ3YTg5NTdkOTFjYmU2NWY5MzE4YjBjODViYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDE2ZDIyYTJhOTZlNjk5MTJkNDE4OGNmNzc3YzFiYzA1NzIzM2Q4YmU4YjFmNjI4NGQ2ZTM1NDRiZTgzYmEzZSJ9"
+        },
+        {
+          "resource": "repo://deploy/nginx/wheremystuff.conf#L11-L16",
+          "version": "repo-lines-v1:sha256:7699d0507e912e7baa23f915c526e354c28edc2b686fa2bc9baa599fc189a056:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGJlNjJlMzNkODU4ODVhYWJiMjIxOWRkMDA0MWQ0NWJiNWJiYjU2MGQ0NTZjNjI0ZjIyMWY1Mzc1ZmNkZGRhNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTkwMGQyMjY2MDU3Yzg4ODYxZTViNWFjNTMwZjc5NDBjNTFlZDEyODg3ZDM5OTMwN2IzOTc0OWZiNzA0MWU2NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2UxNjY5YzIwZmU3ZGJlMzdjMzA4Zjk2M2RjMDRhYmNiNzdjMjhmNWYyNDZlYjg2ZDE5YzU5OWRmM2VhODMzNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGE0ZWMzNWVmMTg1MWFmZmRiMjBiZTM3NmEyMjIwYjFlY2RlOTI3NDc2YTJkNmRhYzNlMGNiZjQ1YTQyZTk1NiJ9"
+        },
+        {
+          "resource": "repo://docs/design.md#L263-L272",
+          "version": "repo-lines-v1:sha256:c838947faf6d00c3f7296d847102cdc5ecc5d21107b1f6e1d72bf824bdcbb54a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyZmExYzZhM2Q4YmRlMjgwNmQzMzgwZjJmZjI2NjI1YmE0MTY2ZGRmMzJmMjg5YjFjYmM1MGE5MmViMTEzZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwZGRkMzNiNGY3MDNjOWZiNjdkZDk4NjQwZWRhM2ZjYzMwNTBjYzBjZjFmNDBlMzg2YTU2MjEyNjhkNTE4YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNlYTgwYTA4YTk2ZjM1NTQ5ZmEzMzM4MjA2MjE4OTFhNThlZDExMGE0N2JiNzNmNjAxMjJlYjc1NDMwNzQwNTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcyZDMzYzEwZmEzMDliMDRjOWMzOWU4NDZkZjhiZTZkM2M2OTFlMDBmYjhmZTMzMDI4NDM1MjFiOWE3MjI3ZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cda62783cbef49ce80471213b73bdb42",
+      "statement": "No automated test protects the storage pipeline: server/tests does not exist, no module defines a #[cfg(test)] block, and the just test recipe simply runs cargo test -p server, so save_image ordering, extension normalization, and the delete paths are verified manually.",
+      "evidence": [
+        {
+          "resource": "repo://justfile#L116-L119",
+          "version": "repo-lines-v1:sha256:8304c49f6bb438ba840a6a049bc2615cb8437c91794a81c18ee9d5fe5cacbbc1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjc2YmUyZDE0YmVjMjljNTNhMTVhZjg2MTk4ODM1M2VmNTZjM2I1Zjg2Yjk0ZGZiMDIwODZjYWI0NmYxZDJlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTE0ZGU4MGYyZmU0Y2UxMDYwYmVjOWIyOTA1NGIwNGY1MDMzNWM4NTQzNDBhYWM0ODViYzZiZTM5MDM4ZTAzOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmZlNTgxMzM5MDBhYjkzZTgzYjA2YjAwMjg4ODFmNTFiMmFkMTI1YWY2MjA0ODFhNjg1NWExOTk3MTMwZWQ0YiJ9"
+        },
+        {
+          "resource": "repo://server/src/services/image.rs#L1-L100",
+          "version": "repo-lines-v1:sha256:86709056f5d569bbd364b7bfdec5eacccfc8702bd531b11264b18c4b0f06add8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlNWYwNGE5M2FhYzIzYjU4MjFjYzUyNGY4NmUxMzZkYmQ5M2YzOWFlNzc4NmFmZDc5MGNkMGI5ZWJmNWUyYzBiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T14:40:20.132Z"
+  }
+}

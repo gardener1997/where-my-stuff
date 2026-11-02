@@ -1,0 +1,506 @@
+{
+  "schemaVersion": 1,
+  "runId": "7155b425-b66b-4646-a408-904eef873652",
+  "mode": "init",
+  "phase": "generating",
+  "startedAt": "2026-10-28T14:40:20.132Z",
+  "language": "en",
+  "languageChanged": false,
+  "requiredRewritePages": [],
+  "initialPages": [],
+  "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95",
+  "targetGitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+  "actor": {
+    "producerActor": "openwiki/0.7.2",
+    "metadataModel": "deepseek-flash"
+  },
+  "previousLastUpdate": null,
+  "wikiGoal": "A code wiki for this repository.",
+  "beforeContentSnapshot": "632cf2073a36a4ef01dcd33b2a7a2d55b75afc69f961e55e70fa14a5e236f881",
+  "preparedWiki": {
+    "generatedProvenance": []
+  },
+  "plan": {
+    "pages": [
+      {
+        "id": "59a0e6b3-4cc6-4ce3-a672-00ee54297746",
+        "path": "/openwiki/architecture/data-model-and-migrations.md",
+        "title": "Data model, migrations, and delete semantics",
+        "purpose": "Document the SQLite schema, how migrations are embedded and applied at startup, the FTS virtual table, and the cascade/nullify behavior every write path depends on.",
+        "seedPaths": [
+          "server/migrations/0001_init.sql",
+          "server/migrations/0002_documents.sql",
+          "server/migrations/0003_item_location_note.sql",
+          "server/src/db.rs",
+          "server/src/repositories/category.rs",
+          "server/src/repositories/container.rs",
+          "server/src/repositories/item.rs",
+          "server/src/repositories/tag.rs"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/http-api-and-errors.md",
+          "/openwiki/concepts/hierarchy-and-location.md",
+          "/openwiki/concepts/search-and-index-sync.md",
+          "/openwiki/operations/configuration.md"
+        ],
+        "instructions": [
+          "Document enforced vs. hand-written referential behavior: deletes in repositories explicitly null out items.category_id/container_id and children parent_id before deleting the row, item delete cascades item_images/item_tags/item_documents rows but only removes image files from disk (PDFs and orphaned thumbs can survive) — verify against code when editing.",
+          "Explain the FTS table as a derived projection, including why 0003 drops and recreates items_fts to add location_note.",
+          "Explain the migration workflow: sqlx::migrate! embeds server/migrations at compile time and runs on every startup, so schema change = new numbered file + rebuild; never edit an applied migration.",
+          "Include a mermaid ER diagram: categories/containers self-referencing trees, items, item_images, item_documents, tags/item_tags, and items_fts.",
+          "Note conventions: UUID string ids, TEXT timestamps via datetime('now'), no compile-time sqlx query checking."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "9af6c646-6ad1-40ee-9cd3-1f7882982089",
+        "path": "/openwiki/architecture/http-api-and-errors.md",
+        "title": "HTTP API surface, DTO semantics, and error contract",
+        "purpose": "Canonical route table plus the request/response conventions a caller or endpoint author must follow: extractors, DTO field semantics, pagination clamps, upload limits, and the JSON error envelope.",
+        "seedPaths": [
+          "server/src/error.rs",
+          "server/src/handlers/category.rs",
+          "server/src/handlers/container.rs",
+          "server/src/handlers/item.rs",
+          "server/src/handlers/search.rs",
+          "server/src/handlers/stats.rs",
+          "server/src/handlers/tag.rs",
+          "server/src/models/container.rs",
+          "server/src/models/item.rs",
+          "server/src/routes.rs"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/concepts/api-dto-and-type-mirroring.md",
+          "/openwiki/concepts/file-storage-and-url-contract.md",
+          "/openwiki/integrations/frontend-backend-contract.md"
+        ],
+        "instructions": [
+          "Call out the non-obvious update semantics in repositories/item.rs: for UpdateItem and UpdateContainer, omitted Option fields overwrite with NULL (description/purchased_at/bought_from/price/category_id/container_id) while name/source_type fall back to existing values — a partial payload can clear data.",
+          "Document the error contract: AppError variants to 404/400/500, JSON body { \"error\": string }, internal errors are logged but masked, and sqlx RowNotFound maps to 404.",
+          "Enumerate every route registered in routes.rs with method, path, handler, and the request/response DTO types — this table is the reference other pages should link to instead of duplicating.",
+          "Keep web-side wiring out of this page; link to integrations/frontend-backend-contract.",
+          "Record pagination behavior (page ≥ 1, size clamped 1..=100, defaults 1/20) and that list endpoints return { items, total, page, size }.",
+          "Record upload constraints: multipart field name must be `file`; global DefaultBodyLimit is 100MB; image size capped by upload.max_file_size, PDF by upload.max_doc_size."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "7e73d0d2-0030-4377-ba12-f84844938b3f",
+        "path": "/openwiki/architecture/overview.md",
+        "title": "System shape and runtime domains",
+        "purpose": "Explain the deployed shape — one Rust binary that owns the REST API, the embedded SPA, uploaded media, and SQLite — and the runtime domains/layering a change must respect.",
+        "seedPaths": [
+          "Cargo.toml",
+          "server/Cargo.toml",
+          "server/src/config.rs",
+          "server/src/db.rs",
+          "server/src/main.rs",
+          "server/src/routes.rs",
+          "server/src/static_files.rs",
+          "web/src/main.tsx",
+          "web/vite.config.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-model-and-migrations.md",
+          "/openwiki/architecture/http-api-and-errors.md",
+          "/openwiki/integrations/frontend-backend-contract.md",
+          "/openwiki/operations/build-and-run.md"
+        ],
+        "instructions": [
+          "Capture the intended layering routes.rs → handlers → {repositories, services} → models and note the real dependency pattern: handlers call repositories directly and use services only for image storage + FTS sync, so 'services layer' is thin.",
+          "Describe the four runtime domains served by one process: /api/v1 JSON API, /images (ServeDir over image_dir), /docs (ServeDir over docs_dir), and the fallback SPA embedded from web/dist via rust-embed.",
+          "Include a mermaid diagram of the process, its routers/services, and the SQLite + filesystem backing it.",
+          "Note module inventory at a high level only; do not mirror the source tree file by file."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "bc7cf6ad-5061-43e6-bfcf-e7b84d2826c1",
+        "path": "/openwiki/concepts/file-storage-and-url-contract.md",
+        "title": "Uploads, on-disk layout, and served URL contract",
+        "purpose": "Map stored relative paths to served URLs for images and PDF documents, and record the upload/thumbnail/delete pipeline plus its current gaps (orphan files, dev-proxy mismatch).",
+        "seedPaths": [
+          "server/src/handlers/container.rs",
+          "server/src/handlers/item.rs",
+          "server/src/main.rs",
+          "server/src/services/image.rs",
+          "server/src/static_files.rs",
+          "web/src/components/ui/DocumentList.tsx",
+          "web/src/components/ui/ImageUpload.tsx",
+          "web/vite.config.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/http-api-and-errors.md",
+          "/openwiki/integrations/frontend-backend-contract.md",
+          "/openwiki/operations/configuration.md",
+          "/openwiki/workflows/create-and-edit-item.md"
+        ],
+        "instructions": [
+          "Document save_image details: allowed extensions in code (jpg/jpeg/png/webp/avif), max-size check on the buffered bytes, id-based filenames, 300px thumbnail, jpeg→jpg normalization, and the avif branch that returns the original as its own thumb.",
+          "Document the URL contract and where it is enforced: DB stores subdir-relative paths, server nest_service('/images', image_dir) and '/docs', SPA prefixes '/images/' and '/docs/pdf/'; note that Vite's dev proxy only forwards /api and /data/images, so media URLs are not proxied in dev — verify before assuming media works under `pnpm dev`.",
+          "Flag that AGENTS.md/nginx comments still describe a /data/images prefix that no longer matches the code, and note deletion gaps: deleting an item removes image files but not stored PDF files.",
+          "Include a mermaid diagram of upload → disk → DB row → browser URL for one image and one PDF.",
+          "Lay out the storage contract: images at {image_dir}/items/{uuid}.{ext} + {uuid}_thumb.{ext}, containers at {image_dir}/containers/ (single image_path column, no thumb recorded), PDFs at {docs_dir}/pdf/{uuid}.pdf."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "c50776db-a9d5-4a79-9e64-afebaaf026df",
+        "path": "/openwiki/concepts/hierarchy-and-location.md",
+        "title": "Hierarchies, container paths, and location modeling",
+        "purpose": "Explain how the two trees (categories, containers) are stored, assembled, rendered, and destroyed, and how an item's 'where' is derived from the container ancestor chain.",
+        "seedPaths": [
+          "server/src/handlers/container.rs",
+          "server/src/models/container.rs",
+          "server/src/repositories/category.rs",
+          "server/src/repositories/container.rs",
+          "web/src/lib/utils.ts",
+          "web/src/routes/categories.tsx",
+          "web/src/routes/containers/$id.tsx",
+          "web/src/routes/containers/index.tsx"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-model-and-migrations.md",
+          "/openwiki/concepts/search-and-index-sync.md",
+          "/openwiki/workflows/browse-and-manage-containers.md"
+        ],
+        "instructions": [
+          "Cover the UI-side equivalents: flattenTree producing indented <Select> options with ancestor path labels, containerPathText falling back to \"未归位\".",
+          "Document build_tree (flat rows → nested nodes, name-sorted, orphans become roots) in both repositories and why list_tree is computed in Rust rather than SQL.",
+          "Document get_path: iterative parent walk, reversed root→leaf, and how the same PathSegment[] is reused for container breadcrumbs, item '位置', and search hits.",
+          "Note that category rename affects display but not the FTS index — cross-link the search page rather than re-deriving.",
+          "Record delete semantics (nullify children and item references, not cascade) and container_type vocabulary (frontend offers room/table/shelf/box/drawer/cabinet/bag/other while the DB default is 'other')."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "fd2c9806-3013-41e8-b599-acd9e68310c5",
+        "path": "/openwiki/concepts/search-and-index-sync.md",
+        "title": "Full-text search and FTS index synchronization",
+        "purpose": "The search subsystem's contract: trigram FTS5 index contents, the LIKE fallback for short queries, snippet/highlight assembly, and exactly which writes keep the index fresh (and which silently don't).",
+        "seedPaths": [
+          "server/migrations/0001_init.sql",
+          "server/migrations/0003_item_location_note.sql",
+          "server/src/handlers/item.rs",
+          "server/src/handlers/search.rs",
+          "server/src/repositories/search.rs",
+          "server/src/services/search_index.rs",
+          "web/src/hooks/useSearch.ts",
+          "web/src/routes/search.tsx"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-model-and-migrations.md",
+          "/openwiki/concepts/hierarchy-and-location.md",
+          "/openwiki/testing/validation-playbook.md",
+          "/openwiki/workflows/search-and-retrieval.md"
+        ],
+        "instructions": [
+          "Document query planning in repositories/search.rs: queries with fewer than 3 chars use LIKE over item/container/category columns, otherwise MATCH with the query wrapped in double quotes; snippet() spans columns 1–3; highlight joins marked snippets or falls back to a truncated description.",
+          "Explain sync points precisely from code: item create/update call sync_item in the handler, item delete removes the FTS row directly, and sync_all runs (best-effort, warn-only) on every startup — there are no triggers.",
+          "Explain the index shape: items_fts with tokenize='trigram' (CJK support), indexed columns name/description/location_note/tags/container_name/container_label/category_name, item_id UNINDEXED.",
+          "State the drift invariant loudly: tag rename/delete and container/category rename do not resync affected items, so search can lag until restart; if a change touches those writes, consider calling sync_item for linked items.",
+          "Use a mermaid flow diagram for the search request decision and highlight assembly; keep the UI rendering contract (dangerouslySetInnerHTML on <mark> output) explicit."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "825f3a7f-87ad-445e-9105-ecf544a79648",
+        "path": "/openwiki/concepts/source-of-truth-and-docs-drift.md",
+        "title": "Source of truth, generated files, and documentation drift",
+        "purpose": "Give an agent the repo's conventions and the known places where prose docs disagree with code, so it edits the right file instead of trusting stale guidance.",
+        "seedPaths": [
+          ".github/workflows/openwiki-update.yml",
+          "AGENTS.md",
+          "README.en.md",
+          "README.md",
+          "docs/design.md",
+          "web/src/routeTree.gen.ts",
+          "web/vite.config.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/file-storage-and-url-contract.md",
+          "/openwiki/operations/build-and-run.md",
+          "/openwiki/operations/configuration.md",
+          "/openwiki/quickstart.md"
+        ],
+        "instructions": [
+          "Document generated files that must never be hand-edited: web/src/routeTree.gen.ts (TanStack router plugin), web/tsconfig.tsbuildinfo, Cargo.lock (regenerate via cargo) and web/pnpm-lock.yaml.",
+          "List concrete drift observed today: AGENTS.md says images are served at /data/images with data/images/... DB paths (code uses /images + subdir-relative paths), claims components/ui is empty scaffolding (real components exist), and claims no CI (an OpenWiki GitHub workflow exists); docs/design.md lists nonexistent files (App.tsx, many components) and triggers-based FTS sync.",
+          "Note the OpenWiki workflow regenerates this wiki on a schedule; do not hand-edit generated pages when a source-doc change is the real fix.",
+          "Record product conventions: UI copy is Chinese, source_type vocabulary (purchased/handmade/gift/salvage/other), '未归位' for unassigned items, description rendered as Markdown.",
+          "State the precedence order: code (server/src, web/src, migrations) > justfile/deploy > README > AGENTS.md > docs/design.md (partly aspirational)."
+        ],
+        "status": "complete",
+        "completedBy": "openwiki/0.7.2"
+      },
+      {
+        "id": "a438b3c2-50d8-4fd9-ba82-1feddc6a2765",
+        "path": "/openwiki/integrations/frontend-backend-contract.md",
+        "title": "Frontend ↔ backend integration contract",
+        "purpose": "The runtime wiring between the React SPA and the Rust API: fetch wrapper and error mapping, React Query hooks and cache invalidation keys, multipart calls, generated router file, and what to touch when the API or a route changes.",
+        "seedPaths": [
+          "web/src/hooks/useContainers.ts",
+          "web/src/hooks/useItems.ts",
+          "web/src/hooks/useSearch.ts",
+          "web/src/lib/api.ts",
+          "web/src/main.tsx",
+          "web/src/routeTree.gen.ts",
+          "web/src/routes/__root.tsx",
+          "web/src/types/index.ts",
+          "web/vite.config.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/http-api-and-errors.md",
+          "/openwiki/architecture/overview.md",
+          "/openwiki/concepts/file-storage-and-url-contract.md",
+          "/openwiki/operations/build-and-run.md"
+        ],
+        "instructions": [
+          "Add an 'API change checklist': Rust model in server/src/models → handler/repository → web/src/types/index.ts → web/src/lib/api.ts → hook invalidation → affected route components.",
+          "Document the React Query layer: query keys (['items', params], ['items', id], ['containers', ...], ['search', params], ['stats'], ['tags'], ['categories']) and which hooks invalidate which keys on mutation success — this is where stale-UI bugs come from.",
+          "Document the client: BASE '/api/v1', JSON request helper that throws Error(body.error || statusText), and the raw fetch multipart helpers for image/document upload that bypass the JSON header.",
+          "Explain provider/router setup in main.tsx and that routeTree.gen.ts is generated by @tanstack/router-plugin from web/src/routes (never hand-edited; bare layout routes such as items/$id.tsx render an Outlet).",
+          "Note the hardcoded /images/ and /docs/pdf/ URL prefixes and the dev-proxy mismatch as a cross-boundary risk (link, don't duplicate, file-storage-and-url-contract)."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "1e4b8876-804d-49df-8ce0-9b2f39b76cfb",
+        "path": "/openwiki/operations/build-and-run.md",
+        "title": "Build, dev loop, and the embedded-SPA constraint",
+        "purpose": "How to build and run the two halves, why a frontend change requires rebuilding the Rust binary, and which commands are authoritative versus stale documentation.",
+        "seedPaths": [
+          "AGENTS.md",
+          "README.md",
+          "deploy/Containerfile",
+          "justfile",
+          "server/src/static_files.rs",
+          "web/package.json",
+          "web/vite.config.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/operations/configuration.md",
+          "/openwiki/operations/deployment.md",
+          "/openwiki/testing/validation-playbook.md"
+        ],
+        "instructions": [
+          "Do not repeat deployment topologies here.",
+          "Document the recipe set from justfile: deps, dev/dev-server/dev-web, build, run, install/uninstall, container-*, test, fmt, lint, check, clean, reset-db, and the default ports (3000 API, 5173 Vite).",
+          "Explain the build dependency: rust-embed reads ../web/dist at compile time, so `cargo build` without a fresh web/dist embeds stale or missing assets; just build handles this by touching server/src/main.rs after a frontend rebuild.",
+          "Note AGENTS.md drift (it claims no CI/lint config and root-relative data/ defaults); prefer justfile + code, and link the drift page.",
+          "State the run-from-repo-root requirement and that missing web/dist breaks compilation of static_files.rs."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "38007c95-a105-4f72-8f0d-3f4c117ea554",
+        "path": "/openwiki/operations/configuration.md",
+        "title": "Configuration, data directories, and upload limits",
+        "purpose": "Explain every knob that changes runtime behavior — config.toml/CONFIG_PATH, CLI overrides, XDG-derived default paths, and size parsing — plus the fact that config is re-read per request.",
+        "seedPaths": [
+          "README.md",
+          "docs/design.md",
+          "server/src/config.rs",
+          "server/src/handlers/item.rs",
+          "server/src/main.rs"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/concepts/file-storage-and-url-contract.md",
+          "/openwiki/operations/deployment.md"
+        ],
+        "instructions": [
+          "Document parse_size (digit prefix + KB/MB/GB, unknown unit treated as MB) and that uploads are validated in handlers/services, while the global axum body limit is a fixed 100MB in main.rs.",
+          "Document resolution order: CONFIG_PATH or ./config.toml if it exists, else Default impl, then CLI --host/--port/--help overrides; unknown args exit(1).",
+          "Document the full TOML shape: [server] host/port, [data] db_path/image_dir/docs_dir, [upload] max_file_size (default 10MB) and max_doc_size (default 50MB, serde default).",
+          "Explain the default data dir: $XDG_DATA_HOME/wheremystuff, else $HOME/.local/share/wheremystuff, else ./data — note this contradicts README's 'creates data/ in the current directory' claim.",
+          "Flag that Config::load() is invoked inside individual handlers (item/container upload and delete paths), so config/env/CLI state is consulted per request rather than once at startup — relevant to any caching or test-isolation change."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "f1ee8862-58dc-472d-b42a-d02f002a60cd",
+        "path": "/openwiki/operations/deployment.md",
+        "title": "Deployment: systemd, Podman, and nginx",
+        "purpose": "Describe the three supported deployment paths and the packaging constraints they impose, including volume/path mismatches that break persistence if copied verbatim.",
+        "seedPaths": [
+          "README.md",
+          "deploy/Containerfile",
+          "deploy/nginx/wheremystuff.conf",
+          "deploy/systemd/wheremystuff.service",
+          "justfile",
+          "server/src/config.rs"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/file-storage-and-url-contract.md",
+          "/openwiki/operations/build-and-run.md",
+          "/openwiki/operations/configuration.md"
+        ],
+        "instructions": [
+          "Cover each artifact concretely: 3-stage Containerfile (node frontend → rust backend with --from=frontend web/dist → debian-slim runtime with only the binary and WORKDIR /app), systemd unit hardening (ProtectSystem, ReadWritePaths on %h/.local/share/wheremystuff), and nginx proxy (client_max_body_size 20M, / proxy_pass, optional static image location).",
+          "Flag the nginx commented block still referencing /data/images, which no longer matches the /images route served by main.rs.",
+          "Flag the persistence mismatch: the container declares VOLUME /app/data and just container-run mounts ./data, but with no config.toml the default data dir resolves via HOME to ~/.local/share/wheremystuff inside the container — verify before documenting 'data persists in ./data'.",
+          "Include the upgrade procedure (rebuild frontend + binary, restart service/container) and note migrations run automatically on startup, so no separate migration step exists.",
+          "Keep port/upload-limit basics linked to configuration rather than duplicated."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "d701227f-5e07-4c70-9f88-0af31d79a0b0",
+        "path": "/openwiki/testing/validation-playbook.md",
+        "title": "Testing and validation playbook",
+        "purpose": "What automated coverage exists (almost none), which gates actually run, and how to verify each class of change manually against a real server and database.",
+        "seedPaths": [
+          "AGENTS.md",
+          "justfile",
+          "server/Cargo.toml",
+          "server/src/db.rs",
+          "server/tests",
+          "web/package.json",
+          "web/tsconfig.json"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/http-api-and-errors.md",
+          "/openwiki/concepts/file-storage-and-url-contract.md",
+          "/openwiki/concepts/search-and-index-sync.md",
+          "/openwiki/operations/build-and-run.md"
+        ],
+        "instructions": [
+          "Give change-specific checklists: new migration (startup applies it + FTS resync), search behavior change (test <3 char and ≥3 char queries, CJK, tag/container renames), upload change (size limit, extension rejection, thumbnail presence), frontend route change (regenerate routeTree, tsc, embedded build).",
+          "List the real gates: cargo clippy -p server -- -D warnings, prettier --check on web/src, tsc -b with strict/noUnusedLocals/noUnusedParameters, and pnpm build (tsc -b && vite build).",
+          "Note there is no seed/fixture data or reset automation beyond `just reset-db`, which deletes data/ only — not the XDG path used by installed builds.",
+          "Provide a manual verification matrix with concrete curl/fetch recipes: API smoke (GET /api/v1/stats, CRUD item, GET /search?q=), upload checks against temp dirs, and how to point the server at an isolated DB via CONFIG_PATH to avoid touching real data.",
+          "State plainly that server/tests is empty, no test targets exist, and dev-dependencies (reqwest, tempfile) are unused — `just test` / `cargo test -p server` passes trivially today."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "d72269bf-58d3-43f7-a567-db5fa8edeb45",
+        "path": "/openwiki/workflows/browse-and-manage-containers.md",
+        "title": "Workflow: browse and manage containers, categories, and tags",
+        "purpose": "Trace the tree browsing and management flows (container tree → detail → children/items → edit/delete/parent change) and the category/tag admin screens, including what each mutation does to items and search.",
+        "seedPaths": [
+          "server/src/handlers/category.rs",
+          "server/src/handlers/container.rs",
+          "server/src/repositories/container.rs",
+          "web/src/hooks/useCategories.ts",
+          "web/src/hooks/useContainers.ts",
+          "web/src/hooks/useTags.ts",
+          "web/src/routes/categories.tsx",
+          "web/src/routes/containers/$id.tsx",
+          "web/src/routes/containers/index.tsx",
+          "web/src/routes/tags.tsx"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-model-and-migrations.md",
+          "/openwiki/concepts/hierarchy-and-location.md",
+          "/openwiki/concepts/search-and-index-sync.md"
+        ],
+        "instructions": [
+          "Cover category create/edit/delete with parent selection and tag CRUD + autocomplete (limit 10, prefix LIKE), noting tags.name UNIQUE and idempotent create.",
+          "Document editing: inline EditContainerForm, parent selection from the flattened tree via PUT /containers/{id}, child creation, and post-delete navigation to parent or /containers.",
+          "Document the delete consequences visible to users (items become 未归位, children become roots) and the search-staleness consequence (container name/label no longer matches items until re-sync).",
+          "Include a mermaid flow for container detail: GET /containers/{id} composes container + path + direct children + up to 100 items (item::list with size 100), so 'all items under a container' means direct children only.",
+          "Note that POST /containers/{id}/image exists server-side but has no SPA caller — relevant if a task asks to add container photos."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "33b9a791-e12c-4efb-8fde-17b9c382a9f5",
+        "path": "/openwiki/workflows/create-and-edit-item.md",
+        "title": "Workflow: create, edit, and enrich an item",
+        "purpose": "Trace the end-to-end item write path from the form through API, tags, image upload, FTS sync, and cache invalidation, and list the invariants a change to this flow must preserve.",
+        "seedPaths": [
+          "server/src/handlers/item.rs",
+          "server/src/repositories/item.rs",
+          "server/src/services/search_index.rs",
+          "web/src/hooks/useItems.ts",
+          "web/src/hooks/useTags.ts",
+          "web/src/routes/items/$id/edit.tsx",
+          "web/src/routes/items/$id/index.tsx",
+          "web/src/routes/items/new.tsx"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/http-api-and-errors.md",
+          "/openwiki/concepts/file-storage-and-url-contract.md",
+          "/openwiki/concepts/search-and-index-sync.md",
+          "/openwiki/integrations/frontend-backend-contract.md"
+        ],
+        "instructions": [
+          "Call out the update-field-clearing pitfall from the API semantics and the fact that tag changes are the path that keeps FTS correct for tags (unlike tag rename elsewhere).",
+          "Document tag creation via POST /tags being idempotent by name (returns the existing tag), and that attaching tags happens through item.tag_ids (set_tags replaces the whole set).",
+          "Document the edit page's local-state hydration effect, image delete through DELETE /items/{id}/images/{image_id}, and document upload through the DocumentList component.",
+          "Highlight the multi-step, non-transactional nature: item row is committed before images upload, each upload is its own request, and a failed upload leaves the item without that image; describe the resulting partial states.",
+          "Include a mermaid sequence diagram: form submit → POST/PUT /items → repository insert/update + set_tags → sync_item → response ItemDetail → sequential image uploads → navigate to detail."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "9c572703-f79e-4dc1-b366-c591154c0707",
+        "path": "/openwiki/workflows/search-and-retrieval.md",
+        "title": "Workflow: search from query to location",
+        "purpose": "Follow a user query from the home/search page through the search endpoint into results rendering, and spell out the paging, highlighting, and staleness behaviors that tests or fixes must consider.",
+        "seedPaths": [
+          "server/src/handlers/search.rs",
+          "server/src/repositories/search.rs",
+          "server/src/services/search_index.rs",
+          "web/src/hooks/useSearch.ts",
+          "web/src/lib/api.ts",
+          "web/src/routes/index.tsx",
+          "web/src/routes/search.tsx"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/search-and-index-sync.md",
+          "/openwiki/integrations/frontend-backend-contract.md",
+          "/openwiki/workflows/browse-and-manage-containers.md"
+        ],
+        "instructions": [
+          "Explain URL-as-state: search terms and page live in TanStack Router search params, so changing the input alone does not refetch until submit/navigate.",
+          "Keep the index-maintenance rules on the search concept page and link to it; here cover only the request/response path and UI behaviors (loading skeletons, empty state, pagination links).",
+          "Note the per-row N+1 ancestor walk in get_path and the ranking difference (ORDER BY rank vs created_at DESC) as performance/behavior observations, not mandates.",
+          "Use a mermaid sequence/flow diagram covering route search params (q, page) → useSearch (disabled for empty q) → GET /search → FTS vs LIKE branch → container_path enrichment per row → highlight → render."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "d548845d-b464-4c80-9de3-01bca0ea0b78",
+        "path": "/openwiki/quickstart.md",
+        "title": "Quickstart — wheremystuff (东西在哪)",
+        "purpose": "Orientation hub for the repo: what the app does, how the Rust API + React SPA fit together, the minimal dev loop, and a task→page routing map so a coding agent can jump straight to the right subsystem.",
+        "seedPaths": [
+          "AGENTS.md",
+          "README.md",
+          "docs/design.md",
+          "justfile",
+          "server/src/main.rs",
+          "server/src/routes.rs",
+          "web/src/lib/api.ts"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/overview.md",
+          "/openwiki/concepts/source-of-truth-and-docs-drift.md",
+          "/openwiki/integrations/frontend-backend-contract.md",
+          "/openwiki/operations/build-and-run.md",
+          "/openwiki/testing/validation-playbook.md"
+        ],
+        "instructions": [
+          "Include a task-routing table (e.g. 'add an API field', 'change search', 'change upload limits', 'deploy', 'new DB column') mapping to the specific wiki page and the owning source files.",
+          "Link, do not restate: architecture/overview, workflows, operations, integrations, testing.",
+          "Mention the hard operational constraint that the binary must be run from the repo root and that the SPA is embedded at compile time (frontend change ⇒ rebuild).",
+          "State the repo's source-of-truth rule: server/src and web/src win over AGENTS.md and docs/design.md, which are partially stale/aspirational; point to the drift page instead of repeating details.",
+          "This is the init entry page; keep it short and make it a router, not a tutorial dump."
+        ],
+        "status": "pending"
+      }
+    ],
+    "deletePages": []
+  }
+}

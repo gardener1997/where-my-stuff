@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/data-model-and-migrations.md": {
+      "gitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+      "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95",
+      "pageVersion": "sha256:1c8f307aa8d9c4139b693e0f094bd1b1e8b05e4da0ed0465e84630987fca18b2",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "7155b425-b66b-4646-a408-904eef873652"
+    },
+    "/openwiki/architecture/http-api-and-errors.md": {
+      "gitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+      "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95",
+      "pageVersion": "sha256:77da3f832ff1c61bd174f38f32c112dcd3f2ef6ab102031a366bf0e345ce880f",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "7155b425-b66b-4646-a408-904eef873652"
+    },
+    "/openwiki/architecture/overview.md": {
+      "gitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+      "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95",
+      "pageVersion": "sha256:f10bb3541bfd20d9053a3154e028730b69e786855a279c3a3f72bc4863e185f1",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "7155b425-b66b-4646-a408-904eef873652"
+    },
+    "/openwiki/concepts/file-storage-and-url-contract.md": {
+      "gitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+      "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95",
+      "pageVersion": "sha256:27bd69fd56801c9b4f0be4142cfbf001ee1c8c4400499ad3ec93be5c87536b6e",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "7155b425-b66b-4646-a408-904eef873652"
+    },
+    "/openwiki/concepts/hierarchy-and-location.md": {
+      "gitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+      "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95",
+      "pageVersion": "sha256:759e466fc86700ee9caa680ab59ef9753445918eed8c7c1bd1622602ea981179",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "7155b425-b66b-4646-a408-904eef873652"
+    },
+    "/openwiki/concepts/search-and-index-sync.md": {
+      "gitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+      "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95",
+      "pageVersion": "sha256:7f5f52f0782ec8f600590c8d8d6411de4f9f4d1577e1175571d6026127e19051",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "7155b425-b66b-4646-a408-904eef873652"
+    },
+    "/openwiki/concepts/source-of-truth-and-docs-drift.md": {
+      "pageVersion": "sha256:ffd45c59ecca0e2d9fa2ec18f6c7a4f377360db272886a8d094b32f9a01b2302",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "7155b425-b66b-4646-a408-904eef873652",
+      "gitHead": "1a8f626411a552f84ff2403c80c9021c517c9170",
+      "sourceFingerprint": "sha256:291fef311faf76549e6f60c72084a43f032169a6132fd7ebacf520253edcaa95"
+    }
+  }
+}

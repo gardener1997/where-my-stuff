@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:759e466fc86700ee9caa680ab59ef9753445918eed8c7c1bd1622602ea981179",
+  "claims": [
+    {
+      "id": "claim_4871ad0e44564dfe9772a68605938167",
+      "statement": "Categories and containers are both stored as adjacency lists — a nullable self-referencing `parent_id` with no depth, materialized path, or sibling-order column — and an item's location is a single `items.container_id` foreign key, so both the tree shape and the item's where-string are recomputed per request rather than stored.",
+      "evidence": [
+        {
+          "resource": "repo://server/migrations/0001_init.sql#L1-L32",
+          "version": "repo-lines-v1:sha256:6d290ca753d5f1f72e75876d8f03e421d45ac639f83c5d3d7476b035cc58c88b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2YTBhODM3ZTA2NmY2NWY2MjRmYzVlOGY1ZTkyYmJiNWNhYjBlYWFmNmVhOGFlMTM5NTMwYmE0YTczNDVhOGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI2ZmIzNzJmNjJlY2FhM2YzYWQwNDMwNmEwMmFhNmU0MDU3NDU5NmMwNTBiZDNiNTczODc4NGZlNTllZTY0ZTMifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L6-L23",
+          "version": "repo-lines-v1:sha256:3dcc9c88126030ebda909913ea87e6fd3f8da484c9eabc47a468dd8dd502bcaf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MGM2Y2E3YmM5NGUwMGM4ZDU3NDZlODAyMzhmYjQ3NDA1ZTE5MjVhNWUyMDAxNzY2NzRmMDI4NTdkNTRjNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliNTMyZTgzODA4Y2IyYzkyZTdlMGE4ZGUwYWQzM2Q2ODkxMDRmMWExYWMyZTA4MjQyYzZiZDAwNTZiMWY4OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExYmE1ZTRlOThiZjQ4MzU1ZGRmYmE5MTcwMzE1MWFkMDI1NjNmMDliYmQ2YzE1NGJiYTJmYTIzNDI2OTJkNzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c6ce9e69ca584f81a414c2c7d0205de9",
+      "statement": "`build_tree` in both repositories turns one flat, name-sorted row list into nested nodes: it sorts by name, partitions nodes into a children map or the roots list using an id-set guard that promotes orphans and NULL parents to roots, and attaches children recursively via `map.remove` so each node is consumed at most once.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/category.rs#L70-L118",
+          "version": "repo-lines-v1:sha256:446b37036c6b8f9fe65d6cbe5830c91f061d5a8fc57c0c820916efce54179fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYzQ2ZTg0ZTk0NTRkOTcyNGUzYjdiYjY3Nzk3ZGU0NDczZTgzMTliMDZmNTkzYThiNGViOTA1MDZjMTRkNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZjZmNDY2ZTU5Y2ZjMzA3MDNjNDVmNzJhZjY1ZGU1NGFjMzYzZDM1NGNjMWEzMzMwMzUwYWNkNDUyNDM0YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L116-L158",
+          "version": "repo-lines-v1:sha256:37c59b109395ca198ca04bf9ad2548090f24ff83ef2dee027c8ecd851aa226f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NzY4YmJjOGQ1ODBmZWYzYjcxYjBmZjc5N2JkMDExNGI3NWExODgyMmI0NzQxNDY0MzBjYmY0ZDhlZWM4NzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZjZmNDY2ZTU5Y2ZjMzA3MDNjNDVmNzJhZjY1ZGU1NGFjMzYzZDM1NGNjMWEzMzMwMzUwYWNkNDUyNDM0YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c51ddc71ba2642098e8ad6fafc7450d3",
+      "statement": "`container::list_tree` and `category::list_tree` issue a single unbounded SELECT and assemble the nested DTO in Rust instead of using a recursive SQL query or per-level queries, so each `/containers/tree` and `/categories/tree` request loads the whole table and returns it name-sorted with no server-side cache.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/container.rs#L18-L27",
+          "version": "repo-lines-v1:sha256:a8d12d17a2f87f276cd2faf5bd2768f124137787d1599a0830e959cdde416c91:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMzE0NTQwNmNmMDdhMThjNzEwMzQ2NDYwMDg2MGYyMTIzZTk3NjlhNzA2ZDNjZTQ4NTg2ZWU1NDM4Njg3MmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU5YzI5ODUwMTgxYzlhOWI4OTQ0NGU5ODlhOGJkZTg3N2IzYTkzYTlmMDJlZTliMTRiZDUzNzUyMzNkMWQwNWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwMWUwZWQ3NGE2MjU0MDcwYjkwNmU5ZGQ1NzIxMWYyNmQ2MGZhNzlkOTQwOWJmZTNkNmUwZTg1YWZiOTkxZTMifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/category.rs#L15-L18",
+          "version": "repo-lines-v1:sha256:809cb396bce435a03655cdca6b6af3856b48ac03163d3886783fd9868308f99e:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTViNzAxOTVlNWQxNTNkMDBhOGUzOGNmZDY4YWI1NTcwZTYxMzUxZjEyMmZlNjEwMjdmMzYwZjBkNzk0NmYyMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTYzZjIyOTM4NzllYjFiOWYwNjZkNWUyNzk3Mzk2ZDIxNWFlNDZhYmNjN2U0NDdhNTA5MGQ5MDIzNzZlYWE0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTEyZmY4ZDQ4Y2FmYTI3OTNhMTI4NDhkMDRlMmQyMDc3YmM0ZTFhOTM5ZWU5MmQwNzkwNzRjODhkOWFiZjQ3MyJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L25-L28",
+          "version": "repo-lines-v1:sha256:708e1b3c84efc35f00205ca9413241930c680f02e6c90931889d101b60451da4:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTUzYTFlNjkyZDUxOTBkYTBiMzQzZThlNTQ0M2E3YWViNjc3YTFhOGNjMmY0ODBhNDM1MzdjYTAwYjQwZWY3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTYzZjIyOTM4NzllYjFiOWYwNjZkNWUyNzk3Mzk2ZDIxNWFlNDZhYmNjN2U0NDdhNTA5MGQ5MDIzNzZlYWE0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQxZTdhNjZkZWU5MTIwNmZkYzAzOGZlZGQ1ODgwZDM0ZjY4ODhiYjk1MzE4YWMzMzhmOTI5OWU0ZTQ1MGZjYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b2de37ac0894c7580f2a760c7bf1757",
+      "statement": "Nodes that form a parent cycle (including a self-parent) are unreachable from any root during `build_tree`'s attach pass and are therefore silently omitted from the tree response while still present in the flat list endpoint, because neither the repositories, the handlers, nor the schema check ancestry when a `parent_id` is written.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/container.rs#L127-L158",
+          "version": "repo-lines-v1:sha256:f0a054a7daa2eac91d14ac3822f284421a694b3ff9bd14798b50d4c0ad9e3572:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MDAxM2Q2MmMyMDZiN2MwNDgyMmJjYjM1MWI3YmExN2E2NDBkODhiZmRlMDE3NmMyMzJjYTFiZDZlMDM0NzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3YzI2NGE5YWFmMTNjZDAxYmZmZjFkNDNjMjk2ZjhlOTA1MDQ4Zjc2N2ExOTNhZTY2ODM1ODIxNWNkOWQ3YjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L74-L89",
+          "version": "repo-lines-v1:sha256:68612dd8afb5255bd39019cd0fdaf0e204e02c92f33aa2868b9e22dd0d48a467:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNTg4N2JhYWNkYTI1ODZkNTEwNWIwZjI1YzdjY2E1MjFhOTk0MTZkZTU5YzkxYzE1NTFjZmQ5MWUzZDc5ZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxZjdmZDM4NjA0ZjE4Nzg2NzE3MjcxNDJhMzg3ZGMwZjQwMjdhNjg0NDRjNzA4ZTU2ODQ4ZDRhNTU0OGU1YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NTEwOWEwY2E3ODczYjEwMjkxMmIzZjYyZTU3NTc0MTMxOWZkNzQzNzU5YTliMWY3NzY1YzQ3MWZmMmM0MmYifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L292-L300",
+          "version": "repo-lines-v1:sha256:1d98729c7f79522c1b34d18f672d21fc7276c14929f373b7ce2fdaa10571663d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQ3YWIwYjYwYTg1ZDBlNTk0OTI5MzFkNWI2OGE0MTA3NzA1Yjc4M2U4OGJkMzE0ODkxMjY5MTJiMWVmYjVkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUwMDYzOTk3NmZhNzYzMWE1ZGJkMjdlM2U0Y2MyMjdiYjRjMzcxYzc1NWU2NWU3OWQ0OWRkMzAwZWQ4ZjQzYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjViNjgxNTdkZDkzNjE0ZGU5YTljNDZmOWUyZDFiYzJiMGMwMjg1ZmQ0NmNjNTVjMmVhZjk5NTgxNzFlZTQwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM4NTA2NTM4YjkwYjFkYmE1MDgxNGY4NGM1ODllYjQzZjk1Njg1Mzk3NThkYTc2NjgwMTVjN2M0YzEwNTdkYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_658a5bc53774469f8b85faedcc1c30b7",
+      "statement": "`get_path` walks `parent_id` iteratively from the requested container up to the root, collecting one `PathSegment { id, name }` per step and then reversing the vector, so every caller receives a root→leaf path whose last element is the container itself.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/models/container.rs#L49-L52",
+          "version": "repo-lines-v1:sha256:a0ca0838e7a2abde22f21250c2613df3c0c90468f501d925d6fbc4628876933b:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWZhMWNhZjYzYTNlYWVhNTg4NGVjNjM2NjQ2NDU5NjJmNTBlMGI4YjEzMDkwMGVjOTg0NzVjOGQ1MjBiZjhhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY5MDUyODc0NGRiMDlkMmVhMGM3YjdlNDZkY2NlOTU1MDVkNGNjZjYzNDQ5ODcwNDdjYzM2MmNlNWQ0OWQ1YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTliZDUxNTE3YTI4ZDYzNWZhYmQ3MmI4NWE5YzdjN2JiYWEwODFmM2ZjMmRkZDFhOGFlNjhiNWVkMmE4OGFhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L41-L55",
+          "version": "repo-lines-v1:sha256:dd16755f3c532d4efe262c4629dc487f6c6b789f15c1df5e202782d111b5f244:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MDRjYmNkNjc0NTE4NDVlMGYzMTRhMmY4ZGFmYjZhODg3ZGMwM2QyZjZlMWVjMjQ5MTc3NDdmZTQwMzczNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViNzhhNzlkOTYxMjFiN2QwMGQ3OGNiMGQ4ZWVkNjI0MTJlMTkxYTJkZjM1ZDVjOTQzMjFlMTIyMjhmZjA5NTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiOWEwMGJjYWU5ODczYmQ3OWFmNDhiNDI3MTEwNWZiYjk2MWQ5YTczZmE2NTdkNDU1OTMxN2UwZWMxNWYyMWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c5fd51850d247e882fdd5ae5894e768",
+      "statement": "`get_path` keeps no visited set, so a parent cycle or self-parent makes it loop indefinitely while growing the path vector; since item lists, item detail, and search hits resolve a path for every row, one such row hangs those requests instead of only breaking the affected container page.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/container.rs#L42-L55",
+          "version": "repo-lines-v1:sha256:510fb0dbae72ffd47922586160fa10f372d6b6135660fc0513f1b1a941506a3d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZTRkOTQ4MGNhNmQwMjY1YWI5MDNmYTQ5ZTMyOTFmYjMwMzkzNzA2NWFmZjI4MWYyOGY0ZTM3ZmM1YWJjZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YzFiNjA2MzRhYzNkZWZhZDY5ZjdhMTVhNDlkN2JiNmYxZDY2YzBmZjk3NGJhNzYxZGRmYjg4NmI5YmU4ODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiOWEwMGJjYWU5ODczYmQ3OWFmNDhiNDI3MTEwNWZiYjk2MWQ5YTczZmE2NTdkNDU1OTMxN2UwZWMxNWYyMWUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L77-L95",
+          "version": "repo-lines-v1:sha256:2bf00459ac3110accb6be05f02bbf0c70b43b12b2590de4a2c7ee6fd54e1a2d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxOGJmNGQ5NGE3MzJmN2U1NjUxM2YxMWRmODM0NjY0NTgzZjYyYWZlOWY1M2YxYTAyYzc2YjM2NDM2OWIyN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjMWE4ZDM4YzFlZDE5MDFjYTQ2NGE1ZmUzNGVjNGZkM2ViZDA4NDc5ZDMxZjYyODk3ZmUzY2I2ZGMzZmRkODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NDJkNTNiYTA2NjIzMjk1MjZiZWIzOWZkOTYzYzQ1M2M2MmIxYjgyYWQ1NzQ3OWIxNmMwYWFkODAyODI3ODgifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L23-L28",
+          "version": "repo-lines-v1:sha256:7e84ec260a35656f0ad4b5c6d80870b70946e4703e742eb62b7a52075dfc6ffe:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE4YmY0ZDk0YTczMmY3ZTU2NTEzZjExZGY4MzQ2NjQ1ODNmNjJhZmU5ZjUzZjFhMDJjNzZiMzY0MzY5YjI3ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzVjZGVmODA4NWFlNzRhYjYzNmQ2NDU5ZjVjNmQ1ZmJmYjBkYjI2NGYxYjBkNzViYWM1MTljOWIzZjY3MTdhYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg2YmFjZmViNTcyNDU0MGUzMmQ4MmUyMDcwYWQ1NmY2OGU0MzUyMjc0ZGNhMjdlMzM2ZDVhMTFjYzUwOTRkNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2M3YjhlYzVkZWYxNjE0YzllOTg0NjlhMTA4MWNjODJiZjA5ZDdmZTU2NzIzMmMxZTQwNjdiYWMzNjY1N2I2MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4aa5886e37de4b059b0d69304c11d01c",
+      "statement": "Path resolution costs one SELECT per ancestor per call site and is neither cached nor deduplicated, so item list and search responses run `get_path` once per returned row, the container detail page requests up to 100 such rows, and `handlers::container::detail` fetches the container row twice (once via `get`, once as the first step of `get_path`).",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/container.rs#L29-L56",
+          "version": "repo-lines-v1:sha256:e8fe3886367617846b07ec640977b3f46b6725cf1f39025aae83f6732cca456c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MDk0NjM0N2QwN2FlY2YyZWJlNDk2YzBhNDU5NzhhODY3NjVjMTU4MDNlM2E3MjUzMjNhMDIwYzBmMGViYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4OGI5MDdhNmYzMDJhN2U1MDk3ZGFkNThiNGJhY2NkNTc4ZTkyOWIzNjk4YzhkOTRlN2U0NTM2MTczZDcxMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4ZmUzNzMwNWJiZTI0ZDFmYWFmMDM2NmI5NGVjZWNkZDZlZDY3NDg2ZmU5NTZmNjlmNmRjZWEwYzQ5ZWRhMTgifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L30-L55",
+          "version": "repo-lines-v1:sha256:ec42019fd0a8cd332b14f7c917508c802b0ef086a137ae63497ac599293ad4b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJhOTliMTMxMmQ5NTNlMzllZWFmM2M5MzY0ZmRhYTA5ZWZiOWUwMjRhYjM5ZWUxMzcyZDQyNGYzZWYzNmY4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiNjU3YjM4OWRjY2JlZTIzOGUzNGZiMzgzZjg0MDQ1ZDg3OGFhZjAzMDQyMjNkMDU1ODJmMjAxMjllOGFmMzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiOWEwMGJjYWU5ODczYmQ3OWFmNDhiNDI3MTEwNWZiYjk2MWQ5YTczZmE2NTdkNDU1OTMxN2UwZWMxNWYyMWUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L77-L95",
+          "version": "repo-lines-v1:sha256:2bf00459ac3110accb6be05f02bbf0c70b43b12b2590de4a2c7ee6fd54e1a2d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIxOGJmNGQ5NGE3MzJmN2U1NjUxM2YxMWRmODM0NjY0NTgzZjYyYWZlOWY1M2YxYTAyYzc2YjM2NDM2OWIyN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjMWE4ZDM4YzFlZDE5MDFjYTQ2NGE1ZmUzNGVjNGZkM2ViZDA4NDc5ZDMxZjYyODk3ZmUzY2I2ZGMzZmRkODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4NDJkNTNiYTA2NjIzMjk1MjZiZWIzOWZkOTYzYzQ1M2M2MmIxYjgyYWQ1NzQ3OWIxNmMwYWFkODAyODI3ODgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_22cd331554444dda911d621681503ff1",
+      "statement": "The same `PathSegment` array produced by `get_path` is reused as the container breadcrumb (`ContainerDetail.path`), the item's '位置' row (`ItemDetail.container_path`), and the one-line location on item-list and search rows (`ItemSummary.container_path`), so all three surfaces agree by construction.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/models/container.rs#L41-L52",
+          "version": "repo-lines-v1:sha256:4bb81967f05432e416673daf78c8a07250a2d42400e549a8f89b012c1001540d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmYTFjYWY2M2EzZWFlYTU4ODRlYzYzNjY0NjQ1OTYyZjUwZTBiOGIxMzA5MDBlYzk4NDc1YzhkNTIwYmY4YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmOTA1Mjg3NDRkYjA5ZDJlYTBjN2I3ZTQ2ZGNjZTk1NTA1ZDRjY2Y2MzQ0OTg3MDQ3Y2MzNjJjZTVkNDlkNWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhMDFiZjMwNjlkMzlhZTAzMzAxMzJkOGM2NjAzNmQ0ZjVlMTAxNWU5MTg3ZThlMDc1MzdjN2Q3N2FiMWFkNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L126-L129",
+          "version": "repo-lines-v1:sha256:ce361f5b357b658cf0c9dff598d947619adf0b96026e949c2f611bbe6f6a6bdc:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQzZjA1MmViNGYzNGMzODIzOTUxMGM5NjBkNWViOWE4MTYzZjFjMzM2ZTdmYjM3NWVkYjUzMDEwMmEyYWZjOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmMxZWRmODZmY2EyZjQzMTViNmEwOWY2MDY3MTAzZmQ0OTFlN2E3NTc5MDM0Mzc3Mjk1YzBiMTM4ZGMyNmJlMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODIwYzc5ZjcwNjE1ZGI4NTlhNWY5MjYwMzZjZjVlNTUxOTM2ODc1ODE4ZWE1MzkxZjI5NDdkY2U4ZGU5ZWMzMSJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L51-L65",
+          "version": "repo-lines-v1:sha256:625f92c19ff42c3515d35af5ae3457a65ba415534e4512e10ca76717775e7186:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjMjZiZmM1YmNmMjYzMzY5MzNjY2YwMTgwOTdjZjc0NTljOWIxZTI0NDhiZWM1NDRhNjc0ZGFlOTAwYmU5ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2YWZhZTYyNThhNWZjNDU0Yjk4OTJjYTliNjJkNTY2NGZhMTRhNjNlZGU2NzNkNzkxMWI3ODE3NjU4MzU2ZDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMyMDNmOTk3ODljYmY2MDdjMDg1OTVhNjIxZTg2YTlmY2ZlMjY3ZTI3ZjdhYTE2ZTYyODgzNDE5MzMwNDhmZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxNGZkOGJiNDlhYTNmZmFmMGMxYTFkY2E3ZjA2NTVkYmE1Mzk3NjllYzBlYjdlY2ZmODg5NWJhZWI5ZGFkNjgifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/items/%24id/index.tsx#L139-L164",
+          "version": "repo-lines-v1:sha256:ee02ce3dbd998dd6d7b2625b7b0215f0e91058b5400f24f35aab20e02867e729:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDJiMGU1NDM4MjMwMjg1M2M5YjY4MjJmODRiNjY4ZjY5YzQxOGQ1NTYwNmMzN2YyNDhhNDdiMDdmNTY2MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkYTU5M2ViODNjNzlmZTljNmQyNjhkMWMxYjg3ODdhMDkyODEwODYyYjIxZmU4YTFkMTYyZjRmMWQxZjMxMWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxYTU2Nzk2NGQ3NDBlNWQxNTEwZDM0MjkxMTU5ZGFmODkwOTQ5MWU2YTY0MTUyMDU5NzU5NDI5Yzg3ZmQ3YWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjMzJiN2ZjYWYxNjNmNzdlZGJmY2Q2OGNkYTMxZTFmNmVmZTczY2Y0OTE5ZGYwYjcyN2U2ODcyMTA5NDJkYjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7775bdd6328f47969d31ff0ac35cef8e",
+      "statement": "An item shows only its category's bare name (`category_name`, resolved by one scalar query) while it shows the container's full ancestor path, so the category hierarchy is navigation-only and never rendered as an item's classification path.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/models/container.rs#L41-L47",
+          "version": "repo-lines-v1:sha256:bdec01b77156f32130fc8078851cd85d9147e9bb4aa1af6faa323afaf9599514:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWZhMWNhZjYzYTNlYWVhNTg4NGVjNjM2NjQ2NDU5NjJmNTBlMGI4YjEzMDkwMGVjOTg0NzVjOGQ1MjBiZjhhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmEwMWJmMzA2OWQzOWFlMDMzMDEzMmQ4YzY2MDM2ZDRmNWUxMDE1ZTkxODdlOGUwNzUzN2M3ZDc3YWIxYWQ2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGZlNjE5MGVmYTRmYTE0ZjgwYjIxMmE3NWUyMmZlZmMzZTcyMjU4NTljMWEzYTgxODc1ZWFiN2UyM2ZlZWM2NCJ9"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L116-L124",
+          "version": "repo-lines-v1:sha256:4725d5b30d47cfd8eb7cef6de3c3b651ef9d37865c50856f32021bb0464234cc:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTc1NGEzYjdlM2Q2NDg3YzM4ZGE2NTVmZTZkZmFhNDMxOWI4MzdmM2EyZjkzYmIwZjU5MzZhZmE4ZDk2NmU1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWQ5ZTEyNTQ2NDI1NTc2ZDNkZWFlOGM5YjlkYmYxMjhkNWQ2ZGRhZjVkN2ZlODU3OTM0OTI3ZGVmZmEzYjlkZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQ1YzRiM2E0YmQyMjI5MjI4YjU1YzYzODVjMzkxMWRkMTQ4YzVhNjdlZTNmYTQ4NmFiNDZhMjFiY2I1ZDUyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmIzZWE0YjJiYTUyNzg1MDk2ZTljNDRlYjg3ZGUwM2I0ZDI2NThlZDcwYjdjZTZjYTcyZGRkMTA2MThmNWE5YSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d439354d89354fdca70a48b1f1704f52",
+      "statement": "`flattenTree` depth-first flattens the server-provided tree into `{value,label,depth,path}` options whose `path` joins ancestor names with ' › ', and `Select` uses `depth` for 16px-per-level indentation, `path` as the trigger text of the chosen option, and `path + label` as the target of its searchable filter.",
+      "evidence": [
+        {
+          "resource": "repo://web/src/components/ui/Select.tsx#L152-L154",
+          "version": "repo-lines-v1:sha256:64e918ae4f3752c1194ed08d69751547a9c8d9a34d1ee650f5abf2a2e16f4ceb:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Q3NGRkNWNiZmJiMTNiZDhjZTQxMDcxNjVhODE4ZGQxNGIxZjdlNTM0YmM4ZTMyYTM2OTBkMDFmNzczM2U0OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjViN2FmODQ3YzNlMjdjNDU5OTY1N2E3OTM4ZjIyNzUzZTEyYzhiMDE3NDIzNWQ5ZDJmZDEyZWU4ODVkNTk1ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWIxNWFiOWFkNzk0ZTZmNmY3MjVhOTBlMzE1NjA4Njg2NGMwMTc5YmM0OWEyNzU4ZDU2M2E3MDk2MDIzM2ZlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjhkMjY5MTdmOGIwZmUwNjYyOTIwMjI3YTE2MTE3NWNhYmQwYjI2YjhhZmM4Yzk4YzNkMzVmMTE5ZWRkMDMyMCJ9"
+        },
+        {
+          "resource": "repo://web/src/components/ui/Select.tsx#L207-L214",
+          "version": "repo-lines-v1:sha256:5d9d13b06dea245972b8171fb134fae4bd741dc5c2bd4ccf642f98f99e698136:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTYxNWIzMTFiMTE3ZjMzNmJjMjEyMDUzYzI3NmRiODQ4NjMwODJmNDQxZjkyNDdjN2NiYmVhMDQzN2NlZGFjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjYwOGNhZjg5YzhjMjAwMGJhMDE0OWRmYTljYzA2OTc3Zjg4MWQyYjM0YjYyNDU1Mjc2ZTk5M2Q4N2EzYzMxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzAyZmQ3NTE5MTMwYmZjZmNlY2NjYmE3YWE5ZDg0YzE1ZGZhN2EyZDlkYTc0MTgzNjI4NGU0Yzk5NGQ2YTA1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmFhZjk3MzAyYmVlYTc3YjVhZDc4OTIyN2YyY2IxOTBlODk0YjQ4YmMyOGVkNWJkZDZmNmY5NTlkZWFiNWE2YiJ9"
+        },
+        {
+          "resource": "repo://web/src/components/ui/Select.tsx#L47-L52",
+          "version": "repo-lines-v1:sha256:7d2281145425aff0dde8dc44b274d7b5b7f51181872fd25eda51ae96a8ecb061:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGMwNTRjYjdmYjUxYzJlMGY5ZGQ1YjJmZjVkNWY0NWJjZGFmY2VhMGFhM2UwMjQwMjY1MGExZDRjNTc4MjU1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUyMmNkZmNhMDY2YTJhMjIzNjE5ZDdlZDhiM2NhNjZlYWY3MDBjMGFiYTFkN2I5ZDRmZmUzYTNhY2JiZDM4OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmQ5NTBmZTkxMGE3MDY3NjQ1MDBjMDZjMzcxNDQ4MzJhYzFmMDJkZGZmYTI1ODRiOGM1MTNlZTlkN2M3NWEwNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzU1ZDAwNzU5ZGRmYjNlNTgxZDI5NDQ3YjZhNDVmOThlZDlmODYzNjM1YWY2NGU3Y2ZjZDczMzMzOTNhNjVmNiJ9"
+        },
+        {
+          "resource": "repo://web/src/lib/utils.ts#L34-L59",
+          "version": "repo-lines-v1:sha256:bb85970f71199a6ce18c8b4c9e7595316a4bcb7e97fc98768177dfaf5c533b16:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzNTAxOGQ2NjAyMGNiYTI0NTY0NmJhNzEzNDRhMTRlMjM4MDIyY2Y4ZDdjZTc2OGY4YmRiYjE5NjkwNmJhNjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ODcyZjkzYTViMWIzMzA5YTZmMWJkYmNkZjQzMDk2N2E2ODA0YzRmM2I4MGVkZDIwZDAzYTQ0ODY4YTBiNjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b4d422baeee4e76a25d3e2c54b63c06",
+      "statement": "`flattenTree` feeds five pickers (category create, category edit, container edit, item create, item edit); every parent picker removes only the node being edited from its own options, so descendants stay selectable, and the top-level container create form offers no parent picker at all — child containers exist only via the detail page's form, which posts an explicit `parent_id`.",
+      "evidence": [
+        {
+          "resource": "repo://web/src/routes/categories.tsx#L142-L148",
+          "version": "repo-lines-v1:sha256:4ce9674aa8b4c080ed271a82eb31a30213da0d4bceabc0421905ac530a55b6f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDBhYmZlY2RmYTFjZGQ4MDcwNGMwMGM5YTRhNGQyY2Q5ZDE5MDZjM2MxZDNiYjgyYmQzZjVlMzliZjA0MGFiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE0MTQzNjc2NmIyZjhjNGZkNzA3NmU5YTdiZTJmYjNjMjQ1NzI4MjI4YmNiOWRjM2E3NmY1MWE1YTQwYzFkOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzYyNTQzNTIxNzYyNDY4MDdjNGYwMTY5ZGRkOGQ4ZTIzZDAzMTg1NjJhODVhZTNhZjQzZTc1YTlhYTk5NmQxNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGM2YmJiZDJkZGU0ZGY3NWYzNDgwZjlhMzFjOGQ1MzZiODhkYzlhOTAzODczZTdlOWQ4MmU0ZmQ3MGQyMTJkMyJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/categories.tsx#L59-L67",
+          "version": "repo-lines-v1:sha256:a2626f3be1897df1d85c145f55bd994fd88ca5c3868dcb6cdd6452cf29ef189a:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWUxNWIyMDFiMmE0ZjNjM2UzYWJhNjBhZjAyZTEwNTg5MDc4MDc0MGYzOTY3YmUzZTExMmI5Njc3YWVlMTgxOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWYyMTVmZDAzY2ZjMmJlZWJmODA0YTE3YWM1ZTk0Nzk1MWY3Y2QyZGMwNTYwNTIyNDk5YzYwNmZkYmNkNzE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDM5N2E5MWI5ZWY0NmFmNzI4OGFjNjcwMjMyZGRhOTAxM2QzOWVmNmIxZTc4YWEyMjRjOTBmNzE2ZmZlNGZhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2MzYmMyYWRiNGI1M2NkMjQwM2YxZGUyNDJkNzkwOTY0ZWUyOTZlZTI3YmIyZWYxZjc1N2U4NDZhYjU4ZWY0YyJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L292-L300",
+          "version": "repo-lines-v1:sha256:1d98729c7f79522c1b34d18f672d21fc7276c14929f373b7ce2fdaa10571663d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQ3YWIwYjYwYTg1ZDBlNTk0OTI5MzFkNWI2OGE0MTA3NzA1Yjc4M2U4OGJkMzE0ODkxMjY5MTJiMWVmYjVkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUwMDYzOTk3NmZhNzYzMWE1ZGJkMjdlM2U0Y2MyMjdiYjRjMzcxYzc1NWU2NWU3OWQ0OWRkMzAwZWQ4ZjQzYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjViNjgxNTdkZDkzNjE0ZGU5YTljNDZmOWUyZDFiYzJiMGMwMjg1ZmQ0NmNjNTVjMmVhZjk5NTgxNzFlZTQwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM4NTA2NTM4YjkwYjFkYmE1MDgxNGY4NGM1ODllYjQzZjk1Njg1Mzk3NThkYTc2NjgwMTVjN2M0YzEwNTdkYSJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L331-L336",
+          "version": "repo-lines-v1:sha256:800a071bc47387b6d2e234359919a4e279f919e5a8dbaff2934bb4374ee28c63:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRjZDUyMzU2YzNiNDBlYWFmOTcwNWQ2ZTMwNTg0MzQ1Yzg2YTBiNjE5ODhjYTM3ZmJmMGJmNDhjNDU5NzYzOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDk0ZmMwYzE3M2QxZWMzZmM1MDFkN2RmYTkyODU1MDFjNTI3Y2ZiNDcxMjU4M2RhM2NjMzYxODA1NjZiNGJlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTg1MTk3NmQxZjQ2NWQ4YmUxOGE3OGJlMTE5MDJkOGYwOTQ1YzIwMjI4MjhmY2RhY2E5Y2UxYjI0MTEwM2RiNCJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/index.tsx#L19-L29",
+          "version": "repo-lines-v1:sha256:80811920d496da9c95d3cf58f3479150c4f2c6ed9370e71701c0efd394efc738:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjMGNiMTcwMDQ3NmM4Nzg3ZTcyNDE2MjE5NTVhZDNmMDY3MDk2OThhNWMwOGViYjZjM2VlN2IwNmRhMGQ0YjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyNjE2YzUwZWYwZDgzN2Y2N2M1NzBiMDJlMTM2ZTY0OTZiOWJmMDU0M2VkNWVkMGJmNzM4MTQ2YTE4OGM3NjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2MDc3ZmNhMDM4NWFlNDQxNmZlY2I5ZDE5YTIwYjcxNGQ2ZGQ3MGY1ZjA5ZDI5MDgxMDE1NDYwMzQyNThlOTcifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/items/new.tsx#L168-L177",
+          "version": "repo-lines-v1:sha256:1daf1da4fc0a87f32ef55e756dbbe72ad5ab330bfeaa814b77d047270043b291:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlZWRjYzFmODVlN2VjMmM4NzczOTUzYmUyYzA3NWYxNmZmYjVjZjFhZGJhOWQyYjRmZGVhNmMzNjQ1OWU1YjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmMTE1MDQyNDY5OTc0ZTY1NDc4ZTdiYzQ5M2MyYWU2YmQ5ZGQzNDY1NDQ5N2M5MzhjYzZiM2IwNGQ5ZjFiM2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5ZDJlYWI0NDIxOTdiMzUzZWY1NmYzNWFmYTFkOTNhMDI4MWNkOTFmY2JmZjNmMTI0NmFhOTgyNzQwOTM1ZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1YTk5NDI3OGZmMmZlMDEyOTMyYjk3MDU3NzkzNzgzZTQyNDVmNmY3ODIyNWFmOTE5ZTIzMzliZTM1ZmE5MmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_811fccd53efb4d0983644311781caad8",
+      "statement": "`containerPathText` joins path segments with ' › ' and returns '未归位' for an empty or missing path, which is how items with `container_id = NULL` are labelled on item cards and search hits, while the container breadcrumb and item '位置' row instead link each segment individually and print plain 未归位.",
+      "evidence": [
+        {
+          "resource": "repo://web/src/lib/utils.ts#L29-L32",
+          "version": "repo-lines-v1:sha256:8b7ddb4cd3a40c80b145376bd9dbccb3e62567bc262342c6a94d537ca27fb856:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzI4ZDM5Yjc0MmNkYjE4YmYyOGMwZmE1YzhhYTM1YmFhNzkyZjVjZTBiNzU2NmZlZmE4NDRjY2IzODlmOGI1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWJhNzY4N2NkMjFkYTVjNzUxYjdlMTk0ZmFjZjc1YjI2YzQ3NjE1ODcwNzNkNGRkMDg3ZDk0OWRlNGY2NWI3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmZmOWZmN2U4MjA3MmFlM2MwODUxZDNmZmRhMjQyMmMxMWI1YjYxNzM1OWQ1NGFhYThmNDViOGVlZGNhM2EyMyJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/items/%24id/index.tsx#L139-L164",
+          "version": "repo-lines-v1:sha256:ee02ce3dbd998dd6d7b2625b7b0215f0e91058b5400f24f35aab20e02867e729:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDJiMGU1NDM4MjMwMjg1M2M5YjY4MjJmODRiNjY4ZjY5YzQxOGQ1NTYwNmMzN2YyNDhhNDdiMDdmNTY2MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkYTU5M2ViODNjNzlmZTljNmQyNjhkMWMxYjg3ODdhMDkyODEwODYyYjIxZmU4YTFkMTYyZjRmMWQxZjMxMWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxYTU2Nzk2NGQ3NDBlNWQxNTEwZDM0MjkxMTU5ZGFmODkwOTQ5MWU2YTY0MTUyMDU5NzU5NDI5Yzg3ZmQ3YWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjMzJiN2ZjYWYxNjNmNzdlZGJmY2Q2OGNkYTMxZTFmNmVmZTczY2Y0OTE5ZGYwYjcyN2U2ODcyMTA5NDJkYjEifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/items/index.tsx#L74-L74",
+          "version": "repo-lines-v1:sha256:029bcc03a67223874cec6c2900c8118eff77655f1225586ad581f8708e31f73e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI5YmNjMDNhNjcyMjM4NzRjZWM2YzI5MDBjODExOGVmZjc3NjU1ZjEyMjU1ODZhZDU4MWY4NzA4ZTMxZjczZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI5YmNjMDNhNjcyMjM4NzRjZWM2YzI5MDBjODExOGVmZjc3NjU1ZjEyMjU1ODZhZDU4MWY4NzA4ZTMxZjczZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJjNzZkYmEzMDQ5Y2M0MTVhMmVlMTRmMDcxMzNlYTZiNjIwYTUwM2NmMWVlODViYWY2YmEzZGU0NWJhOGVmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGZmYjU4MWM1MjFhN2YwN2I2MTU0MTA0NTEwM2UxM2NjNGI0Y2QzMDI5ZmVlZjU0NzBkODMxNjY1YzMxZDFkZSJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/search.tsx#L96-L96",
+          "version": "repo-lines-v1:sha256:b191562e9af816cb625e81ccac105a2b0f9114c8065a00ef2b316d94e119f2bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE5MTU2MmU5YWY4MTZjYjYyNWU4MWNjYWMxMDVhMmIwZjkxMTRjODA2NWEwMGVmMmIzMTZkOTRlMTE5ZjJiZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjE5MTU2MmU5YWY4MTZjYjYyNWU4MWNjYWMxMDVhMmIwZjkxMTRjODA2NWEwMGVmMmIzMTZkOTRlMTE5ZjJiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjZiNzgxMmEwY2NjMmEwYWM3YWFjMDFlZTZlYmNkNGVjODNkMDJkNmUxY2JhNGYzZGY2YmQ3MzkzODI4NWU1MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjUzZjc5ZTcxYmVjYjJmNjk5ZTkxMjExMGZiN2JmYTYwYzkyY2E1MGU2ODZhNTMwZWMzYjMyNWIyYTZjMjliNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f5a761b4d5e441c9bd5d6648f71304c",
+      "statement": "Deleting a container or category nullifies references before deleting the row — items lose their container/category and children keep existing with `parent_id` set to NULL — so deletion promotes children to roots rather than deleting them, reparenting them to the grandparent, or touching items inside those subtrees.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/category.rs#L54-L68",
+          "version": "repo-lines-v1:sha256:0842ad76d7d49dcb075d531dc7ebbd172d44b75c34e03aac5a257ebd8682219d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMzFkZGZjOTdjNzYzODllNmE4OGViMmRlYWNmNDM5ODZmNDA3ZWVlMzgwMDM3NGM3MzQ5YmUzYWY5NzhjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTE3YjgzN2EzYTQ0ZmY0NGVhMjJlZGExYzBmM2MyMzU4NjczMWZmN2M3NjBkZGE3YTcwYmUyYWMyMjM2YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmNzI4NjdkMTkzYTZiM2YxMTNlM2RmNDRiNGY0MzAxYWQxMDU5N2U0ZWVkOWYzYzc4ZDVkYjgzNWIyODdkNTgifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L91-L105",
+          "version": "repo-lines-v1:sha256:523da6851c21e4563e56ce58541c55557339db7a152ac4d55819d04afcf74ded:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMzFkZGZjOTdjNzYzODllNmE4OGViMmRlYWNmNDM5ODZmNDA3ZWVlMzgwMDM3NGM3MzQ5YmUzYWY5NzhjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTE3YjgzN2EzYTQ0ZmY0NGVhMjJlZGExYzBmM2MyMzU4NjczMWZmN2M3NjBkZGE3YTcwYmUyYWMyMjM2YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0YmJhZGQzZDBlZjE4ODllNzJhYTY4NTIxMDg0YzU1YjQ1OThkYjEzZGIyYjI5NzExYjIzMWUxMGFmODg2OTcifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L104-L126",
+          "version": "repo-lines-v1:sha256:daa1a4901aef248f5cfc8838c9e890628baac0d4b08146871b90f44f8a195fc8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxZWY2YjRkYjRjZThkMGEzYzZhNDQ2Yzk0MjBjMjM3MTVhMDhiOTlmYjEwZGM3OTc4MTYwYzEyMmJkY2Y1N2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTAwNTlmNDhjYTU2ZjZiNTBmZGM2OWExNWM3YjdlNjMzY2MxZTEzNjA4ZGFhNTBlZDkyM2JlYjBmNjM2ZmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxOTE3NDU5MDRiOTVhMGY5NjNlZTkzYzQxNmNkMTRhZjRmODJmZmJkMGU4ODRhMDUzNDU0NzFlOTJjZmQ0NDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM4OWY0MzMwOWViYzRlMjlhMTk2OGJhNDUxOWNkOGY0ZjViZjEyMDAyMjU0ZDY4NThjNjEzYmQxMDU3MzgxNjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f7771fcda304d6aab288a14bc580727",
+      "statement": "`container::delete` never unlinks the file referenced by `containers.image_path`, unlike `item::delete` which unlinks each image and thumbnail, so deleting a container leaves its photo orphaned on disk.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/container.rs#L91-L105",
+          "version": "repo-lines-v1:sha256:523da6851c21e4563e56ce58541c55557339db7a152ac4d55819d04afcf74ded:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMzFkZGZjOTdjNzYzODllNmE4OGViMmRlYWNmNDM5ODZmNDA3ZWVlMzgwMDM3NGM3MzQ5YmUzYWY5NzhjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTE3YjgzN2EzYTQ0ZmY0NGVhMjJlZGExYzBmM2MyMzU4NjczMWZmN2M3NjBkZGE3YTcwYmUyYWMyMjM2YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0YmJhZGQzZDBlZjE4ODllNzJhYTY4NTIxMDg0YzU1YjQ1OThkYjEzZGIyYjI5NzExYjIzMWUxMGFmODg2OTcifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L222-L243",
+          "version": "repo-lines-v1:sha256:75c300b0f3ad34bf1608aa9042db297c92d1032f4cb32348466915a24123d1ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwOWNkMmM3NGI5MDQ4MTM2MjQzYWRlYTk3YTY1NmU3ZmY1OGY2ZTgyM2VmZWE2NDE5ZmU2NzAwZGYzZjAzN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTE3YjgzN2EzYTQ0ZmY0NGVhMjJlZGExYzBmM2MyMzU4NjczMWZmN2M3NjBkZGE3YTcwYmUyYWMyMjM2YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhZmQ1Zjg0NGFiN2ZmOTM5ZjVlNDg3NjMyZTdlMWQ4MmViYWE1NjA5NmEwZjlmMzY4ZDg5MDU2NmI5ZmFjYWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c36d120afe0740f9a2f29e93b8a86543",
+      "statement": "Only item create/update/delete and the startup `sync_all` write `items_fts`, so renaming or deleting a container or category leaves the indexed `container_name`, `container_label`, and `category_name` stale until the process restarts.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/item.rs#L28-L58",
+          "version": "repo-lines-v1:sha256:eb7cd210fd3bc241b4fd51124d8216c691d115fb35a7aa435a4a76c9ac141268:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0MzBiYzNhYWViYzg3ZTk2NzM5N2M3YzVlOGQ3MTFiNWUxYmMyMDExMzRkNzczYTEyMTU1MGVmNzRmNjllZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZGQ1MWI5NzNhZWViZTg4NWFmZjNmYzEwNmEyNjBjOTI5YzE2ZWUxMjg0YTk0ZGU0YWVmYTcxMGIwMjE5YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhZGJlMzI0MTVkYmRjNGViYjRmNDJhOTc2ZjAwNjMwZmNkYzZjOTUwOTZlODkzYWNjZGIwZjNiYzZjZTc4NTkifQ"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L33-L38",
+          "version": "repo-lines-v1:sha256:cc4ae8d0fc47feee3923c16c5042d552f8817c72b5c39cb8a6666a5967088521:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzRiNmFhN2FhNzlhNzVmZGFhMjIxM2M3Mzk4N2Y0MjIwOTE3YWI3MWFlYTQ5Mjg3N2U1Zjc4ZTRhMjQyOTEwYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWE2YWM3NDk2YjllNzA1MTRiOTkyNjkwOTdlZDMyNWIyNGQ0OTY3ZjM5MGIzMWJkMWM0ODVlZGUyZjhhZTk1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTFhODMxYjlkNjdhNzNhMWIwNTVhMjgyN2Q4ZjkxMzYxMTIwNDdhZjFhODA1ODFjZWMzZjlhMjY3YjU5OGYxNiJ9"
+        },
+        {
+          "resource": "repo://server/src/services/search_index.rs#L33-L53",
+          "version": "repo-lines-v1:sha256:6da5ab3dce061759c8c90255dcde620f7c3e43f7f5ebe6561a821ea1794303b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmYWM0ODcwOTAwMDBhYTRjMmMxOTVmZTkxNDczNTkyZjcyZDZmNjY1YTc3YWM0MjIxZjIyZmEwOTQ2NjE2ZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxZjNjM2RiZGJjM2JhNDY4NmM1NDQzMDRjNGVmZDNhZjUwOWJjOGM4ZTdiODA1ZjY5NWM4OWU2ZGY5MWRkYWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0NjViMDFkMWUyYjI1ZDdlZjAxZjRmYmE2ZmFmNWVkNDBjY2NlNzlkZGZkYjJmNDJjY2I0ZDUwNmVjYTU1OTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiMDJkZDBkNTIxNzMzYzM4NWQ1NTIyYzVmNDc4ZTYzMTQzN2UwNWQ3Y2VkMDhlMTQyYmVmNjhmYWZkZmNlMjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_597f343a08614e94bfa50b2ba9c7da9c",
+      "statement": "`container_type` is a free-form TEXT column defaulting to 'other' with no CHECK constraint or server validation (create substitutes 'other' only when the field is absent), while the SPA hard-codes eight options — room, table, shelf, box, drawer, cabinet, bag, other — inline in three components and renders the stored identifier raw instead of its Chinese label.",
+      "evidence": [
+        {
+          "resource": "repo://server/migrations/0001_init.sql#L9-L18",
+          "version": "repo-lines-v1:sha256:84724d2db1de11639f933c36dbbb7bece26b56a4520195fba5deb2533524436f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlODkyOTk4Yjk5NWVhOWE1Mjc1ZTE4NWZjMzM4MzBlZjBhMTk1ODYwNTk0MjUzZDgwMTg5YWQxMGYzMDgyOTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkZDJlMWU1Y2VjZGIyYjQ3OWNlNjg2ZTYwZmMxOTE1MGQxMzljMThjYzkwOGE5NDUwZmEzOTg5OTk0ZThhYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwYzdkMTI1YjUxZjNiMzkzNjQxNzEyYjJkNTY2NjYzN2ZhM2NhMDM5YTAxOTE5NjZjYTQxYTc5ODRhNGEwNDEifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L57-L72",
+          "version": "repo-lines-v1:sha256:0d547e8ed9a111bb86d275de612b18a32a734502995926a1b774de4723f7c6e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiNzM5NDIxZDcwM2E5ZDRkZTY2MWM1NmRiYTg5OTlhZTNkNDJiZWYwYTU2MWQzOTI1MGZjYzY1N2NhNTBkMjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwNGRjNTJhZTA0NWM4MjZjNWI2ZWUzZGRhZWU2MjU4OGMxNjllOWZmZTg5YmE3NGNiNTg4MDM2NWE4MjgyMDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5NWQ2MTA2ZGZhNTYzMzA5NmMyNDRiMGMxODQ3ZDdjZWVkZGNmOGE1N2NkMjYyYTBiMTg3N2I1MWE1MTFjYzgifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L127-L137",
+          "version": "repo-lines-v1:sha256:3796f21a917ba16b55411c8e6d2c50893577614f880ed60f65f13a3ad6dde085:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkYmEzMWM2YzhjZjZkY2IwNTVlNDIyMWE3MTI3MWM0Yzg4MjJhMDY1OTIxODYzNWJjYzY5YTU1ZWQyODFiYTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkNTE4NTVlMWU1ODg3ZjljMjFjZTA2NjdhZDc5NGMyMTZmNDI0ZGYxNWNmYzg1ODljZDY5ZjAwNGQyNzE4YTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyNzMyYWE0YWU5ZmUwZDQxMmU1Mjk0MGM1Y2QwOGU3YTQ2NDZhZThhMjFjYWJhZTYxNWI2OWE4MmJiOWQyMzMifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L272-L290",
+          "version": "repo-lines-v1:sha256:2d391d0c88eb338233844e7dc9c1171dce0e23511041c8ed085c4ccc449162c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNiZGQ0MDYxODUxYTJlMDVhN2IyOGZmNmM4ZmM5MzcxMDg5M2FlMzY0MmNhOTFkYmIwOTM0MDA3NzE3YmU0YzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlMDA2Mzk5NzZmYTc2MzFhNWRiZDI3ZTNlNGNjMjI3YmI0YzM3MWM3NTVlNjVlNzlkNDlkZDMwMGVkOGY0M2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiZGJiZjgxZDg4MzM3MGNlYmFkNTA3ZGUxOGZlM2M0MjBmZjY5NzU5MzMyMDc3NTM0ZTdiODU3OWUxYjI5YjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllNTc5N2UxZTMyZWYxMmM1YTMyOTI3NzZiN2Q1NGU0NzBlMjU0ODFkNTJlYmY4YWEwNTM2YTA0ZDkyYzk1NjcifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/index.tsx#L57-L74",
+          "version": "repo-lines-v1:sha256:422cb87e37588d2b772c6134959bc027e5befebf2481fb4177b21c64ea363d1f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNzY0NmE5NGQ4NDU3ODlkY2EzYTA2NjM3YWFkYjAxNGI3ZDJlNGU2M2QwZDRmZTA5OGQ5M2NjMzdlMzAyNmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMjE1ZmQwM2NmYzJiZWViZjgwNGExN2FjNWU5NDc5NTFmN2NkMmRjMDU2MDUyMjQ5OWM2MDZmZGJjZDcxODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlYTBjNmRkODMxM2MzYzg2Zjc2YTJlYjU5NjYwMTI4MTIyMDc4OWY3ZThiM2ExMzNiMzU5MjE2ODRlYjQwMDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyODU0ZTI1MDlkYzE1MWU3ZTYyYjIyZDA1ZWRhYWU3MzU0MThiMTMwN2M3NzQ5OWNjOTNjOTI3MjQ0MmY4ZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_76b461b067294215b8be617ac47de240",
+      "statement": "Container-type defaults differ by entry point: the `/containers` create form initialises to 'room' while the child-container form initialises to 'box', so the DB default 'other' is only reachable through direct API use.",
+      "evidence": [
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L331-L336",
+          "version": "repo-lines-v1:sha256:800a071bc47387b6d2e234359919a4e279f919e5a8dbaff2934bb4374ee28c63:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRjZDUyMzU2YzNiNDBlYWFmOTcwNWQ2ZTMwNTg0MzQ1Yzg2YTBiNjE5ODhjYTM3ZmJmMGJmNDhjNDU5NzYzOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDk0ZmMwYzE3M2QxZWMzZmM1MDFkN2RmYTkyODU1MDFjNTI3Y2ZiNDcxMjU4M2RhM2NjMzYxODA1NjZiNGJlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTg1MTk3NmQxZjQ2NWQ4YmUxOGE3OGJlMTE5MDJkOGYwOTQ1YzIwMjI4MjhmY2RhY2E5Y2UxYjI0MTEwM2RiNCJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/index.tsx#L14-L29",
+          "version": "repo-lines-v1:sha256:4eed730f11f2f10b9e4d8dc517b6dce149129781efbb69f391589ac75395f2fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NDc5YTUxNjQ4YTBkMTZiZmI4YThkYjhmMDY4YzQ0MGIxYjI2Nzk2ODEwOTU0MWJlYjBmM2M5M2FkOTAzNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyYTJjYjI1YTEyMmI0NDIyMWE2MjM0ZWM2NjBhN2I1ZmI3ZjliZGU3YjNiOWUyYjNjNTU5YTBkOTZmYWM3MzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzMTI5OGJjNDIxNTI1NjJjMDdhMDYzOTI3NWY1ZThkZWYxODA0NzdhYzE4YzM4NTFjYjk5YmI1MjkxYjMwZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2MDc3ZmNhMDM4NWFlNDQxNmZlY2I5ZDE5YTIwYjcxNGQ2ZGQ3MGY1ZjA5ZDI5MDgxMDE1NDYwMzQyNThlOTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_821360f6617646bf86c77f8855ec04e5",
+      "statement": "`container::update` merges with `.or(existing)` / `.unwrap_or(&existing)`, so an omitted or null `parent_id`, `label`, or `description` keeps the stored value; combined with the edit form sending `parentId || undefined`, a container can be reparented but can never be promoted back to a top-level root through `PUT /containers/{id}` or the edit form.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/container.rs#L74-L89",
+          "version": "repo-lines-v1:sha256:68612dd8afb5255bd39019cd0fdaf0e204e02c92f33aa2868b9e22dd0d48a467:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlNTg4N2JhYWNkYTI1ODZkNTEwNWIwZjI1YzdjY2E1MjFhOTk0MTZkZTU5YzkxYzE1NTFjZmQ5MWUzZDc5ZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAxZjdmZDM4NjA0ZjE4Nzg2NzE3MjcxNDJhMzg3ZGMwZjQwMjdhNjg0NDRjNzA4ZTU2ODQ4ZDRhNTU0OGU1YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NTEwOWEwY2E3ODczYjEwMjkxMmIzZjYyZTU3NTc0MTMxOWZkNzQzNzU5YTliMWY3NzY1YzQ3MWZmMmM0MmYifQ"
+        },
+        {
+          "resource": "repo://web/src/routes/containers/%24id.tsx#L302-L317",
+          "version": "repo-lines-v1:sha256:5561604c82d53c902635b8ca3540cab9087785cde2a18d956ea31e8ced5fd085:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0OGJiNmM2ZTZmYWI1OGVmNTg4NmUzZThmY2M0OWM4NzhhYzUyNDA4NGRjZDY0ZGZhYTEzNTRkOTU2YmVlMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNzNhZGIxZjE2MDUzNGM2NDQ4NWUxMDFkNmU0NTNhNjE1OGM2ZTcxYmEyMWEyZjM2ZWI5YzUwODQ3NWNiYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2OGEzNzBhMGFhNTgwZGQ4YzE5ZjA3OWNlNDJlNjIyYzBhNTkwNjQzZGZhNGM0NTI4ZGRhZmJmMTQxNjliYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5NWU3ZjU4ZWViYzU5ODcxYWM3YmY1ZWIyMDQ2NzQ0OGEzYjI4NjgzMzUxOWNhNzkxNDcwNWMwYjk2Zjg4OTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_287c4ec8a44a40958013dd10dd6c905d",
+      "statement": "`GET /containers/{id}` returns the container, its path, one level of children, and only the first 100 items stored directly in that container (page 1, size 100, total discarded), and item-list/search container filtering is exact-match on `container_id`, so no endpoint aggregates items across a subtree.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/container.rs#L29-L56",
+          "version": "repo-lines-v1:sha256:e8fe3886367617846b07ec640977b3f46b6725cf1f39025aae83f6732cca456c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MDk0NjM0N2QwN2FlY2YyZWJlNDk2YzBhNDU5NzhhODY3NjVjMTU4MDNlM2E3MjUzMjNhMDIwYzBmMGViYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4OGI5MDdhNmYzMDJhN2U1MDk3ZGFkNThiNGJhY2NkNTc4ZTkyOWIzNjk4YzhkOTRlN2U0NTM2MTczZDcxMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg4ZmUzNzMwNWJiZTI0ZDFmYWFmMDM2NmI5NGVjZWNkZDZlZDY3NDg2ZmU5NTZmNjlmNmRjZWEwYzQ5ZWRhMTgifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/item.rs#L9-L30",
+          "version": "repo-lines-v1:sha256:5f1b7d95fc66a19cfc28db73c539f1d054b79d1e1dacbce1c29271adac4933b3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlMGU4NzgzNTY4NTM5YWI1ODg1ODQ0MzcwMDMzYTllOWE3MjY4NTA0NzZhN2NkZWIzN2M3YzY3MDEzMTRjNzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1MTYyYzhhZjdiNzAwMDZkMDBmOTRjMDNhMDJkNmRjZjZhOTM0N2FkMWJlOWUyYmE4ODI2Yjc4MWZkODUwZTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY0MTdmMGUxNGJkNTgxZDliYTIzMDZlNGVmNmU1ZTkxYmYxMjk4ZWZjMmQ0YjQxNDE5OTBkMjUzMTY0NmExNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiZDJkOTIzMjgwYTJjNzdlZTFiYTZmMjA3ODFjYTczZjEyOGI5YTRjMjgwNWE0MzhhY2QyNzhjOTQ3NmU2OWMifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/search.rs#L85-L97",
+          "version": "repo-lines-v1:sha256:893b2f0fcf79ba07acf66214b69233637095df5a928d7a9c8e7dba3c2cdecd85:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxOGY5NDc1OGFlMmNmOTNkNzUwZTNkMmMwNjg2MWMyMGQyZTAwZThiMTBmZjhlMzI4ZTA2ZjEzYTRiNTQzNTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwNjNjNGQxYWY4Y2Q4OWJiMGJkZDc2NTdmZmNiZjY4MDZhNjEwZDc5ZDZjOGQ0YzMwN2MyNDFkZjM5MDA1MjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1MzAzMmU3ZTgxMzE5MTU4MzZiYzBlNjM4MjMyNzJhN2Y2M2Y3YWJjMmVmNWExNjdmZjA0NzBjNmIyN2M4ODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_34e86711e6d34538a117380be30a3614",
+      "statement": "`build_tree` is duplicated in the category and container repositories instead of being shared, and the category copy still declares a `remaining` vector that is never populated before being appended to the roots, so any change to tree semantics must be mirrored in both files.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/category.rs#L70-L118",
+          "version": "repo-lines-v1:sha256:446b37036c6b8f9fe65d6cbe5830c91f061d5a8fc57c0c820916efce54179fc0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxYzQ2ZTg0ZTk0NTRkOTcyNGUzYjdiYjY3Nzk3ZGU0NDczZTgzMTliMDZmNTkzYThiNGViOTA1MDZjMTRkNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZjZmNDY2ZTU5Y2ZjMzA3MDNjNDVmNzJhZjY1ZGU1NGFjMzYzZDM1NGNjMWEzMzMwMzUwYWNkNDUyNDM0YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/container.rs#L116-L158",
+          "version": "repo-lines-v1:sha256:37c59b109395ca198ca04bf9ad2548090f24ff83ef2dee027c8ecd851aa226f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5NzY4YmJjOGQ1ODBmZWYzYjcxYjBmZjc5N2JkMDExNGI3NWExODgyMmI0NzQxNDY0MzBjYmY0ZDhlZWM4NzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1ZjZmNDY2ZTU5Y2ZjMzA3MDNjNDVmNzJhZjY1ZGU1NGFjMzYzZDM1NGNjMWEzMzMwMzUwYWNkNDUyNDM0YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d57f9319f2a24a7d97b043dd7c2d3659",
+      "statement": "Tree behaviour has no automated coverage: `server/tests` is empty, `cargo test -p server` compiles no tests, and tree assembly, path derivation, and delete outcomes are verified manually through the API and UI.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L31-L33",
+          "version": "repo-lines-v1:sha256:247c570f25beda2ca1368f1c59d067de8427a0f66f2b4328794d8a1a76555ba0:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDYxMGEwYzA5MjdhN2FlZThiYTIyZGRlOTVkOTYxNDdmN2M5ZGQ0ZjkzNjU1MGVlMzIwNjU2ZjZmZDlhMzA2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDdjMDZjNTYxZDVjMzI3MzQzNjg1MjY4YTQ2YjMzOTFmMzk5OGVlZTg5MGQyYmU1MWYwZDIxY2M0YTUzYWU2ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDQ5ODM3NTdkMWVhZTNmZTM2M2EzMTI2NzgyMDlmM2QxMjcwOWNhNWQ4MWFmMjQ1ZWQwYzUxYzcxMzdhMGQxZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjY5MjAyN2YzYWJjNjFlZjBiMDg1ZmI5ZjQzOGY4ZThiM2YzMDgxZWU3OTEwNGUyZGMyMDVjZjIzNjY0YjgxOSJ9"
+        },
+        {
+          "resource": "repo://justfile#L117-L119",
+          "version": "repo-lines-v1:sha256:6d86c29954a19b6d810ebc1424ddd4e5a2d6ceb56e5025befd06c7fc2d75019d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FhOTU2ZmYwZGYzMjJmZjA5YjU1YTU5OTBiMDJlMzZkZDJlZWNiZmRiZDNjZDY0OGMxODE0MjhkZjE1ODAxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjc2YmUyZDE0YmVjMjljNTNhMTVhZjg2MTk4ODM1M2VmNTZjM2I1Zjg2Yjk0ZGZiMDIwODZjYWI0NmYxZDJlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWZlY2E1MGE2ZmI4ZDBhMWM3MWU0YjZjNmJkZmE1OWVkOTExOWMyODc0NGExMjc1ZDBmYzhkYmM5ZTkzYzEyYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmZlNTgxMzM5MDBhYjkzZTgzYjA2YjAwMjg4ODFmNTFiMmFkMTI1YWY2MjA0ODFhNjg1NWExOTk3MTMwZWQ0YiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T14:40:20.132Z"
+  }
+}

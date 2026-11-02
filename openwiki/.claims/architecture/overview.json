@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:f10bb3541bfd20d9053a3154e028730b69e786855a279c3a3f72bc4863e185f1",
+  "claims": [
+    {
+      "id": "claim_78ebd2b20f014b70b18631589369e802",
+      "statement": "The deployed system is a single Rust binary: the Cargo workspace has exactly one member (`server`), and its `main` builds one Axum `Router` served on one TCP address that handles the JSON API, uploaded images, documents, and the embedded SPA, with no separate worker, external DB, or frontend web server.",
+      "evidence": [
+        {
+          "resource": "repo://Cargo.toml#L1-L3",
+          "version": "repo-lines-v1:sha256:277c807ab71d3c6b3b2bf998aa77650f3d2f8b626439e86a703765f1d9d1bc29:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDM0ZTEwMmM4NjFmOTk0ZDJhYWNlOTExNGQzOTJkYmMxNjIxOTBlMDBiZThmZTM1N2Q0NzIxNTBjYTQzOTYxNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI3NjAwYzRjMTM1OGUwOGY2ZGU0NDAyNGU0NWI2M2EwNTJlN2JiMzA4ZTMzNWEzMmE5N2Y5ZTdiYmQzN2JlZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmY0OTdmZDRlN2M5NjY5NWU1YjZiYjEyZGYyZGJjNzI4YjE2NzAwZTkyYjkxN2UyMDU1MjVhMzI4ZjQwZGMwZSJ9"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L45-L61",
+          "version": "repo-lines-v1:sha256:e1c8034695dfcc9234f5aa139e22b7404bf530aadcdb4fa9a7db776d9c19ea6c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiODlhYTUwM2IyMDU5MmM3NjdlYzM4YTJmZTYzZWY1MzRhNjIyNzMwM2E5NjVmOWY3NGE3Yzg2OTgzNmYwMzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3MmMwZDMyZDk1NTJiOGFkNWFlM2NjNWRiNjQzNTUxN2ZiZGZiNzFhZmQ3MWMwNmNiNmUxYzZmZDJjZTk5YzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYzU4OTQ2YmY5NDI1YmM2N2FiNTMxNTg0YjEyYzc5NmQ0YTU4MjIyYTU3MTFjMmExMzIxNThkN2NmN2Q3YWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c48ca29643a84532a9c4f478488fa9bb",
+      "statement": "`main.rs` mounts exactly four runtime domains on the router in this order: `.nest(\"/api/v1\", routes::api_routes(pool))`, `.nest_service(\"/images\", ServeDir::new(image_dir))`, `.nest_service(\"/docs\", ServeDir::new(docs_dir))`, and `.fallback(static_files::handler)` for the compile-time embedded SPA, wrapped by `DefaultBodyLimit::max(100 * 1024 * 1024)`, `CorsLayer::permissive()`, and `TraceLayer::new_for_http()`.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/main.rs#L45-L53",
+          "version": "repo-lines-v1:sha256:08c99ca09c589ba8d485eb7ebde9b440efef5c5dab908b73c3312ae671707f55:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI4OWFhNTAzYjIwNTkyYzc2N2VjMzhhMmZlNjNlZjUzNGE2MjI3MzAzYTk2NWY5Zjc0YTdjODY5ODM2ZjAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDcxMDJhZjVmZmYxYTQ1ZTFhODQ5MjNiZjVkM2M1NTI5MjRlN2I2NGU1YWMzOWIzZjgzY2E3YWU4NzFjMzc2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJjNTg5NDZiZjk0MjViYzY3YWI1MzE1ODRiMTJjNzk2ZDRhNTgyMjJhNTcxMWMyYTEzMjE1OGQ3Y2Y3ZDdhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjdjN2VhMDBkMGUxNmNiMmE2OGU1OGNhYjlkNDEzNzE0YWM5ZTAxMzYzZTVmYjdkYzkwYTU4OWE2YWE3ZDA0YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b49e48384f404f5eb70d4993f24d8b43",
+      "statement": "Any request that matches no registered route — including a misspelled path under `/api/v1` — reaches `static_files::handler`, which returns `index.html` with status 200 (so unknown API paths surface as HTML, not a JSON 404); only a registered path with the wrong method yields 405.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/main.rs#L45-L50",
+          "version": "repo-lines-v1:sha256:e3e22d9e297e38f2520954322d7831c67f834d752b1ef19cf840644a04a2415e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI4OWFhNTAzYjIwNTkyYzc2N2VjMzhhMmZlNjNlZjUzNGE2MjI3MzAzYTk2NWY5Zjc0YTdjODY5ODM2ZjAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODFmNGI0YWQ1M2NkMTM1NzdmZDc1Y2U3ZjI3YTFiYTEwMjhmYWI3MTU4MmU4MmQ2NWJiODcxZjVmYzdkM2ZkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJjNTg5NDZiZjk0MjViYzY3YWI1MzE1ODRiMTJjNzk2ZDRhNTgyMjJhNTcxMWMyYTEzMjE1OGQ3Y2Y3ZDdhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWI2MWZmZDI2NzI1ZmE3NTFkNzM5YTg2MTA1YTg4N2IxMWNhMzBhNzFlYWI1ZWQ2N2RmYmIzZDc2YzA3NzRlMiJ9"
+        },
+        {
+          "resource": "repo://server/src/static_files.rs#L12-L29",
+          "version": "repo-lines-v1:sha256:1e71838b3a72803c57363d4cdbba9746254974f53fbad01069e9e2f8c8af4cef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlYzFkNGFlMjVkMzk2YTM3MmJjY2E0ZjE3YWViYzNhYmM3Y2ZiMDllZjczNThmN2Q3NzllOTkzZjQwN2IwMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYzI0ZGI1YjI2YTk0YjcyZjU0Zjg3MDgwODdjMzU0ZGFjMmJlNDk5MWQ5ZGZjMmQyNDBjNmI2MzY3NWNlMjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkYzMzMmVjZTNkODkxZGUwOTg2ZjdlOWJmNDhmMmUwYTMyZGNiYzhlNDMzNzI3N2JiMjg4OGU1ODgyNDY5NjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3fb1b0734a540e597bfed53f6b0eb8a",
+      "statement": "Startup is fail-fast: `main` creates `image_dir/items` and `image_dir/containers`, initialises the migrated pool, runs a full FTS `sync_all` (the only non-fatal step — failure is logged as a warning), creates `docs_dir/pdf`, then binds and serves; every other failure goes through `expect` and aborts the process, and `axum::serve` has no graceful shutdown so in-flight requests are dropped on termination.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/main.rs#L17-L61",
+          "version": "repo-lines-v1:sha256:54f0d51fec5cc9b44d7266f6cfa774c3115a55abee03589598ac55194727bb4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZDA2ZTA0OGNkMjcyNzM4ZDgzN2IwYzBlYzZhYWIwYjAzMTQ1N2U0NzVmZDQ5YWJiY2JhZmM1ZjczYzAyMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3MmMwZDMyZDk1NTJiOGFkNWFlM2NjNWRiNjQzNTUxN2ZiZGZiNzFhZmQ3MWMwNmNiNmUxYzZmZDJjZTk5YzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzNGI3MjE2M2E5MzY0Mzg0MDcwMjUwODZjMzQ4NzFlM2EwZTY3ZTdlZmJjYmMwOGY2MWRlMWMzYzYwYTcxMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_55b9661f02f2432493da724edaa2e344",
+      "statement": "`db::init` creates the DB file's parent directory, opens a SQLite pool with `max_connections(5)` and `create_if_missing(true)`, and runs the migrations embedded via `sqlx::migrate!(\"./migrations\")` on every startup, panicking if they fail — so restarting the binary is the automatic schema-repair mechanism.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/db.rs#L4-L24",
+          "version": "repo-lines-v1:sha256:8480baba3c3811ae9194358c2a05b528a5efa00fa363307e842eb7c9cdf0cc62:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhMDM4YzY3NDJhOGY2MjEyNTViODg1ZGM4MzQ0OGI5ZjA1OTJlYzM1NDAwZDM3MTliYmU0YzU4YTE4NDMxNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMDdkMmI2MDRhODgyNDRkMWVhMmY0MWM1MGI2OGM4NzA1MGY5ZWRiYzhiYzAxNmQ5NmU4NDBmYmUxZDY0YWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3OWRlMmMxOWI5Y2NlMzIwMTMxN2NmN2QxM2M1ZjM3MjJkMzlhZmViNjcwYjE4YjllOGE2MTBiYzBhMGFkOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4fa82b6f8fef44dfb343bdb67a308ab8",
+      "statement": "`Config::load` resolves configuration from the TOML file at `$CONFIG_PATH` (default `config.toml`, relative to the working directory) when it exists, otherwise `Config::default()`, then applies `--host` / `--port` / `--help` CLI overrides and exits with status 1 on an unknown argument.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/config.rs#L45-L97",
+          "version": "repo-lines-v1:sha256:7fca61e409bdfb8f66058cee4311c0b7fc4d704ea84b5e7b45dfeb8f5680f46f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4MDc5NGE2MDA2MzNhZTY5ZGFlMWYzOThjYTk3ZTc5Yzg3NDc5ZDFjNjE3MDg0ZTRkMTgyODZmMTlkODFjMTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1N2I4MWRmMWE5YzZlZWUxYTYwZWY4ZWFmMjFmNTZjZWQ3ZTgzNmE4MzZiOThhYmQ1MDFiM2RjYWEwYTlhNDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5MzI1NmFjZGRjYWFmYjY4Yjc0ZjVjNmU3ZDJiYWUzMWUwMmU3MTdiZDVjMjZiYWNiYzJmNzk2MDBkODU3NWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a5ae3e403f8f49108e4cb9fe4d09558c",
+      "statement": "Default data location is `$XDG_DATA_HOME/wheremystuff` when set, else `$HOME/.local/share/wheremystuff`, else the relative directory `data`, holding `wheremystuff.db`, `images`, and `docs`; the default server bind is `127.0.0.1:3000`.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/config.rs#L119-L138",
+          "version": "repo-lines-v1:sha256:6edb071b48fcf4bda2066add89c09cb7c6bba1e36b47768b01d58a319b11c864:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMWViMWY3NWU3NjZiYzA3OWNjMDk3Yzk5MTM1ZGZhYzdmNjhhNzBjMWJlYTQyNzY5NzA5NmFmMjQyYWNhMGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5ZTc2MzU1Y2YxMTk5NDgwYzNmOTk4MzZiMTQ4NmM4NDFkODkxZmFhZDkwNGM2MDhlMDkzMDIyZDM3NTdhZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://server/src/config.rs#L4-L12",
+          "version": "repo-lines-v1:sha256:af41490c98c92a22e0817a0b7ed03cb85a8b39cdb7a34fb6bed7eabe48265acb:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTlmNjE0YjM2ZDMzYzYzMTgyYWFmNmJmZTk1OWJlMWUwMWY1YWE4Y2NkM2M1ODUyYTZkOTI2OTI0NDZmZDBiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGM1MTI2ZjExMjdiYWE0ZDAwMjVhZjdmNmEyMDY5NTg5YTg5ZmExYjY1YTEwMzRiMWIyNDE2NWQzOTZjYmNkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjQwNDY5MjhjMDFmZTlkNDY5OTkxZGNmMDU3ZTc3YzBhZGYzYmVmNDkzZWQzOTJhM2EwYzY5NWJiYjU4ZDczMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_20e9c9db0dad494181beec0a3f06a4a5",
+      "statement": "Upload limits are strings parsed at use time: `upload.max_file_size` defaults to `\"10MB\"`, `upload.max_doc_size` is optional and defaults to `\"50MB\"`, `parse_size` accepts KB/MB/GB, treats a missing or unknown unit as MB, and falls back to 10 for an unparseable number.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/config.rs#L34-L43",
+          "version": "repo-lines-v1:sha256:16a380eedcf1f4e28c00df0a5e3dc6ac5790bb4d31856fd6cac51c140890949a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MzJjNjJkNWY0YjZmMzVmZGY5NWM1ZjI0MWFjYTg3OGY3ZjZjZGVjNmM3ZjJmOTlhYTRiMGVmNTEyNTYzYjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlNDExNTA5Zjk4MTk1NTU5OWE1ZDlkYjAxNjk3YzE4Njk2NzdlZmY4YTUxNzViN2I5M2Q1MDdlM2QwOTM2MzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMjk4NDk4MWY0ZWIzYmYyYTAwYzYyMmM2NjU0ZTIyNWYzZGQ5YTFlOWYxMmY0N2I2YTcwMzRiMzVkMGU1MWMifQ"
+        },
+        {
+          "resource": "repo://server/src/config.rs#L99-L117",
+          "version": "repo-lines-v1:sha256:8a662a3fce9ae381f097723a7abbdf18c29463005469e3f4bc201f3b933b4974:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkNTBkNGIwODA1OWY4MjcwYmQ5Y2FmNDI3Mjc4MmNkNzhkNDhjOGUxMzc1MGE5YmFkNTJiYWI2NzliM2NjYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyMWMzZmIzZmJmNWJmYjI3ODg4MWFlZTU5Mjk4ZTc5ZjE1MzMwY2E2MzE2MThiOTkyYTBmZGU5MzMwZjgzYmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxODQ3MTJiOGIwMTRkNzRlNDE3Nzg5MzViOTRmOTM1ZTBjYmQ2MzQ1MWYzNWRmNDg0YzgzZDg0MjJkZDQ5ODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_17d97ae6cb7c4e6e953b86f58cb46e39",
+      "statement": "The Axum state is only the `SqlitePool`; configuration is not shared state, because the image and document handlers call `crate::config::Config::load()` inside the request path and therefore re-read `config.toml` from disk per request, while the `ServeDir` mounts, DB path, and bound address were fixed at boot from the earlier load.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/container.rs#L103-L110",
+          "version": "repo-lines-v1:sha256:1063272669729eba9d52c15ca4e1002db343acd385c0aec2d2660c8d1d6d9208:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkwOTIwOWNkZjdlOTAwMTUyMzkyOThlYjU0ZTU1YmQ1Zjk5YTQ5OTZkNGQ0OTI5Njk4NzY3NzdjYWMzMjliNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWJiMmUyNjdjZGEzZWEyZDk5MTBkYTY4YzVhYjkwMTYwYzllMDE5NjQ5MjFhMjFhMTMxMzYwYWFkMWYxZTAxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTEzNWYwNzFlMDA3ZjNlNGY4M2Q3YTRkNmIyNjJkNmJmY2QxOTM5YThlYmVmMGQ4YWZiMDNkYmUwZDE2YTkwYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY1YjUwMzc1NzQ5ZmM0MjFkY2MzOTY1Zjk1MTRlOGRjZGY4OGRjMGRmMjVjNWQwOGE4ZGQ5NjcyNWFhMjUzZSJ9"
+        },
+        {
+          "resource": "repo://server/src/handlers/item.rs#L51-L52",
+          "version": "repo-lines-v1:sha256:fb0d031c03a8751c3dc56e8b684112c29c313197cbbd7d450d9c31519bf393e8:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFkZDU3NmE0YTZjYTRiMWY4OWZmMmUzZTI1MGNhZTU1MGVmMmVkOTQ2Mjc4YTE0OGFkOTE4MjY3YTRhYWE2YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE5NWZjNDAzNThhMjZhZmJmOGY5ZDljZDQwYjFkYTdiNWVlNzc4ZTZiNzZkOTQwYTg1MmZkODYzZWU4MDViZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjhjNGJlZmU0OGUwNGRhNmQ0NmQ5M2ZjOGM4MjI0YmQ5MzMwMzcwZTFhNzZkZGExN2U5MDllYjU2MmMwM2I1ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmMyNGQyZjUxZmEwN2NmZjZmYjkyYmI3NzY5YzA4ZWNkOTE0OGMyNDQ2NDMxN2E3MjZlZGRlM2NhNjNmOTI0MyJ9"
+        },
+        {
+          "resource": "repo://server/src/routes.rs#L9-L56",
+          "version": "repo-lines-v1:sha256:18b18c87a125b36e2ea174647597d10507a8984e8b55bb70c525aabda2b2e173:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmY2VkODI5M2I3ZWQ4NWUyNGQ3MDhlNWYwZThjMmI0MjRkYjM3YWU5NTM4OTM5YTM3OGE0NGE3MTUwMTFmYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NTcyMzFjNTNlYWQzM2M3ZDdkMGFmY2JkMDY0ZDE3NWY3YjNhYTdhYmQzYjA2YTIyMjhmMDk4OGI1MDkyNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_726ca0ab75284f0da2ea1b8b7e57f0c1",
+      "statement": "The documented layering boundary is `routes.rs` → `handlers/` (HTTP only) → `services/` (images, FTS sync) → `repositories/` (SQL) → `models/` (DTOs), with `routes.rs` holding no logic beyond a flat route table plus `.with_state(pool)`.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md#L14-L14",
+          "version": "repo-lines-v1:sha256:680bbb7806cc8aa59b4ffa9c6f80015facf02bbbea5e31368d2dc107f667a15b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjgwYmJiNzgwNmNjOGFhNTliNGZmYTljNmY4MDAxNWZhY2YwMmJiYmVhNWUzMTM2OGQyZGMxMDdmNjY3YTE1YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjgwYmJiNzgwNmNjOGFhNTliNGZmYTljNmY4MDAxNWZhY2YwMmJiYmVhNWUzMTM2OGQyZGMxMDdmNjY3YTE1YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTE5ZGQ5ZWZjMjI3MGM0NDE0NjM0YjRiMWQ3M2RhZTYxYTU1ODQzZjFkMTU0Y2UxNGIzMWI5ZWRlNzk0OGFhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGNkY2Q3ZWQyNWM4YWQ5YjQ3MDg4MTczMTk3Y2Y2OGU3M2I4ZTY1Y2Q3YTdjNmZjMDYxODYyNjAxZmJiM2JkYSJ9"
+        },
+        {
+          "resource": "repo://server/src/routes.rs#L9-L56",
+          "version": "repo-lines-v1:sha256:18b18c87a125b36e2ea174647597d10507a8984e8b55bb70c525aabda2b2e173:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmY2VkODI5M2I3ZWQ4NWUyNGQ3MDhlNWYwZThjMmI0MjRkYjM3YWU5NTM4OTM5YTM3OGE0NGE3MTUwMTFmYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NTcyMzFjNTNlYWQzM2M3ZDdkMGFmY2JkMDY0ZDE3NWY3YjNhYTdhYmQzYjA2YTIyMjhmMDk4OGI1MDkyNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_54f4e8a957a7493b87676e3a86d3c019",
+      "statement": "The real dependency pattern is thinner than the stated layering: handlers call repositories directly for nearly all CRUD (the category, tag, and stats handlers touch only repositories), and `services/` contains exactly two modules, `image` and `search_index`, so there is no service layer for transactions, policy, or item/container mutations.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/category.rs#L11-L39",
+          "version": "repo-lines-v1:sha256:38103b1a5a6b821fda741d76e9a252baf9bfe2acd98e121b98f26c395f5137a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1OTE0N2E2NDg1MWJmZjg0NmYyODJiNzIwMDkzZGZkZmRkOTQwNTcwNjdmNzAzZDYyZWIzZTVkNmZhODdhMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZWFmMDQyZTZjOTJkMDY5MGRhZjNjMjJkNmE4OWVmZjhiYzk2MGNjYWQ4ODRkMGIxNzBhMDkyMjMxZTVjODIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzNjA0YmQ4MDhhMDAxNjY5NjY4MDY2ZGMxMmFhMWRhOWZiM2U3ZWNhMDIxODdiYjFmYzkxZWQxMDQ0NTA5YWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://server/src/handlers/stats.rs#L8-L10",
+          "version": "repo-lines-v1:sha256:62e8a66032e1396cdb16c83311f1af1c6450f5100f0048fb90d376bbfa265db8:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTMxNTc4NGFiNjk0MGFkZDdiOTAwY2Q3MmY4NzRkMTY5Y2MwNTM3ZWJjYmI2ZjlmNjYxODRlYWE2NzE4MGYzZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDk4ZGI3OWUxZTFlM2U5MWQ1NzhmYWJiYjBlNGQzMzllYjI0MmJmYWVhNzUyOTFjYWFkMjRmZmIwYWMxZDU1YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://server/src/handlers/tag.rs#L12-L37",
+          "version": "repo-lines-v1:sha256:900d14b9a440da9c915046eb2b7225633def7562f977d6c61a5200c1ff13b840:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxNzIzZTBkNDI4ZTRjNmVjMTRkMWI0NDg3NDNmN2YwNjI5YjgyZmM4OGQzNjIzOTBlMzY3ZTMwZjZhNzUwMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg4MzI5ZTQwZmZlODg4YTkwYzRiODRhOGI3NzY5ZTk0NzQwOGFiZDc4ZWYyNGMxZjA2NmQ5YzAzYTYzZTEwNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyZDUwZmJjZDdhMTY5ZjQ0MTJmYjFjNjRiMzBhZTkyNjk3OWM0NGE2NWVjNzVlNGM1M2M4NjFiMzE1ZmIwNTUifQ"
+        },
+        {
+          "resource": "repo://server/src/repositories/mod.rs#L1-L5",
+          "version": "repo-lines-v1:sha256:2a8484e845e077e069be589bfe901ed2e3f36517394f4bf3b81e4ca6676eef73:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWJjYzdkYjEyMjNlNzdjNjlmMmFkNTdmNzk3NWEwOTU2OThhNjkxNGRkZDU1MjEyZDUwNjU5MmRhNzUyYzU4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRkYzdjOWQzZWVkOTY2NmZmNmIwOTA0M2IzNzc2NDYxYzM3NWZhODg2NjFlNWM1NDJkZjBlZWU5MTQxNmIxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://server/src/services/mod.rs#L1-L2",
+          "version": "repo-lines-v1:sha256:56441bb53fa7109e55457d96b8c45219794031d310755c928904eab0a3648740:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDYyODk0MjdmMmYzZjI4OWM5OWYwYTgzYWQwMTM5YzUzMTNjNGMxZThiNmM1NmQwNWZjMmE2ZjViOThiNDhhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDAwMzMxZTljNTlmMjA1MmUxNzlhMTAyMDhlOWNiYzc4NWY1ODBjNjI3OWRmNGI1YjJhOTBhYjY4YzY0YmJkOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b384364618c4c198a66f0c28c1cae2b",
+      "statement": "There is a real layer inversion: `repositories::item::delete` calls `services::image::delete_image` to unlink image and thumbnail files after deleting the row, so a repository depends upward on the service layer for file cleanup.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/repositories/item.rs#L222-L243",
+          "version": "repo-lines-v1:sha256:75c300b0f3ad34bf1608aa9042db297c92d1032f4cb32348466915a24123d1ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwOWNkMmM3NGI5MDQ4MTM2MjQzYWRlYTk3YTY1NmU3ZmY1OGY2ZTgyM2VmZWE2NDE5ZmU2NzAwZGYzZjAzN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYTE3YjgzN2EzYTQ0ZmY0NGVhMjJlZGExYzBmM2MyMzU4NjczMWZmN2M3NjBkZGE3YTcwYmUyYWMyMjM2YzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhZmQ1Zjg0NGFiN2ZmOTM5ZjVlNDg3NjMyZTdlMWQ4MmViYWE1NjA5NmEwZjlmMzY4ZDg5MDU2NmI5ZmFjYWEifQ"
+        },
+        {
+          "resource": "repo://server/src/services/image.rs#L96-L100",
+          "version": "repo-lines-v1:sha256:e4b272b39021af515be576ef93effb9c50cfbdb0a749fefd2e6006b8e7abcda3:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE1YzQzYjRhZjIzNTFjMTMzMTFkNDIyNDk4ODM2YjhjOTVkMWNhMWEyODJkNTYwMThmNDJiZGQ3YmNhOGE1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTYzNjMyYzczMGY5NTYyODI5ZjVlNmZkNGRkMjA1YjlmMWZlNDg3YjQ5NDg5NjEyNjdmZjM5ZmE2MTFlNDk4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6416b9cc6ff84f798c437331e84fbad1",
+      "statement": "Search-index coordination lives in the handlers rather than in a service or trigger: `POST /items` and `PUT /items/{id}` call `services::search_index::sync_item` after the write (a sync failure becomes a 500 for an already-committed row), and `DELETE /items/{id}` issues its own `DELETE FROM items_fts` raw SQL inline.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/item.rs#L28-L58",
+          "version": "repo-lines-v1:sha256:eb7cd210fd3bc241b4fd51124d8216c691d115fb35a7aa435a4a76c9ac141268:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0MzBiYzNhYWViYzg3ZTk2NzM5N2M3YzVlOGQ3MTFiNWUxYmMyMDExMzRkNzczYTEyMTU1MGVmNzRmNjllZDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlZGQ1MWI5NzNhZWViZTg4NWFmZjNmYzEwNmEyNjBjOTI5YzE2ZWUxMjg0YTk0ZGU0YWVmYTcxMGIwMjE5YTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhZGJlMzI0MTVkYmRjNGViYjRmNDJhOTc2ZjAwNjMwZmNkYzZjOTUwOTZlODkzYWNjZGIwZjNiYzZjZTc4NTkifQ"
+        },
+        {
+          "resource": "repo://server/src/services/search_index.rs#L5-L86",
+          "version": "repo-lines-v1:sha256:0adac869afb03353193c6e840aefe890a3dbb5dcb3029576a522ac7d7edca0ff:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE1OGI4ZGEyYTdjZWFmNzg4NzFhZDUzZThmOGZiYzNkMzFlNjM3ODUzNzY4ZjQxNmY4Mjc1YmNmN2VjMmE5NWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM2NTY5NzcxNzUwODU5NmZkZjFkMGUwYWE5MWQwM2U2MzMxYWNjOWFiNjkyYjM0Y2JmMzgyOTgwZTI1NDg0NjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e925f3527e674b0c91f90b0cea1b37e6",
+      "statement": "Image uploads flow through `services::image::save_image` (extension whitelist, size cap, UUID filename, 300 px thumbnail, AVIF skipping thumbnailing, DB path stored relative to `image_dir`), whereas PDF uploads are handled inline in the handler with pdf-only and `max_doc_size` checks and a direct `std::fs::write` into `docs_dir/pdf`.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/item.rs#L108-L166",
+          "version": "repo-lines-v1:sha256:9e0824a70b700e9fd953f65ae49d4db8163a47ddf3fe968e608a41853876ed4c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxMjJlNGE1YjI1MTNiNzY4Y2FlM2MxYzFjZWZjZTMyMTY3OTNlMjI5ZWUwNmFjMGU5MTUwYWRiMTRlZDdkZjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlYTg3MTZmYmM2ZmJhM2U2NDI1ODc5ODhjOWE2MjAwYWQzODBiZWFjODRiNGUzOWViZTViMjI5NmM5ZTkzMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhMTM4OGJhNTM1MjA3ZGVjOTA3MGM0MTI1OTgyNzQ0Y2I5ODk1NWJmZWMyNDBkMWNlZjQyOTg4ZTg0ZjY2MWYifQ"
+        },
+        {
+          "resource": "repo://server/src/services/image.rs#L7-L92",
+          "version": "repo-lines-v1:sha256:bcbd475026cc3504074ff1b9ef621550795dddbb37df3111493b5a2d090d4980:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiNWFmZjk3NjRhNGExMjYyOTkwZDU5ODg5YWExMGI3NzEyYTZjYzdmY2Y2M2I5YjhlZmIyOWY1MjA0NzMwNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2ODQyMDQwMTI5Y2VkNTU3NWY3NDVhNGQ5OTIwZGNhYmJkOGYxMGExNDg4YTRlNmE2NWQ1NjVlZWVlMGJmYmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU2MzYzMmM3MzBmOTU2MjgyOWY1ZTZmZDRkZDIwNWI5ZjFmZTQ4N2I0OTQ4OTYxMjY3ZmYzOWZhNjExZTQ5OGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a4d484b1c1f4dbea9f283df8c79cfb4",
+      "statement": "The SPA is baked into the binary at compile time via `#[derive(RustEmbed)] #[folder = \"../web/dist/\"]`, so any frontend change requires rebuilding `web/dist` and recompiling the binary; the handler serves files from an embedded asset lookup with a hand-rolled MIME table and always answers 200, meaning a missing asset returns `index.html` as HTML.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/Containerfile#L10-L27",
+          "version": "repo-lines-v1:sha256:1d807108f5842bb7b286a916a10dcd5818c5d89de4e922a2777805609245083a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZDMyZWRiNTBlZTVmMGYyZDVmMjAzMGIyZmUxYmI2MTdlOTUwYWFhZDFjODcxYzQ5ZjY3OTU1Y2M4ZjQ1NjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NGY0MzdkZDkwYzY3YWE1NWU2ZWNhY2Y4OTY5NmFkNTNjMGRkNmY1ZDExYTM4ZDA3NzhkODEwYzQxNTI5OTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlMWZmZjE3ZjBhYjkwMmI2MWI0OTdhYTI3NjMxODJlOTRhMWQ0NTc2N2Q1Yzc2ZjRhZDI2NzQxNTVjYmYxZTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3Njg4ZWYyZTk0OTRlODM2NDFhOTVkYjFkOTNjODdjMDY1MWJhNWQxMjAwYzQ2ODE5Njc5MGZjNDAwZjdkMDEifQ"
+        },
+        {
+          "resource": "repo://justfile#L31-L54",
+          "version": "repo-lines-v1:sha256:2851ef9a65e7e25fe9050f628e2868a64c30bd523fe00e80c5589283269d89ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZGQzYzc3ODhlZmQ4M2EzNDBhZTM5MzMwOTE5NTE5NTc0NzQ1ZWRmMjg4NjBmY2MyMmViOTIyNGVjMDAxM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0ZTc2MDQyNmE4ZTNhODYwZGQxNTBlNmMxMTc4YmFhNmJmMTgyNGM1N2ZlODI3M2IwMmI0YTVjZTQ1M2FhNzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlODI0YjgxYjdiNTFiMGEwMGNjYjY5ODBhNWVkNDAxYTg0OTI1YmU4M2M3MGI3ODI5ZTNjMWQ2MGRiNDViNjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU2MzRlNDUyNTA0MjMwZDBmNmJjY2NhZTYzMTFkMGY3ZTRmYWI2MWNhMWVlMDg0MjBmYjMyODA1MzhhMGI4MDkifQ"
+        },
+        {
+          "resource": "repo://server/src/static_files.rs#L8-L47",
+          "version": "repo-lines-v1:sha256:fc32b12e8eba48b925ad982912a9d14e9d4feac9ba40d759f5fbbf9a29b99b2e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxMmRjYWUxNTMwZWVhZDFmOWQ4NTJjOWFkYTY4NDEzMTY0Yjg1MzIwMWNkYmM5MWYzNmViMmMxNzMzZjk2ZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjYjA2N2NhNzAyOGRmYTMxNDA3MzFjNmQxYTMyM2QyYmZmODcxMzAyNmM0MzFhZjU4NjJmODc5N2ExYTdjNDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_51b4f67dc2ae46a39a3ca920ba361d01",
+      "statement": "Uploaded media is addressed by DB-stored paths relative to `image_dir` / `docs_dir`, mounted at `/images` and `/docs`; the SPA composes `/images/{thumb_path|file_path}` and `/docs/pdf/{file_path}`, but `web/vite.config.ts` proxies only `/api` and the legacy `/data/images`, so image and document URLs resolve only when pages are served by the Rust binary, not through the Vite dev server.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/main.rs#L43-L48",
+          "version": "repo-lines-v1:sha256:3f90506f2381a920beef8056caebca63fdb0a072166343ea50a33c8a1d4a8eb0:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTdmNjAzMjgzZGU4NTRjNzdlNDI5NDEzNGRlZjE3MjYyNjkxN2UxMDc2MGZhYWE5MTdlZDI4NjhjYWViNjJjNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2RiODRjMThmNDI3YjIxYjY1OGNiZmRkYjk0YjIxMjI5MDMwMWQxZjNmNjcxNWZmZGQ4YTdmMzcxOGYzYmM4MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTM0MzZlMjk2MWUwNmNjZWZkYjYwZGE2ZGYxMjJlYTgyMWRiMzJmZmY2MzZkYmJjYTY1MDc4MDBkZWJmOGEwZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjA0ZTNhNjhhYmNiZTUwZWNlZjIxYjY4OTk1YzYzYzYyYzk2NzdkMmYwYTJhOWE4ZmQwZTdmMWZmZjllOGNjZSJ9"
+        },
+        {
+          "resource": "repo://web/src/components/ui/DocumentList.tsx#L13-L13",
+          "version": "repo-lines-v1:sha256:c95827749e51bf8f880f89e552a886355cc04187fb51bb84b1cb014d8e63f921:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzk1ODI3NzQ5ZTUxYmY4Zjg4MGY4OWU1NTJhODg2MzU1Y2MwNDE4N2ZiNTFiYjg0YjFjYjAxNGQ4ZTYzZjkyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzk1ODI3NzQ5ZTUxYmY4Zjg4MGY4OWU1NTJhODg2MzU1Y2MwNDE4N2ZiNTFiYjg0YjFjYjAxNGQ4ZTYzZjkyMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGM2MmZkYzM5ZDhjZDY5YWY4ODMxMzRjNGM4MzgyZDJkYWE0ZmQ0NDM4ZWU1Y2Q3MTBmYWVkMzdlMWZmMjFiYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTlmYjY3ZDUzNDA2ZmMxMzczMWJkOGI5YmRmYjhiYzI5NDMwZTcxY2IzY2ZhMzI5OGNkMDA0MmZlMmJiMDgxMSJ9"
+        },
+        {
+          "resource": "repo://web/src/routes/items/index.tsx#L58-L62",
+          "version": "repo-lines-v1:sha256:567706b45eea11329d1a4a01be91b3a4bdd8f534576a2fd1cd8bf4c4e9317196:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzk2MTY5MzQyYWZmNzQxYWQ1ZGQzZTU4NGJiMTVhN2NhZGM3MDZiMmNiZTQ1MzgxYTE3ZjYwZTU3MWFhMjZmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2E1MzMzZDZlNDQwMmM3ZWQ5NzFkNTcwN2M0ZDZhZWVlNzc3YTI2NzdkZTg1MzIyMGM0ZDM4MDNhYjA5YWQ3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWVjZTdmZTY2MGFhZjBiNmQ4MTA5NDRkMjQzOGNiN2IyYTZkYjg1MjU5ODA1MTVhNjJjZGYwODgyOWVjY2NhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDU1MDAxNDM0OTk0NGQxZTM1YjUyZmYxMjM5MThhMTgwMGZjOWNmNjk5NTQ4NGQ2Yjk1ODhjOGY5MjJjNzU5NCJ9"
+        },
+        {
+          "resource": "repo://web/vite.config.ts#L14-L26",
+          "version": "repo-lines-v1:sha256:777c022bfc3e952d1c431cab2b95a253971845e65e02131cce66d0f3c6f2c64a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwZTY2YWZlMzEwMjMxZDJlNjA5MWE1ZDg5YTYzZTc0OTg1ZmM3YzAyMzY0YTg5OWI0Y2FjZjdmNTI3Mjk2NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkNWNkMmZiNGYzZGY4ODQ1MTUyNTViMzk1MjNmMmY4YjU0NzJiZWVhOWY1NjZmZmNhMjA0ZGI4MDI1NjEwNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczYzc5ZGYzNjhmMTYzY2U5MDNlNDAxMTYwYzkwMmMzOWZmZTUxYzZhZDBkNWNiM2IzYjRjOTdhNDgyYWQ4ZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e941d73fb326423e965edca8ac2755d6",
+      "statement": "All handler failures funnel through the single `AppError` enum (`NotFound`/`BadRequest`/`Internal`) whose `IntoResponse` emits `{ \"error\": message }`; `sqlx::Error::RowNotFound` maps to 404, other SQL and any `std::io::Error` map to `Internal`, which is logged via `tracing::error!` and returned to clients as the fixed string `internal server error`.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/error.rs#L8-L63",
+          "version": "repo-lines-v1:sha256:2bd3a75a4e8160674a55c022b70aca29dce89e348977729b027c17dc67ed3329:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc1Nzg4ODZlOTFiMmI5NGNmZDhlOGU5YzVmYTQxMzUzNDcyMTRlNWM0ZWRmZDRmMjM1ZWMyMzc3NzJjNGM0MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNGRmMDgwYjA2NzkwMThlZGJhODM3ZTk3ODBkZmY5ZDBmYjg5YjhkNDIyNTRiY2EwYmU2MDVkZmRjN2QzMTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlNDM2Y2NmZDVlZjJkNTNmYjQxNmQ3Y2I4MzE3NTc4ZjI2MjhjNWVhMDM4NzJjNjQ4N2RjZjlkZmRjMDQwYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f3e0465a9c10423bac13ac0648bbe206",
+      "statement": "No authentication or authorization layer exists: no middleware or extractor checks credentials, CORS is permissive, and `/images` plus `/docs` are unguarded static mounts, so the only access boundary is the network bind or an external reverse proxy.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/main.rs#L45-L53",
+          "version": "repo-lines-v1:sha256:08c99ca09c589ba8d485eb7ebde9b440efef5c5dab908b73c3312ae671707f55:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI4OWFhNTAzYjIwNTkyYzc2N2VjMzhhMmZlNjNlZjUzNGE2MjI3MzAzYTk2NWY5Zjc0YTdjODY5ODM2ZjAzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDcxMDJhZjVmZmYxYTQ1ZTFhODQ5MjNiZjVkM2M1NTI5MjRlN2I2NGU1YWMzOWIzZjgzY2E3YWU4NzFjMzc2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJjNTg5NDZiZjk0MjViYzY3YWI1MzE1ODRiMTJjNzk2ZDRhNTgyMjJhNTcxMWMyYTEzMjE1OGQ3Y2Y3ZDdhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjdjN2VhMDBkMGUxNmNiMmE2OGU1OGNhYjlkNDEzNzE0YWM5ZTAxMzYzZTVmYjdkYzkwYTU4OWE2YWE3ZDA0YiJ9"
+        },
+        {
+          "resource": "repo://server/src/routes.rs#L9-L56",
+          "version": "repo-lines-v1:sha256:18b18c87a125b36e2ea174647597d10507a8984e8b55bb70c525aabda2b2e173:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmY2VkODI5M2I3ZWQ4NWUyNGQ3MDhlNWYwZThjMmI0MjRkYjM3YWU5NTM4OTM5YTM3OGE0NGE3MTUwMTFmYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2NTcyMzFjNTNlYWQzM2M3ZDdkMGFmY2JkMDY0ZDE3NWY3YjNhYTdhYmQzYjA2YTIyMjhmMDk4OGI1MDkyNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_58901bded020418281b21f7b2206c3fa",
+      "statement": "No automated tests protect the server: `server/tests/` is empty, no module contains `#[cfg(test)]`, and the `reqwest`/`tempfile` dev-dependencies are unused, so `cargo test -p server` runs zero tests and the enforced gates are `cargo clippy`, prettier check, and the frontend `tsc -b`.",
+      "evidence": [
+        {
+          "resource": "repo://justfile#L115-L133",
+          "version": "repo-lines-v1:sha256:9b8488c78e839c01e04818a34f3b65bb193b62e9a07804f8dd234cec7cb261a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmYjAwOWZkMWMyZTMzZjNhMmYyZmE1Zjk2NDIxODRiOGIxNTUxNDMzMTlmOWU2Y2VkOTdjZTk3NDQzYjFlNjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0MzgyZjE2NGUwODgzMjBkMjg4ZTEyMTgzY2M4ZjA0YTEyMDc0YWFmMzdkYjk3ZGQzZjExNTExOWYxYTI5NWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4OTRkYmMzMjQxYzAyOWZkZDhiODgwN2U0ZGZjMmIxMjllNzk2MWUzNmZhN2E0MGY3NDlhN2U4YWU3ODI1YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmMDQ5NzdmMzU3M2NmOGE0ZWRlMTkxZDY3MmJlNzhhMGUwNzdhZDBlM2EwN2YxMzc1ZjViZjc4ZjZmMzNjMzUifQ"
+        },
+        {
+          "resource": "repo://server/Cargo.toml#L25-L27",
+          "version": "repo-lines-v1:sha256:42cb16ce06231505a704e83607c41046911a5757c0d26c044ae4a254eb458e42:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzMyYTQwYjE2ZTczZDlhNjcwYjYxYTNhYzA4Mjg1MmJmM2Y3M2QwNmVmYjlmZGEwYzYyOTVmYzNjZGYxOWEwYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmQyZmY4MzMzMGEyNmIxZWU5YjQxNDU1ZWY1MGY3Y2RlOGYzYjY4ODc0YTViNDM0MzFmMzkyMjdmNWFlYjIzZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWQ0YzUxMjFlOTA4MmVhZTJlNDM2YzYxYWNlOTNiZGU1YTRmZDg5ZWJiYmEwMGFkMTJiNmEzM2Q4ODRkNmM1YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8b95ed06232414291d573780bbded0c",
+      "statement": "Module structure is deliberately parallel per domain: `handlers/`, `repositories/`, and `models/` each contain `category`, `container`, `item`, `tag` (plus `search`/`stats` variants), `services/` holds only `image` and `search_index`, and `routes.rs` is the only place a domain becomes reachable over HTTP.",
+      "evidence": [
+        {
+          "resource": "repo://server/src/handlers/mod.rs#L1-L6",
+          "version": "repo-lines-v1:sha256:283a3c3d6d6fa9148798ec806cea05813c87c167d8e3c0fef29f800d43b1fa16:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWJjYzdkYjEyMjNlNzdjNjlmMmFkNTdmNzk3NWEwOTU2OThhNjkxNGRkZDU1MjEyZDUwNjU5MmRhNzUyYzU4OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRkYzdjOWQzZWVkOTY2NmZmNmIwOTA0M2IzNzc2NDYxYzM3NWZhODg2NjFlNWM1NDJkZjBlZWU5MTQxNmIxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://server/src/main.rs#L7-L15",
+          "version": "repo-lines-v1:sha256:8995d09c3e6faeb1d98d0028c48f489c9de013f9c6a83ada3737518b737fb9f7:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODg1NjY4NmQyZDExOWI1OTRlYzY4NGYyMjVjMGZlOTVmMWU4ZTNlZjEyOWI2ZWJiZDYxMDcyYTNmYzRmMjk1MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDNjMzQyYzI2M2YyM2Q3MzcyNzJjMjBhOGRjZWQzYTA1Y2UxMDc0YzI3NTFkMDkxMGE3NzkyYjVjYTg1YTA5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGVhMTg4ODQ5NDU0MTk1Mzg3ZjFhMjk5YjhmYjZjODk3Mzg0MGI0ZjYzZTU5MzdkNGY1ODJhYWEzNmUyNzdhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQ3NmFiMWU4ZThmMzVmZDUxNmRiMzhjNWQ0OGY5OGUyMTcwOTBiOWUyMGM4ZjIxYTk5N2QyMGUwNzFjMTYzNyJ9"
+        },
+        {
+          "resource": "repo://server/src/models/mod.rs#L1-L11",
+          "version": "repo-lines-v1:sha256:d113ef892a3908b8f6ab0db6a7725764af3989e6c3bc700e1053983950fe2598:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViY2M3ZGIxMjIzZTc3YzY5ZjJhZDU3Zjc5NzVhMDk1Njk4YTY5MTRkZGQ1NTIxMmQ1MDY1OTJkYTc1MmM1ODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkZjAwODllMzE4NjFmZjNhZjFjZjdlNjM4YzJmZWI1MWY2MjA5NjIwYTgyOGVmZDNiN2U4ZDA4MjFkMzVlZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b29340d0ebf0414d9610d6d0b3f7074e",
+      "statement": "The frontend boots as a TanStack Router SPA with a shared `QueryClient`, and its API client hard-codes `const BASE = \"/api/v1\"`, so the SPA's only server contract besides static media is that prefix.",
+      "evidence": [
+        {
+          "resource": "repo://web/src/lib/api.ts#L1-L16",
+          "version": "repo-lines-v1:sha256:92175dc874efc8c8f65848893212bd1b8ad4dddd2ce41b0b3f7111bb7e5ef5d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllMjVhMmYyY2M0M2ZkMDMxMDljNGY3NGM4MGU2NjQ4ZmM1NzVlNGVjMjQ1ZjRkMGJhMTA1ZDZlYzdjZDc1ODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNDQ2MWNjM2Y3MGQzNDQwNTY2NzY2MzZmNTM3MWM4ZDk3NzMxMjI1NjFiOWQ2NDFlYzE5NDRkMzk3OTk1NTkifQ"
+        },
+        {
+          "resource": "repo://web/src/main.tsx#L8-L23",
+          "version": "repo-lines-v1:sha256:2cc36b682f0c0c521b1a573ccdebb7734725a1e1669c8daf5200ecfe2977a549:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwMmI4MWU5ODhjMTg5YjgwNjdiYzgyZTUzOGY4OGZiYmIyZmQ4YWQ3MTBkNjA2ZmY3NjZmODIyZTJlMjM0NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5OTY3ZWMxZWQzODM2ZjhlYjE3YWZmMTcyYjViZmVmN2RlNjA0ODVhNDM5YzZjYTExYzU5MWUxNzU1NzM5YWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkYWJjODIyM2MzN2RiOGY3ODU1OTA1ODUxMjIwMjUzODIyZTk4ZjE4MDA4YjE0NDBkZGQxYThkMGFiYTEyZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T14:40:20.132Z"
+  }
+}
