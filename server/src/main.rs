@@ -1,7 +1,10 @@
 use axum::{extract::DefaultBodyLimit, middleware, Extension, Router};
+use axum::http::{header::HeaderName, HeaderValue};
 use std::sync::Arc;
+use tower::ServiceBuilder;
 use tower_http::cors::CorsLayer;
 use tower_http::services::ServeDir;
+use tower_http::set_header::SetResponseHeaderLayer;
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::EnvFilter;
 
@@ -63,11 +66,30 @@ async fn main() {
     });
 
     // Serve uploaded images at a fixed URL: /images/{subdir}/{filename}
-    // DB stores relative paths like "items/uuid.png"
+    // DB stores relative paths like "items/uuid.png".
+    // Uploaded files may be SVG, which can embed scripts — every response from
+    // these mounts carries a CSP sandbox so navigating to an uploaded file can
+    // never run same-origin code. The SPA itself is not affected.
+    let uploads_csp = || {
+        SetResponseHeaderLayer::overriding(
+            HeaderName::from_static("content-security-policy"),
+            HeaderValue::from_static("default-src 'none'; style-src 'unsafe-inline'; sandbox"),
+        )
+    };
     let app = Router::new()
         .nest("/api/v1", routes::api_routes(pool.clone()))
-        .nest_service("/images", ServeDir::new(image_dir))
-        .nest_service("/docs", ServeDir::new(docs_dir))
+        .nest_service(
+            "/images",
+            ServiceBuilder::new()
+                .layer(uploads_csp())
+                .service(ServeDir::new(image_dir)),
+        )
+        .nest_service(
+            "/docs",
+            ServiceBuilder::new()
+                .layer(uploads_csp())
+                .service(ServeDir::new(docs_dir)),
+        )
         // Serve embedded frontend (web/dist baked into binary at compile time)
         .fallback(static_files::handler)
         .layer(middleware::from_fn_with_state(

@@ -82,7 +82,7 @@ export function ImageUpload({
         </div>
         <div className="text-center">
           <p className="text-sm font-medium text-ink">点击或拖拽图片到此处上传</p>
-          <p className="mt-0.5 text-xs text-muted">JPG、PNG、WebP、AVIF</p>
+          <p className="mt-0.5 text-xs text-muted">JPG、PNG、WebP、AVIF、SVG</p>
         </div>
         <input
           ref={mainRef}

@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 use crate::error::{AppError, AppResult};
 
 const THUMB_WIDTH: u32 = 300;
-const ALLOWED_EXTENSIONS: &[&str] = &["jpg", "jpeg", "png", "webp", "avif"];
+const ALLOWED_EXTENSIONS: &[&str] = &["jpg", "jpeg", "png", "webp", "avif", "svg"];
 
 pub struct SavedImage {
     pub file_path: String,
@@ -54,8 +54,10 @@ pub fn save_image(
     // Return paths relative to image_dir
     let rel_file = format!("{subdir}/{file_name}");
 
-    // Generate thumbnail (AVIF skipped — no decode support without system libdav1d)
-    if ext == "avif" {
+    // Generate thumbnail. Formats the `image` crate cannot decode/rasterize are
+    // stored as-is and reuse the original as their thumbnail: AVIF (needs system
+    // libdav1d) and SVG (vector — browsers render the original fine at any size).
+    if ext == "avif" || ext == "svg" {
         return Ok(SavedImage {
             file_path: rel_file.clone(),
             thumb_path: rel_file,

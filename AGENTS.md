@@ -72,7 +72,9 @@ Optional `config.toml` (or `CONFIG_PATH` env). If missing, defaults apply — no
 
 ## Images
 
-- Uploads: multipart field `file`. Allowed: `jpg/jpeg/png/webp`. Default max 10MB. `jpeg` is normalized to `jpg` on disk.
+- Uploads: multipart field `file`. Allowed: `jpg/jpeg/png/webp/avif/svg`. Default max 10MB. `jpeg` is normalized to `jpg` on disk.
+- AVIF and SVG are stored as-is with `thumb_path = file_path` — the `image` crate can't rasterize them, so no thumbnail is generated.
+- SVG can embed scripts: every response from the `/images` and `/docs` mounts carries a CSP sandbox (`default-src 'none'; style-src 'unsafe-inline'; sandbox`, tower-http `set-header` layer in `main.rs`), scoped to those mounts only — the SPA/API responses do not.
 - Layout: `data/images/items/{uuid}.{ext}` + `{uuid}_thumb.{ext}` (300px thumb); containers use `data/images/containers/` and a single `image_path` column.
 - API returns filesystem-relative paths (`data/images/...`). The SPA renders them as `/{path}` (e.g. `src={`/${item.thumb_path}`}`).
 - `main.rs` serves `image_dir` at that same URL prefix via `nest_service` (default `/data/images`) — only the image dir is exposed, not the SQLite DB. Vite proxies `/data/images` to the backend in dev.
